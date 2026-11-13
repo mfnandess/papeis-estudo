@@ -1,0 +1,1117 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cálculo 1 sem Sofrimento</title>
+<meta name="description" content="Paper de estudo de Cálculo 1 baseado no Guidorizzi (Vol. 1, 5ª ed.), com complementos do Apostol, figuras, exemplos resolvidos e exercícios do livro com respostas.">
+<meta name="theme-color" content="#f7f5f0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#16171b" media="(prefers-color-scheme: dark)">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false}],throwOnError:false})"></script>
+<style>
+:root{
+  --bg:#f7f5f0; --surface:#ffffff; --ink:#1f2024; --muted:#6a6a73; --line:#e3dfd6;
+  --accent:#2f5bd3; --accent-soft:#e8eefc;
+  --red:#c8443c; --green:#1f7a4c; --violet:#7a4cc2;
+  --g:#2f5bd3; --g-soft:#e8eefc;           /* Guidorizzi */
+  --a:#a85a00; --a-soft:#fbf0e1;           /* Apostol */
+  --x:#1f7a4c; --x-soft:#e5f3ec;           /* extra */
+  --warn:#b4372f; --warn-soft:#fbe9e7;
+  --fill:rgba(47,91,211,.16); --rect:rgba(31,122,76,.18);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16171b; --surface:#1f2026; --ink:#e9e8e4; --muted:#a0a0aa; --line:#33343c;
+    --accent:#86a6ff; --accent-soft:#232c45;
+    --red:#ff8a80; --green:#6fd3a0; --violet:#c2a3ff;
+    --g:#86a6ff; --g-soft:#232c45; --a:#f0b25c; --a-soft:#382a17; --x:#6fd3a0; --x-soft:#17322a;
+    --warn:#ff8a80; --warn-soft:#3a1f1e;
+    --fill:rgba(134,166,255,.2); --rect:rgba(111,211,160,.2);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16171b; --surface:#1f2026; --ink:#e9e8e4; --muted:#a0a0aa; --line:#33343c;
+  --accent:#86a6ff; --accent-soft:#232c45;
+  --red:#ff8a80; --green:#6fd3a0; --violet:#c2a3ff;
+  --g:#86a6ff; --g-soft:#232c45; --a:#f0b25c; --a-soft:#382a17; --x:#6fd3a0; --x-soft:#17322a;
+  --warn:#ff8a80; --warn-soft:#3a1f1e;
+  --fill:rgba(134,166,255,.2); --rect:rgba(111,211,160,.2);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%; scroll-behavior:smooth; scroll-padding-top:16px}
+body{margin:0; background:var(--bg); color:var(--ink);
+  font:18px/1.68 "Charter","Iowan Old Style","Georgia",serif;}
+main{max-width:740px; margin:0 auto; padding:0 16px 120px}
+h1,h2,h3,h4,.ui{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif}
+h1{font-size:2rem; line-height:1.15; margin:0 0 .3em; letter-spacing:-.01em}
+h2{font-size:1.5rem; line-height:1.25; margin:0}
+h3{font-size:1.15rem; margin:2em 0 .5em}
+h4{font-size:1rem; margin:1.4em 0 .3em}
+p{margin:.7em 0}
+a{color:var(--accent)}
+hr{border:0; border-top:1px solid var(--line); margin:2.5em 0}
+.katex{font-size:1.06em}
+.katex-display{overflow-x:auto; overflow-y:hidden; padding:.3em 0; margin:.8em 0}
+
+/* capa */
+.capa{padding:56px 0 20px}
+.capa .sub{color:var(--muted); font-size:1.05rem; margin:.2em 0 1.2em}
+.legenda{display:flex; flex-wrap:wrap; gap:8px; margin:1em 0}
+.tag{display:inline-block; font:600 .72rem/1 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  padding:.38em .6em; border-radius:999px; letter-spacing:.02em; vertical-align:.12em; white-space:nowrap}
+.tag.g{background:var(--g-soft); color:var(--g)}
+.tag.a{background:var(--a-soft); color:var(--a)}
+.tag.x{background:var(--x-soft); color:var(--x)}
+
+/* sumário */
+.toc{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:6px 18px 14px; margin:1.5em 0}
+.toc ol{margin:0; padding-left:1.4em}
+.toc li{margin:.35em 0}
+.toc a{text-decoration:none; color:var(--ink)}
+.toc a:hover{color:var(--accent)}
+.toc small{white-space:nowrap; color:var(--muted); font-family:-apple-system,BlinkMacSystemFont,sans-serif; font-size:.78rem}
+@media (min-width:640px){ .toc ol{columns:2; column-gap:2.2em} .toc li{break-inside:avoid} }
+
+/* capítulos */
+.cap{padding-top:28px; margin-top:36px; border-top:1px solid var(--line)}
+.cap-head{display:flex; gap:14px; align-items:flex-start; margin-bottom:.6em}
+.cap-num{flex:0 0 auto; width:44px; height:44px; border-radius:12px; background:var(--accent); color:var(--surface);
+  display:flex; align-items:center; justify-content:center; font:700 1.2rem/1 -apple-system,BlinkMacSystemFont,sans-serif}
+.cap-meta{color:var(--muted); font:500 .82rem/1.4 -apple-system,BlinkMacSystemFont,sans-serif; margin-top:.35em}
+
+/* caixas */
+.box{background:var(--surface); border:1px solid var(--line); border-left:4px solid var(--accent);
+  border-radius:10px; padding:12px 16px; margin:1.2em 0}
+.box>:first-child{margin-top:0} .box>:last-child{margin-bottom:0}
+.box .t{display:block; font:700 .78rem/1.3 -apple-system,BlinkMacSystemFont,sans-serif; letter-spacing:.06em;
+  text-transform:uppercase; color:var(--accent); margin-bottom:.35em}
+.box.ideia{border-left-color:var(--green)} .box.ideia .t{color:var(--green)}
+.box.cuidado{border-left-color:var(--warn); background:var(--warn-soft)} .box.cuidado .t{color:var(--warn)}
+.box.exemplo{border-left-color:var(--violet)} .box.exemplo .t{color:var(--violet)}
+.box.apostol{border-left-color:var(--a); background:var(--a-soft)} .box.apostol .t{color:var(--a)}
+.checklist{list-style:none; padding:0}
+.checklist li{padding-left:1.6em; position:relative; margin:.35em 0}
+.checklist li::before{content:"✓"; position:absolute; left:0; color:var(--green); font-weight:700}
+
+/* figuras */
+.fig{margin:1.6em 0; text-align:center}
+.fig svg{width:100%; max-width:480px; height:auto; display:block; margin:0 auto; overflow:visible}
+.fig figcaption{font-size:.88rem; color:var(--muted); margin-top:.5em; text-align:left; line-height:1.5}
+.fig .ax{stroke:var(--muted); stroke-width:1.2}
+.fig .arw{fill:var(--muted)}
+.fig polyline,.fig line{fill:none; stroke-linecap:round; stroke-linejoin:round}
+.fig .c1{stroke:var(--accent); stroke-width:2.6}
+.fig .c2{stroke:var(--red); stroke-width:2.2}
+.fig .c3{stroke:var(--green); stroke-width:2.2}
+.fig .c4{stroke:var(--violet); stroke-width:2.2}
+.fig .thick{stroke-width:3.2}
+.fig .c-faint{stroke:var(--muted); stroke-width:1.4; stroke-dasharray:2 4; fill:none}
+.fig .c-faint-fill{stroke:var(--muted); stroke-width:1.2; fill:none}
+.fig .guide{stroke:var(--muted); stroke-width:1; stroke-dasharray:4 4}
+.fig .sec{stroke:var(--muted); stroke-width:1.6}
+.fig .sec.faint{opacity:.45}
+.fig .fill{fill:var(--fill); stroke:none}
+.fig .fill.faint{opacity:.7}
+.fig .rect{fill:var(--rect); stroke:var(--green); stroke-width:1}
+.fig .dot{fill:var(--accent)} .fig .dot2{fill:var(--red)} .fig .dot3{fill:var(--green)}
+.fig .hole{fill:var(--surface); stroke:var(--accent); stroke-width:2}
+.fig .lb{fill:var(--ink); font:13px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.fig .lb.s{fill:var(--muted); font-size:11.5px}
+.fig .c1t{fill:var(--accent); font-weight:600} .fig .c2t{fill:var(--red); font-weight:600}
+.fig .c3t{fill:var(--green); font-weight:600} .fig .c4t{fill:var(--violet); font-weight:600}
+
+/* exercícios */
+.exs{list-style:none; padding:0; counter-reset:ex}
+.exs>li{counter-increment:ex; background:var(--surface); border:1px solid var(--line); border-radius:12px;
+  padding:12px 14px 10px; margin:.8em 0; position:relative}
+.exs>li::before{content:counter(ex); position:absolute; left:-1px; top:-1px; background:var(--ink); color:var(--surface);
+  font:700 .72rem/1 -apple-system,BlinkMacSystemFont,sans-serif; padding:.45em .6em; border-radius:12px 0 10px 0}
+.exs .src{display:block; margin:0 0 .4em 1.8em}
+.exs .itens{display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,150px),1fr)); gap:.35em 1em; margin:.5em 0}
+.exs .itens>span{white-space:nowrap; overflow-x:auto; overflow-y:hidden}
+.exs .itens.l{grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr)); gap:.7em 1.2em}
+details{margin-top:.5em; border-top:1px dashed var(--line); padding-top:.4em}
+summary{cursor:pointer; color:var(--accent); font:600 .9rem/1.6 -apple-system,BlinkMacSystemFont,sans-serif;
+  list-style:none; padding:.3em 0; -webkit-tap-highlight-color:transparent}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"▸ "} details[open]>summary::before{content:"▾ "}
+details>div{padding:.2em 0 .3em}
+
+table.f{border-collapse:collapse; width:100%; font-size:.95rem; margin:1em 0}
+table.f td{border-bottom:1px solid var(--line); padding:.45em .3em; vertical-align:middle}
+.tablewrap{overflow-x:auto}
+
+/* botões flutuantes */
+.fab{position:fixed; right:14px; bottom:calc(14px + env(safe-area-inset-bottom)); display:flex; gap:8px; z-index:5}
+.fab a,.fab button{width:46px; height:46px; border-radius:50%; border:1px solid var(--line); background:var(--surface);
+  color:var(--ink); display:flex; align-items:center; justify-content:center; text-decoration:none;
+  box-shadow:0 4px 14px rgba(0,0,0,.12); font:600 1.05rem/1 -apple-system,BlinkMacSystemFont,sans-serif; cursor:pointer}
+.progress{position:fixed; top:0; left:0; height:3px; background:var(--accent); width:0; z-index:6}
+footer{color:var(--muted); font-size:.85rem; margin-top:3em}
+@media (min-width:900px){ body{font-size:19px} }
+@media print{ .fab,.progress{display:none} details{display:block} details>div{display:block} }
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<main>
+
+<header class="capa" id="topo">
+  <h1>Cálculo 1 sem sofrimento</h1>
+  <p class="sub">Um guia de estudo para a disciplina de Cálculo I da universidade: teoria curta, figuras, exemplos resolvidos e exercícios do livro com respostas.</p>
+
+  <p>A referência principal é o <b>Guidorizzi</b>, <i>Um Curso de Cálculo, Vol. 1</i>, 5ª ed. (LTC). A ordem dos capítulos e a maioria dos exercícios seguem esse livro. O <b>Apostol</b>, <i>Cálculo I</i> (Reverté), aparece como referência secundária, sempre marcada, nos pontos em que ele explica algo de um jeito diferente ou mais profundo.</p>
+
+  <div class="legenda ui">
+    <span class="tag g">Guidorizzi §3.8</span> <span style="align-self:center;font-size:.85rem">trecho baseado no Guidorizzi, seção indicada</span>
+  </div>
+  <div class="legenda ui">
+    <span class="tag a">Apostol §5.1</span> <span style="align-self:center;font-size:.85rem">complemento tirado do Apostol</span>
+  </div>
+  <div class="legenda ui">
+    <span class="tag x">Extra</span> <span style="align-self:center;font-size:.85rem">exercício criado para este paper (não está nos livros)</span>
+  </div>
+
+  <div class="box ideia">
+    <span class="t">Como usar</span>
+    <p>Cada capítulo leva de 15 a 30 minutos. Leia a <b>ideia central</b>, acompanhe o <b>exemplo resolvido</b> e só então tente os exercícios. As respostas ficam escondidas: toque em <b>“Ver resposta”</b> depois de tentar. Os exercícios “do livro” trazem o número exato no Guidorizzi (por exemplo, <i>Ex. 3.3 – 1(j)</i>), então você acha a lista completa lá.</p>
+  </div>
+</header>
+
+<nav class="toc ui" id="sumario" aria-label="Sumário">
+  <h3 style="margin:.8em 0 .5em">Sumário</h3>
+  <ol>
+    <li><a href="#c1">Números reais e funções</a> <small>G cap. 1–2</small></li>
+    <li><a href="#c2">Limite e continuidade</a> <small>G cap. 3</small></li>
+    <li><a href="#c3">Limites no infinito e o número e</a> <small>G cap. 4</small></li>
+    <li><a href="#c4">Teoremas das funções contínuas</a> <small>G cap. 5</small></li>
+    <li><a href="#c5">Exponencial e logaritmo</a> <small>G cap. 6</small></li>
+    <li><a href="#c6">Derivadas</a> <small>G cap. 7</small></li>
+    <li><a href="#c7">Funções inversas</a> <small>G cap. 8</small></li>
+    <li><a href="#c8">Estudo da variação das funções</a> <small>G cap. 9 e 15</small></li>
+    <li><a href="#c9">Primitivas</a> <small>G cap. 10</small></li>
+    <li><a href="#c10">Integral de Riemann e TFC</a> <small>G cap. 11</small></li>
+    <li><a href="#c11">Técnicas de integração</a> <small>G cap. 12</small></li>
+    <li><a href="#c12">Aplicações da integral</a> <small>G cap. 13</small></li>
+    <li><a href="#c13">Equações diferenciais de 1ª ordem</a> <small>G cap. 14</small></li>
+    <li><a href="#c14">Fórmula de Taylor</a> <small>G cap. 16</small></li>
+    <li><a href="#form">Formulário e roteiro de estudo</a></li>
+  </ol>
+</nav>
+
+<!-- ============================================================ 1 -->
+<section class="cap" id="c1">
+<div class="cap-head"><div class="cap-num">1</div><div><h2>Números reais e funções</h2>
+<div class="cap-meta"><span class="tag g">Guidorizzi cap. 1–2</span> · ~15 min · revisão</div></div></div>
+
+<div class="box ideia"><span class="t">Ideia central</span>
+<p>Quase todo o Cálculo 1 é sobre <b>funções</b> \(f:\mathbb{R}\to\mathbb{R}\). Antes de começar, você precisa estar confortável com três ferramentas: <b>módulo</b>, <b>intervalos</b> e <b>gráficos</b> das funções básicas.</p></div>
+
+<h3>Módulo: a distância até zero</h3>
+<p><span class="tag g">Guidorizzi §1.3</span> O módulo de \(x\) é a distância de \(x\) até \(0\) na reta:</p>
+\[ |x| = \begin{cases} x, & x \ge 0 \\ -x, & x \lt 0 \end{cases} \]
+<p>A leitura geométrica é a que mais ajuda: \(|x-p|\) é a <b>distância entre \(x\) e \(p\)</b>. Por isso</p>
+\[ |x-p| \lt r \iff p-r \lt x \lt p+r . \]
+<p>Essa frase vai reaparecer na definição de limite, então vale a pena guardá-la.</p>
+
+<h3>Funções e o quociente de Newton</h3>
+<p><span class="tag g">Guidorizzi §2.1</span> Uma função associa a cada \(x\) do domínio um único \(y=f(x)\). Uma expressão que o Guidorizzi treina desde o capítulo 2, porque depois vira a derivada, é o <b>quociente</b></p>
+\[ \frac{f(x)-f(p)}{x-p}, \qquad x\ne p, \]
+<p>que é a inclinação da reta que passa por \((p,f(p))\) e \((x,f(x))\).</p>
+
+<div class="box exemplo"><span class="t">Exemplo resolvido</span>
+<p>Simplifique \(\dfrac{f(x)-f(p)}{x-p}\) para \(f(x)=x^3\).</p>
+<p>Use \(a^3-b^3=(a-b)(a^2+ab+b^2)\):</p>
+\[ \frac{x^3-p^3}{x-p} = x^2+xp+p^2 . \]
+<p>Repare: quando \(x\) se aproxima de \(p\), isso vira \(3p^2\), que é a derivada de \(x^3\) em \(p\). Você vai ver isso no capítulo 6.</p></div>
+
+<h3>Seno e cosseno</h3>
+<p><span class="tag g">Guidorizzi §2.2–2.3</span> No círculo de raio 1, o ponto que corresponde ao arco \(x\) tem coordenadas \((\cos x,\ \operatorname{sen} x)\). Daí saem \(\operatorname{sen}^2x+\cos^2x=1\), a periodicidade \(2\pi\) e as outras quatro funções: \(\operatorname{tg} x=\frac{\operatorname{sen} x}{\cos x}\), \(\sec x=\frac1{\cos x}\), e assim por diante.</p>
+
+<h3>Exercícios</h3>
+<ol class="exs">
+<li><span class="src"><span class="tag g">Guidorizzi Ex. 1.3 – 2</span></span>Resolva as equações.
+<div class="itens"><span>a) \(|x|=2\)</span><span>b) \(|x+1|=3\)</span><span>c) \(|2x-1|=1\)</span><span>d) \(|x-2|=-1\)</span><span>e) \(|2x+3|=0\)</span><span>f) \(|x|=2x+1\)</span></div>
+<details><summary>Ver resposta</summary><div>
+a) \(x=\pm2\). b) \(x=2\) ou \(x=-4\). c) \(x=0\) ou \(x=1\). d) Não há solução, porque módulo nunca é negativo. e) \(x=-\tfrac32\).<br>
+f) Separe em casos. Se \(x\ge0\): \(x=2x+1\Rightarrow x=-1\), que não serve. Se \(x\lt 0\): \(-x=2x+1\Rightarrow x=-\tfrac13\), que serve. Resposta: \(x=-\tfrac13\).</div></details></li>
+
+<li><span class="src"><span class="tag g">Guidorizzi Ex. 2.1 – 1</span></span>
+a) \(f(-1)\) e \(f(\tfrac12)\), sendo \(f(x)=-x^2+2x\).<br>
+b) \(g(0)\), \(g(2)\) e \(g(\sqrt2)\), sendo \(g(x)=\dfrac{x}{x^2-1}\).<br>
+d) \(\dfrac{f(a+b)-f(a-b)}{ab}\), sendo \(f(x)=3x+1\) e \(ab\ne0\).
+<details><summary>Ver resposta</summary><div>
+a) \(f(-1)=-3\), \(f(\tfrac12)=\tfrac34\). b) \(g(0)=0\), \(g(2)=\tfrac23\), \(g(\sqrt2)=\sqrt2\). d) \(\dfrac{3(a+b)-3(a-b)}{ab}=\dfrac{6b}{ab}=\dfrac6a\).</div></details></li>
+
+<li><span class="src"><span class="tag g">Guidorizzi Ex. 2.1 – 2</span></span>Simplifique \(\dfrac{f(x)-f(p)}{x-p}\) para:
+<div class="itens"><span>a) \(f(x)=x^2,\ p=1\)</span><span>c) \(f(x)=x^2,\ p\) qualquer</span><span>g) \(f(x)=x^3,\ p=2\)</span><span>j) \(f(x)=\tfrac1x,\ p=1\)</span></div>
+<details><summary>Ver resposta</summary><div>a) \(x+1\). c) \(x+p\). g) \(x^2+2x+4\). j) \(\dfrac{\frac1x-1}{x-1}=\dfrac{1-x}{x(x-1)}=-\dfrac1x\).</div></details></li>
+</ol>
+</section>
+
+<!-- ============================================================ 2 -->
+<section class="cap" id="c2">
+<div class="cap-head"><div class="cap-num">2</div><div><h2>Limite e continuidade</h2>
+<div class="cap-meta"><span class="tag g">Guidorizzi cap. 3</span> · ~30 min · <b>essencial</b></div></div></div>
+
+<div class="box ideia"><span class="t">Ideia central</span>
+<p>\(\displaystyle\lim_{x\to p} f(x)=L\) quer dizer: <b>dá para deixar \(f(x)\) tão perto de \(L\) quanto se queira, tomando \(x\) suficientemente perto de \(p\)</b>, mas diferente de \(p\). O que acontece exatamente em \(p\) não importa.</p></div>
+
+{{fig:limite|O limite “olha” para os vizinhos de \(p\), não para \(p\). Aqui \(f(p)\) está fora da curva, mas mesmo assim \(\lim_{x\to p}f(x)=L\). Como \(f(p)\ne L\), a função <b>não</b> é contínua em \(p\).}}
+
+<h3>Continuidade primeiro (como no Guidorizzi)</h3>
+<p><span class="tag g">Guidorizzi §3.2</span> O Guidorizzi faz algo pouco comum: define <b>continuidade antes de limite</b>. \(f\) é contínua em \(p\) quando</p>
+\[ \begin{gathered}\forall\varepsilon\gt 0,\ \exists\delta\gt 0 \text{ tal que}\\ |x-p|\lt\delta \;\Rightarrow\; |f(x)-f(p)|\lt\varepsilon .\end{gathered} \]
+<p>Na prática: <b>“o gráfico não tem salto nem buraco em \(p\)”</b>. Polinômios, \(\operatorname{sen}\), \(\cos\), \(e^x\), \(\ln x\) e raízes são contínuos onde estão definidos. Somas, produtos, quocientes (com denominador \(\ne0\)) e composições de funções contínuas também são.</p>
+
+<p><span class="tag g">Guidorizzi §3.3</span> O limite é definido do mesmo jeito, só que trocando \(f(p)\) por \(L\) e exigindo \(0\lt|x-p|\). Consequência prática:</p>
+<div class="box"><span class="t">Regra de ouro</span>
+<p>Se \(f\) é contínua em \(p\), então \(\lim_{x\to p}f(x)=f(p)\): <b>basta substituir</b>. Só dá trabalho quando a substituição gera \(\tfrac00\).</p></div>
+
+<div class="box apostol"><span class="t">Apostol §3.2–3.3</span>
+<p>O Apostol faz o caminho inverso: define primeiro o <b>limite</b>, usando vizinhanças \(N(p)\) e \(N(L)\), e depois diz que \(f\) é contínua em \(p\) quando \(\lim_{x\to p}f(x)=f(p)\). As duas abordagens chegam aos mesmos teoremas. Se a definição com \(\varepsilon\) e \(\delta\) não fizer sentido no Guidorizzi, a leitura em termos de vizinhanças do Apostol costuma ajudar.</p></div>
+
+<h3>Como calcular quando dá \(\tfrac00\)</h3>
+<p>A estratégia é sempre a mesma: <b>simplificar o fator que zera</b> e depois substituir. Os três truques mais usados são fatorar, multiplicar pelo conjugado e trocar variável.</p>
+
+<div class="box exemplo"><span class="t">Exemplo resolvido · conjugado</span>
+<p>Calcule \(\displaystyle\lim_{x\to1}\frac{\sqrt x-1}{x-1}\).</p>
+<p>Substituir dá \(\frac00\). Multiplique em cima e embaixo por \(\sqrt x+1\):</p>
+\[ \begin{aligned}\frac{\sqrt x-1}{x-1}&=\frac{(\sqrt x-1)(\sqrt x+1)}{(x-1)(\sqrt x+1)}\\&=\frac{x-1}{(x-1)(\sqrt x+1)}\\&=\frac1{\sqrt x+1}\;\xrightarrow{x\to1}\;\frac12 .\end{aligned} \]</div>
+
+<h3>Limites laterais</h3>
+<p><span class="tag g">Guidorizzi §3.4</span> \(\lim_{x\to p^+}\) olha só para \(x\gt p\); \(\lim_{x\to p^-}\), só para \(x\lt p\). O limite existe se, e somente se, os dois laterais existem e são iguais. Exemplo clássico: \(\frac{|x|}{x}\) vale \(1\) à direita de \(0\) e \(-1\) à esquerda, então não tem limite em \(0\).</p>
+
+<h3>Teorema do confronto</h3>
+<p><span class="tag g">Guidorizzi §3.6</span> Se \(f(x)\le g(x)\le h(x)\) perto de \(p\) e \(f\) e \(h\) tendem ao mesmo \(L\), então \(g\) também tende a \(L\). É o “sanduíche”.</p>
+<div class="box exemplo"><span class="t">Exemplo resolvido</span>
+<p>\(\displaystyle\lim_{x\to0}x\operatorname{sen}\tfrac1x=0\). Como \(|\operatorname{sen}\tfrac1x|\le1\), temos \(-|x|\le x\operatorname{sen}\tfrac1x\le|x|\), e os dois lados tendem a \(0\).</p></div>
+
+<h3>O limite fundamental</h3>
+<p><span class="tag g">Guidorizzi §3.8</span></p>
+\[ \boxed{\lim_{x\to0}\frac{\operatorname{sen}x}{x}=1} \]
+<p>Por que é verdade? No círculo unitário, para \(0\lt x\lt\frac\pi2\), comparando áreas obtém-se \(\operatorname{sen}x\lt x\lt\operatorname{tg}x\) (Figura abaixo). Dividindo tudo por \(\operatorname{sen} x\) e invertendo:</p>
+\[ \cos x\lt\frac{\operatorname{sen}x}{x}\lt1 , \]
+<p>e o confronto termina o trabalho, porque \(\cos x\to1\).</p>
+
+{{fig:circulo|No círculo de raio 1, o segmento vermelho (\(\operatorname{sen}x\)) é menor que o arco azul (\(x\)), que é menor que o segmento verde (\(\operatorname{tg}x\)). Essa desigualdade é a base do limite fundamental.}}
+
+{{fig:senx|Gráfico de \(\frac{\operatorname{sen}x}{x}\). A função não está definida em \(0\) (buraco), mas se aproxima de \(1\).}}
+
+<div class="box"><span class="t">Truque para usar o limite fundamental</span>
+<p>Faça aparecer “seno de alguma coisa dividido pela <b>mesma</b> coisa”:</p>
+\[ \lim_{x\to0}\frac{\operatorname{sen}3x}{x}=3\lim_{x\to0}\frac{\operatorname{sen}3x}{3x}=3. \]</div>
+
+<div class="box cuidado"><span class="t">Erros comuns</span>
+<p>• Escrever “\(\frac00=0\)” ou “\(\frac00=1\)”. \(\frac00\) é <b>indeterminação</b>: um sinal de que ainda falta trabalho.<br>
+• Usar o limite fundamental com \(x\to\pi\) ou \(x\to\infty\). Ele só vale quando o argumento do seno vai a <b>zero</b>.</p></div>
+
+<h3>Exercícios</h3>
+<ol class="exs">
+<li><span class="src"><span class="tag g">Guidorizzi Ex. 3.3 – 1</span></span>Calcule.
+<div class="itens l">
+<span>j) \(\displaystyle\lim_{x\to3}\frac{x^2-9}{x-3}\)</span>
+<span>n) \(\displaystyle\lim_{x\to\frac12}\frac{4x^2-1}{2x-1}\)</span>
+<span>o) \(\displaystyle\lim_{x\to1}\frac{\sqrt x-1}{x-1}\)</span>
+<span>q) \(\displaystyle\lim_{x\to3}\frac{\sqrt x-\sqrt3}{x-3}\)</span>
+</div>
+<details><summary>Ver resposta</summary><div>
+j) \(\frac{(x-3)(x+3)}{x-3}=x+3\to\mathbf{6}\). n) \(\frac{(2x-1)(2x+1)}{2x-1}=2x+1\to\mathbf{2}\). o) \(\mathbf{\tfrac12}\) (exemplo resolvido acima). q) Conjugado: \(\frac1{\sqrt x+\sqrt3}\to\mathbf{\frac1{2\sqrt3}}\).</div></details></li>
+
+<li><span class="src"><span class="tag g">Guidorizzi Ex. 3.3 – 1(r) e 1(u)</span></span>
+<div class="itens l">
+<span>r) \(\displaystyle\lim_{x\to3}\frac{\sqrt[3]x-\sqrt[3]3}{x-3}\)</span>
+<span>u) \(\displaystyle\lim_{x\to1}\frac{\sqrt x-1}{\sqrt{2x+3}-\sqrt5}\)</span></div>
+<details><summary>Ver resposta</summary><div>
+r) Com \(a=\sqrt[3]x\), \(b=\sqrt[3]3\): \(x-3=a^3-b^3=(a-b)(a^2+ab+b^2)\). Logo o limite é \(\frac1{3b^2}=\mathbf{\frac1{3\sqrt[3]9}}\).<br>
+u) Use os dois conjugados. \((\sqrt x-1)(\sqrt x+1)=x-1\) e \((\sqrt{2x+3}-\sqrt5)(\sqrt{2x+3}+\sqrt5)=2(x-1)\). Assim
+\[\begin{aligned}\frac{\sqrt x-1}{\sqrt{2x+3}-\sqrt5}&=\frac{\sqrt{2x+3}+\sqrt5}{2(\sqrt x+1)}\\&\to\frac{2\sqrt5}{4}=\mathbf{\frac{\sqrt5}2}.\end{aligned}\]</div></details></li>
+
+<li><span class="src"><span class="tag g">Guidorizzi Ex. 3.8 – 1</span></span>Calcule.
+<div class="itens l">
+<span>a) \(\displaystyle\lim_{x\to0}\frac{\operatorname{tg}x}{x}\)</span>
+<span>c) \(\displaystyle\lim_{x\to0}\frac{\operatorname{sen}3x}{x}\)</span>
+<span>g) \(\displaystyle\lim_{x\to0}\frac{\operatorname{tg}3x}{\operatorname{sen}4x}\)</span>
+<span>h) \(\displaystyle\lim_{x\to0}\frac{1-\cos x}{x}\)</span>
+<span>f) \(\displaystyle\lim_{x\to0}\frac{3x^2}{\operatorname{tg}x\,\operatorname{sen}x}\)</span>
+<span>j) \(\displaystyle\lim_{x\to0}x\operatorname{sen}\tfrac1x\)</span>
+</div>
+<details><summary>Ver resposta</summary><div>
+a) \(\frac{\operatorname{sen}x}{x}\cdot\frac1{\cos x}\to\mathbf1\). c) \(\mathbf3\). g) \(\frac{\operatorname{sen}3x}{3x}\cdot\frac{4x}{\operatorname{sen}4x}\cdot\frac{3}{4\cos3x}\to\mathbf{\tfrac34}\).<br>
+h) Multiplique por \(1+\cos x\): \(\frac{\operatorname{sen}^2x}{x(1+\cos x)}=\frac{\operatorname{sen}x}{x}\cdot\frac{\operatorname{sen}x}{1+\cos x}\to1\cdot0=\mathbf0\).<br>
+f) \(3\cdot\frac{x}{\operatorname{sen}x}\cdot\frac{x\cos x}{\operatorname{sen}x}\to\mathbf3\). j) \(\mathbf0\), por confronto (exemplo acima).</div></details></li>
+
+<li><span class="src"><span class="tag g">Guidorizzi Ex. 3.8 – 1(d), 1(q) e 1(o)</span></span>
+<div class="itens l">
+<span>d) \(\displaystyle\lim_{x\to\pi}\frac{\operatorname{sen}x}{x-\pi}\)</span>
+<span>q) \(\displaystyle\lim_{x\to1}\frac{\operatorname{sen}\pi x}{x-1}\)</span>
+<span>o) \(\displaystyle\lim_{x\to0}\frac{x+\operatorname{sen}x}{x^2-\operatorname{sen}x}\)</span></div>
+<details><summary>Ver resposta</summary><div>
+d) Troque \(u=x-\pi\to0\). Como \(\operatorname{sen}(u+\pi)=-\operatorname{sen}u\), fica \(-\frac{\operatorname{sen}u}{u}\to\mathbf{-1}\).<br>
+q) \(u=x-1\): \(\operatorname{sen}(\pi u+\pi)=-\operatorname{sen}\pi u\), e \(-\pi\frac{\operatorname{sen}\pi u}{\pi u}\to\mathbf{-\pi}\).<br>
+o) Divida em cima e embaixo por \(x\): \(\frac{1+\frac{\operatorname{sen}x}{x}}{x-\frac{\operatorname{sen}x}{x}}\to\frac{2}{0-1}=\mathbf{-2}\).</div></details></li>
+
+<li><span class="src"><span class="tag x">Extra</span></span>Determine \(L\) para que \(f(x)=\begin{cases}\frac{x^2-4}{x-2},&x\ne2\\ L,&x=2\end{cases}\) seja contínua em \(2\).
+<details><summary>Ver resposta</summary><div>Precisa valer \(L=\lim_{x\to2}\frac{x^2-4}{x-2}=\lim_{x\to2}(x+2)=4\). Logo \(L=4\).</div></details></li>
+</ol>
+
+<h4>Checklist do capítulo</h4>
+<ul class="checklist">
+<li>Sei explicar, com palavras, o que \(\lim_{x\to p}f(x)=L\) significa.</li>
+<li>Diante de \(\frac00\), tento fatorar, usar o conjugado ou trocar a variável.</li>
+<li>Reconheço quando usar \(\frac{\operatorname{sen}u}{u}\to1\) e quando usar o confronto.</li>
+</ul>
+</section>
+
+<!-- ============================================================ 3 -->
+<section class="cap" id="c3">
+<div class="cap-head"><div class="cap-num">3</div><div><h2>Limites no infinito, limites infinitos e o número e</h2>
+<div class="cap-meta"><span class="tag g">Guidorizzi cap. 4</span> · ~20 min</div></div></div>
+
+<div class="box ideia"><span class="t">Ideia central</span>
+<p>Aqui o limite descreve o <b>comportamento nas pontas</b>: o que acontece com \(f(x)\) quando \(x\) cresce sem parar (\(x\to+\infty\)), ou quando \(f(x)\) explode perto de um ponto. Isso dá as <b>assíntotas</b> do gráfico.</p></div>
+
+<p><span class="tag g">Guidorizzi §4.1–4.2</span> Dois fatos resolvem quase tudo:</p>
+\[ \begin{gathered}\lim_{x\to\pm\infty}\frac1{x^n}=0\quad(n\ge1),\\ \lim_{x\to0^+}\frac1x=+\infty,\qquad \lim_{x\to0^-}\frac1x=-\infty .\end{gathered} \]
+
+{{fig:assintotas|\(y=\frac{2x+1}{x+3}\) tem assíntota horizontal \(y=2\) (porque o limite em \(\pm\infty\) é \(2\)) e assíntota vertical \(x=-3\) (porque a função explode ali).}}
+
+<div class="box"><span class="t">Receita para quocientes de polinômios em \(\pm\infty\)</span>
+<p>Coloque em evidência a <b>maior potência</b> do numerador e do denominador:</p>
+\[ \begin{aligned}\frac{5x^4-2x+1}{4x^4+3x+2}&=\frac{x^4\,(5-\frac2{x^3}+\frac1{x^4})}{x^4\,(4+\frac3{x^3}+\frac2{x^4})}\\&\xrightarrow{\;x\to+\infty\;}\frac54 .\end{aligned} \]
+<p>Graus iguais: o limite é a razão dos coeficientes líderes. Grau de cima menor: o limite é \(0\). Grau de cima maior: o limite é \(\pm\infty\).</p></div>
+
+<div class="box exemplo"><span class="t">Exemplo resolvido · “\(\infty-\infty\)”</span>
+<p>\(\displaystyle\lim_{x\to+\infty}\big(x-\sqrt{x^2+1}\big)\). Multiplique pelo conjugado:</p>
+\[ \begin{aligned}\big(x-\sqrt{x^2+1}\big)\frac{x+\sqrt{x^2+1}}{x+\sqrt{x^2+1}}&\\=\frac{-1}{x+\sqrt{x^2+1}}&\to0 .\end{aligned} \]</div>
+
+<h3>O número \(e\)</h3>
+<p><span class="tag g">Guidorizzi §4.5</span></p>
+\[ \boxed{\lim_{x\to\pm\infty}\Big(1+\frac1x\Big)^x=e\approx2{,}71828} \]
+<p>ou, trocando \(h=\frac1x\):</p>
+\[ \lim_{h\to0}(1+h)^{1/h}=e . \]
+<p>Uso típico: \(\lim_{x\to\infty}(1+\frac{a}{x})^x=e^a\). Com \(u=x/a\), fica \(\big[(1+\frac1u)^u\big]^a\to e^a\).</p>
+
+<h3>Exercícios</h3>
+<ol class="exs">
+<li><span class="src"><span class="tag g">Guidorizzi Ex. 4.1 – 1</span></span>Calcule.
+<div class="itens l">
+<span>e) \(\displaystyle\lim_{x\to+\infty}\frac{2x+1}{x+3}\)</span>
+<span>h) \(\displaystyle\lim_{x\to+\infty}\frac{5x^4-2x+1}{4x^4+3x+2}\)</span>
+<span>j) \(\displaystyle\lim_{x\to-\infty}\frac{2x^3+1}{x^4+2x+3}\)</span>
+<span>n) \(\displaystyle\lim_{x\to+\infty}\frac{\sqrt{x^2+1}}{3x+2}\)</span>
+<span>r) \(\displaystyle\lim_{x\to+\infty}\big[x-\sqrt{x^2+1}\big]\)</span>
+<span>s) \(\displaystyle\lim_{x\to+\infty}\big[\sqrt{x+1}-\sqrt{x+3}\big]\)</span></div>
+<details><summary>Ver resposta</summary><div>
+e) \(\mathbf2\). h) \(\mathbf{\tfrac54}\). j) \(\mathbf0\) (grau 3 contra grau 4).<br>
+n) Para \(x\gt0\), \(\sqrt{x^2+1}=x\sqrt{1+1/x^2}\). Fica \(\frac{\sqrt{1+1/x^2}}{3+2/x}\to\mathbf{\tfrac13}\).<br>
+r) \(\mathbf0\) (exemplo resolvido). s) Conjugado: \(\frac{-2}{\sqrt{x+1}+\sqrt{x+3}}\to\mathbf0\).</div></details></li>
+
+<li><span class="src"><span class="tag g">Guidorizzi Ex. 4.2 – 1</span></span>Calcule.
+<div class="itens l">
+<span>a) \(\displaystyle\lim_{x\to+\infty}(x^4-3x+2)\)</span>
+<span>e) \(\displaystyle\lim_{x\to+\infty}\frac{5x^3-6x+1}{6x^3+2}\)</span>
+<span>f) \(\displaystyle\lim_{x\to+\infty}\frac{5x^3-6x+1}{6x^2+x+3}\)</span>
+<span>j) \(\displaystyle\lim_{x\to-\infty}\frac{5-x}{3+2x}\)</span></div>
+<details><summary>Ver resposta</summary><div>a) \(+\infty\). e) \(\tfrac56\). f) \(+\infty\) (grau 3 contra grau 2, coeficientes positivos). j) \(-\tfrac12\).</div></details></li>
+
+<li><span class="src"><span class="tag g">Guidorizzi Ex. 4.2 – 3(c), 3(e), 3(h)</span></span>
+<div class="itens l">
+<span>c) \(\displaystyle\lim_{x\to+\infty}\big[2x-\sqrt{x^2+3}\big]\)</span>
+<span>e) \(\displaystyle\lim_{x\to+\infty}\big(x-\sqrt{x^2+3}\big)\)</span>
+<span>h) \(\displaystyle\lim_{x\to+\infty}\big(x-\sqrt[3]{2+3x^3}\big)\)</span></div>
+<details><summary>Ver resposta</summary><div>
+c) \(x\big(2-\sqrt{1+3/x^2}\big)\to(+\infty)\cdot1=+\infty\).<br>
+e) Conjugado: \(\frac{-3}{x+\sqrt{x^2+3}}\to0\).<br>
+h) \(x\big(1-\sqrt[3]{3+2/x^3}\big)\). O parêntese tende a \(1-\sqrt[3]3\lt0\), então o limite é \(-\infty\).</div></details></li>
+
+<li><span class="src"><span class="tag x">Extra</span></span>Calcule \(\displaystyle\lim_{x\to+\infty}\Big(1+\frac2x\Big)^{x}\) e \(\displaystyle\lim_{x\to+\infty}\Big(1+\frac1x\Big)^{3x}\).
+<details><summary>Ver resposta</summary><div>\(e^2\) e \(e^3\). No segundo, \(\big[(1+\frac1x)^x\big]^3\to e^3\).</div></details></li>
+</ol>
+</section>
+
+<!-- ============================================================ 4 -->
+<section class="cap" id="c4">
+<div class="cap-head"><div class="cap-num">4</div><div><h2>Teoremas das funções contínuas</h2>
+<div class="cap-meta"><span class="tag g">Guidorizzi cap. 5</span> · ~10 min</div></div></div>
+
+<div class="box ideia"><span class="t">Ideia central</span>
+<p>Uma função contínua em um intervalo fechado \([a,b]\) <b>não pula valores</b> e <b>atinge um máximo e um mínimo</b>. Esses dois fatos parecem óbvios, mas sustentam metade do curso.</p></div>
+
+<div class="box"><span class="t">Teorema do anulamento (Bolzano)</span>
+<p>Se \(f\) é contínua em \([a,b]\) e \(f(a)\) e \(f(b)\) têm sinais opostos, existe \(c\in\,]a,b[\) com \(f(c)=0\).</p></div>
+{{fig:tvi|Se o gráfico contínuo começa abaixo do eixo e termina acima, em algum ponto \(c\) ele tem de cruzar o eixo.}}
+
+<div class="box"><span class="t">Valor intermediário (TVI)</span>
+<p>Se \(f\) é contínua em \([a,b]\), então \(f\) assume <b>todos</b> os valores entre \(f(a)\) e \(f(b)\).</p></div>
+<div class="box"><span class="t">Weierstrass</span>
+<p>Se \(f\) é contínua em \([a,b]\) (intervalo <b>fechado e limitado</b>), existem \(x_1,x_2\in[a,b]\) com \(f(x_1)\le f(x)\le f(x_2)\) para todo \(x\in[a,b]\).</p></div>
+
+<p><span class="tag g">Guidorizzi cap. 5 + Apêndice 2</span> O livro enuncia e aplica os teoremas no capítulo 5 e deixa as demonstrações para o Apêndice 2, porque elas dependem da propriedade do supremo (Apêndice 1).</p>
+
+<div class="box apostol"><span class="t">Apostol §3.9, §3.10 e §3.16</span>
+<p>O Apostol demonstra os três teoremas logo no texto principal, a partir do <b>axioma do supremo</b>, que ele apresenta já na Introdução (§I 3.9). Se o seu professor cobra demonstrações, as seções 3.9, 3.10 e 3.16 do Apostol são uma leitura mais direta que o apêndice do Guidorizzi.</p></div>
+
+<div class="box exemplo"><span class="t">Exemplo resolvido</span>
+<p>Mostre que \(x^3+x-1=0\) tem raiz em \([0,1]\).</p>
+<p>\(f(x)=x^3+x-1\) é polinômio, logo é contínua. Como \(f(0)=-1\lt0\) e \(f(1)=1\gt0\), o teorema do anulamento garante uma raiz em \(]0,1[\).</p></div>
+
+<div class="box cuidado"><span class="t">Cuidado</span>
+<p>Sem as hipóteses, o teorema falha. \(f(x)=\frac1x\) em \([-1,1]\) troca de sinal e nunca zera, porque não é contínua em \(0\). \(f(x)=x\) em \(]0,1[\) não tem máximo, porque o intervalo é aberto.</p></div>
+
+<h3>Exercícios</h3>
+<ol class="exs">
+<li><span class="src"><span class="tag x">Extra</span></span>Mostre que \(\cos x=x\) tem solução em \([0,\frac\pi2]\).
+<details><summary>Ver resposta</summary><div>Tome \(g(x)=\cos x-x\), contínua. \(g(0)=1\gt0\) e \(g(\frac\pi2)=-\frac\pi2\lt0\). Pelo anulamento, existe \(c\) com \(g(c)=0\), isto é, \(\cos c=c\).</div></details></li>
+<li><span class="src"><span class="tag x">Extra</span></span>Todo polinômio de grau ímpar tem pelo menos uma raiz real. Por quê?
+<details><summary>Ver resposta</summary><div>Se o coeficiente líder é positivo, \(p(x)\to+\infty\) quando \(x\to+\infty\) e \(p(x)\to-\infty\) quando \(x\to-\infty\) (o contrário se for negativo). Então existem \(a\lt b\) com \(p(a)\lt0\lt p(b)\), e o anulamento dá a raiz.</div></details></li>
+</ol>
+</section>
+
+<!-- ============================================================ 5 -->
+<section class="cap" id="c5">
+<div class="cap-head"><div class="cap-num">5</div><div><h2>Exponencial e logaritmo</h2>
+<div class="cap-meta"><span class="tag g">Guidorizzi cap. 6</span> · ~15 min</div></div></div>
+
+<div class="box ideia"><span class="t">Ideia central</span>
+<p>\(e^x\) e \(\ln x\) são <b>inversas</b> uma da outra: \(e^{\ln x}=x\) para \(x\gt0\) e \(\ln(e^x)=x\). Os gráficos são reflexos um do outro na reta \(y=x\).</p></div>
+
+{{fig:explog|\(y=e^x\) e \(y=\ln x\). Repare nos pontos \((0,1)\) e \((1,0)\), na assíntota de \(e^x\) para a esquerda e na de \(\ln x\) para baixo.}}
+
+<p><span class="tag g">Guidorizzi §6.1–6.2</span> O Guidorizzi primeiro define \(a^x\) para \(x\) real, estendendo as potências racionais por continuidade, e depois define \(\log_a\) como a inversa. Propriedades que você precisa saber de cor:</p>
+\[ \begin{gathered}\ln(ab)=\ln a+\ln b,\quad \ln\frac ab=\ln a-\ln b,\\ \ln a^r=r\ln a,\quad a^x=e^{x\ln a}.\end{gathered} \]
+
+<p><span class="tag g">Guidorizzi §6.3</span> Um limite que volta muitas vezes:</p>
+\[ \lim_{h\to0}\frac{e^h-1}{h}=1, \qquad \lim_{h\to0}\frac{\ln(1+h)}{h}=1 . \]
+
+<div class="box apostol"><span class="t">Apostol §6.2–6.3 e §6.12</span>
+<p>O Apostol inverte a ordem: <b>define</b> o logaritmo como uma integral,</p>
+\[ \ln x=\int_1^x\frac{dt}{t}\quad(x\gt0), \]
+<p>e só depois define \(e^x\) como a inversa de \(\ln\). A vantagem é que \((\ln x)'=\frac1x\) sai na hora, pelo Teorema Fundamental, e \(\ln(ab)=\ln a+\ln b\) vira uma mudança de variável. Vale a pena reler esta seção depois do capítulo 10.</p></div>
+
+<h3>Exercícios</h3>
+<ol class="exs">
+<li><span class="src"><span class="tag x">Extra</span></span>Resolva \(e^{2x}-3e^x+2=0\).
+<details><summary>Ver resposta</summary><div>Com \(u=e^x\gt0\): \(u^2-3u+2=0\Rightarrow u=1\) ou \(u=2\). Logo \(x=0\) ou \(x=\ln2\).</div></details></li>
+<li><span class="src"><span class="tag x">Extra</span></span>Calcule \(\displaystyle\lim_{x\to0}\frac{e^{3x}-1}{x}\).
+<details><summary>Ver resposta</summary><div>\(3\cdot\frac{e^{3x}-1}{3x}\to3\cdot1=3\).</div></details></li>
+</ol>
+</section>
+
+<!-- ============================================================ 6 -->
+<section class="cap" id="c6">
+<div class="cap-head"><div class="cap-num">6</div><div><h2>Derivadas</h2>
+<div class="cap-meta"><span class="tag g">Guidorizzi cap. 7</span> · ~40 min · <b>essencial</b></div></div></div>
+
+<div class="box ideia"><span class="t">Ideia central</span>
+<p>A derivada \(f'(p)\) é a <b>inclinação da reta tangente</b> ao gráfico em \(p\). Ela também é a <b>taxa de variação instantânea</b>: velocidade, se \(f\) for posição; vazão, se for volume.</p></div>
+
+<p><span class="tag g">Guidorizzi §7.2</span></p>
+\[ \boxed{f'(p)=\lim_{x\to p}\frac{f(x)-f(p)}{x-p}} \]
+<p>ou, escrevendo \(x=p+h\):</p>
+\[ f'(p)=\lim_{h\to0}\frac{f(p+h)-f(p)}{h}. \]
+<p>É o quociente do capítulo 1 com um limite na frente. A reta tangente em \((p,f(p))\) é</p>
+\[ y-f(p)=f'(p)\,(x-p). \]
+
+{{fig:tangente|As secantes por \(P\) e \(Q\) (cinza) giram até a tangente (vermelha) quando \(h\to0\). A inclinação das secantes é \(\frac{f(p+h)-f(p)}{h}\); o limite dela é \(f'(p)\).}}
+
+<div class="box"><span class="t">Derivável ⇒ contínua</span>
+<p><span class="tag g">Guidorizzi §7.6</span> Se \(f\) tem derivada em \(p\), então \(f\) é contínua em \(p\). A volta é falsa: \(|x|\) é contínua em \(0\), mas tem um “bico” ali e não é derivável.</p></div>
+
+<h3>Tabela básica</h3>
+<p><span class="tag g">Guidorizzi §7.3–7.5</span></p>
+<div class="tablewrap"><table class="f">
+<tr><td>\((x^n)'=n\,x^{n-1}\)</td><td>\((\sqrt[n]x)'=\frac1n x^{\frac1n-1}\)</td></tr>
+<tr><td>\((e^x)'=e^x\)</td><td>\((\ln x)'=\frac1x\)</td></tr>
+<tr><td>\((\operatorname{sen}x)'=\cos x\)</td><td>\((\cos x)'=-\operatorname{sen}x\)</td></tr>
+<tr><td>\((\operatorname{tg}x)'=\sec^2x\)</td><td>\((\sec x)'=\sec x\operatorname{tg}x\)</td></tr>
+</table></div>
+
+<h3>Regras de derivação</h3>
+<p><span class="tag g">Guidorizzi §7.7</span></p>
+\[ \begin{gathered}(f\pm g)'=f'\pm g',\qquad (fg)'=f'g+fg',\\ \Big(\frac fg\Big)'=\frac{f'g-fg'}{g^2}.\end{gathered} \]
+
+<h3>Regra da cadeia</h3>
+<p><span class="tag g">Guidorizzi §7.10</span> Para uma composição \(f(g(x))\): <b>derive a de fora</b> (mantendo a de dentro) e <b>multiplique pela derivada da de dentro</b>.</p>
+\[ \begin{gathered}\big[f(g(x))\big]'=f'(g(x))\cdot g'(x)\\ \text{ou}\quad \frac{dy}{dx}=\frac{dy}{du}\cdot\frac{du}{dx}.\end{gathered} \]
+
+<div class="box exemplo"><span class="t">Exemplo resolvido</span>
+<p>Derive \(y=\cos(e^x)\) e \(y=(\operatorname{sen}x+\cos x)^3\).</p>
+\[ \big[\cos(e^x)\big]'=-\operatorname{sen}(e^x)\cdot e^x, \]
+\[ \begin{aligned}\big[(\operatorname{sen}x+\cos x)^3\big]'&\\=3(\operatorname{sen}x+\cos x)^2&\,(\cos x-\operatorname{sen}x).\end{aligned} \]</div>
+
+<p><span class="tag g">Guidorizzi §7.12</span> Para \(f(x)^{g(x)}\), escreva como exponencial: \(f^g=e^{g\ln f}\), e derive com a cadeia. Exemplo: \((x^x)'=(e^{x\ln x})'=x^x(\ln x+1)\).</p>
+
+<h3>Derivação implícita</h3>
+<p><span class="tag g">Guidorizzi §7.13</span> Quando \(y\) aparece “misturado” numa equação, derive os dois lados em relação a \(x\), tratando \(y\) como função de \(x\) (cadeia: \((y^2)'=2y\,y'\)), e isole \(y'\).</p>
+<div class="box exemplo"><span class="t">Exemplo resolvido</span>
+<p>Ache \(y'\) em \(x^2+y^2=25\) e a tangente no ponto \((3,4)\).</p>
+\[ \begin{gathered}2x+2y\,y'=0\;\Rightarrow\;y'=-\frac xy,\\ y'(3)=-\frac34.\end{gathered} \]
+<p>Tangente: \(y-4=-\frac34(x-3)\).</p></div>
+
+<div class="box apostol"><span class="t">Apostol §4.11</span>
+<p>O Apostol trata derivação implícita junto com <b>taxas relacionadas</b> (“coeficientes de variação ligados”): duas grandezas presas por uma equação, ambas variando com o tempo. Exemplo: em uma escada escorregando na parede, \(x^2+y^2=L^2\) dá \(x\,x'+y\,y'=0\). É um tipo de problema que cai bastante em prova; os exercícios da §4.12 do Apostol são um bom treino extra.</p></div>
+
+<div class="box cuidado"><span class="t">Erros comuns</span>
+<p>• \((\operatorname{sen}3x)'=\cos3x\). <b>Errado</b>: falta o \(3\) da cadeia.<br>
+• \((fg)'=f'g'\). <b>Errado</b>: é \(f'g+fg'\).<br>
+• Esquecer o \(y'\) ao derivar \(y^2\), \(xy\), \(\operatorname{sen}y\) na derivação implícita.</p></div>
+
+<h3>Exercícios</h3>
+<ol class="exs">
+<li><span class="src"><span class="tag g">Guidorizzi Ex. 7.7 – 1</span></span>Calcule \(f'(x)\).
+<div class="itens">
+<span>b) \(x^3+x^2+1\)</span><span>d) \(3x+\sqrt x\)</span><span>f) \(2\sqrt[3]x\)</span><span>h) \(\frac4x+\frac5{x^2}\)</span><span>m) \(6x^3+\sqrt[3]x\)</span></div>
+<details><summary>Ver resposta</summary><div>
+b) \(3x^2+2x\). d) \(3+\frac1{2\sqrt x}\). f) \(\frac23x^{-2/3}\). h) \(-\frac4{x^2}-\frac{10}{x^3}\). m) \(18x^2+\frac13x^{-2/3}\).</div></details></li>
+
+<li><span class="src"><span class="tag g">Guidorizzi Ex. 7.7 – 2 e 3</span></span>
+2) Seja \(g(x)=x^3+\frac1x\). Determine a reta tangente ao gráfico de \(g\) no ponto \((1,g(1))\).<br>
+3) Seja \(f(x)=x^2+\frac1x\). Em que ponto do gráfico a tangente é paralela ao eixo \(x\)?
+<details><summary>Ver resposta</summary><div>
+2) \(g(1)=2\); \(g'(x)=3x^2-\frac1{x^2}\), \(g'(1)=2\). Tangente: \(y=2x\).<br>
+3) \(f'(x)=2x-\frac1{x^2}=0\Rightarrow x^3=\frac12\Rightarrow x=\frac1{\sqrt[3]2}\). O ponto é \(\big(\frac1{\sqrt[3]2},\ \frac3{\sqrt[3]4}\big)\).</div></details></li>
+
+<li><span class="src"><span class="tag g">Guidorizzi Ex. 7.11 – 1</span></span>Determine a derivada.
+<div class="itens">
+<span>a) \(\operatorname{sen}4x\)</span><span>c) \(e^{3x}\)</span><span>f) \(\ln(2t+1)\)</span><span>g) \(e^{\operatorname{sen}t}\)</span><span>h) \(\cos e^x\)</span><span>j) \(\sqrt{3x+1}\)</span><span>n) \(\ln(t^2+3t+9)\)</span><span>q) \((t^2+3)^4\)</span><span>t) \(\operatorname{tg}3x\)</span></div>
+<details><summary>Ver resposta</summary><div>
+a) \(4\cos4x\). c) \(3e^{3x}\). f) \(\frac2{2t+1}\). g) \(\cos t\,e^{\operatorname{sen}t}\). h) \(-e^x\operatorname{sen}e^x\). j) \(\frac3{2\sqrt{3x+1}}\). n) \(\frac{2t+3}{t^2+3t+9}\). q) \(8t(t^2+3)^3\). t) \(3\sec^23x\).</div></details></li>
+
+<li><span class="src"><span class="tag g">Guidorizzi Ex. 7.11 – 2 e 3</span></span>
+2) \(f\) derivável, \(g(t)=f(t^2+1)\) e \(f'(2)=5\). Calcule \(g'(1)\).<br>
+3) \(g(x)=f(e^{2x})\) e \(f'(1)=2\). Calcule \(g'(0)\).
+<details><summary>Ver resposta</summary><div>
+2) \(g'(t)=2t\,f'(t^2+1)\), então \(g'(1)=2f'(2)=10\).<br>
+3) \(g'(x)=2e^{2x}f'(e^{2x})\), então \(g'(0)=2f'(1)=4\).</div></details></li>
+
+<li><span class="src"><span class="tag g">Guidorizzi Ex. 7.13 – 3 e 4</span></span>
+3) \(y=f(x)\) é dada por \(xy+3=2x\). Mostre que \(x\frac{dy}{dx}=2-y\) e calcule \(\frac{dy}{dx}\) em \(x=2\).<br>
+4) Expresse \(\frac{dy}{dx}\) em termos de \(x\) e \(y\): a) \(x^2-y^2=4\); b) \(y^3+x^2y=x+4\); e) \(x^2+4y^2=3\); g) \(x^2+y^2+2y=0\).
+<details><summary>Ver resposta</summary><div>
+3) Derivando: \(y+xy'=2\Rightarrow xy'=2-y\). Em \(x=2\): \(2y+3=4\Rightarrow y=\frac12\), logo \(y'=\frac{2-1/2}{2}=\frac34\).<br>
+4a) \(y'=\frac xy\). 4b) \(3y^2y'+2xy+x^2y'=1\Rightarrow y'=\frac{1-2xy}{3y^2+x^2}\). 4e) \(y'=-\frac{x}{4y}\). 4g) \(y'=-\frac{x}{y+1}\).</div></details></li>
+
+<li><span class="src"><span class="tag g">Guidorizzi Ex. 7.16 – 1</span></span>Determine as retas tangente e normal ao gráfico no ponto dado.
+<div class="itens l"><span>a) \(f(x)=x^2-3x\), abscissa \(0\)</span><span>b) \(f(x)=\sqrt[3]x\), abscissa \(8\)</span><span>c) \(g(x)=\frac1{x^2}\), abscissa \(1\)</span></div>
+<details><summary>Ver resposta</summary><div>A normal é perpendicular à tangente: inclinação \(-\frac1{f'(p)}\).<br>
+a) \(f'(0)=-3\). Tangente \(y=-3x\); normal \(y=\frac x3\).<br>
+b) \(f(8)=2\), \(f'(8)=\frac1{12}\). Tangente \(y=\frac x{12}+\frac43\); normal \(y=-12x+98\).<br>
+c) \(g'(1)=-2\). Tangente \(y=-2x+3\); normal \(y=\frac x2+\frac12\).</div></details></li>
+
+<li><span class="src"><span class="tag g">Guidorizzi Ex. 7.16 – 2, 3 e 4</span></span>
+2) Reta tangente a \(f(x)=x^2\) e paralela a \(y=\frac12x+3\).<br>
+3) Reta tangente a \(f(x)=x^3+3x\) e paralela a \(y=6x-1\).<br>
+4) Reta perpendicular a \(2y+x=3\) e tangente a \(f(x)=x^2-3x\).
+<details><summary>Ver resposta</summary><div>
+2) \(2x=\frac12\Rightarrow x=\frac14\). Reta: \(y=\frac12x-\frac1{16}\).<br>
+3) \(3x^2+3=6\Rightarrow x=\pm1\). Há duas: \(y=6x-2\) (em \(x=1\)) e \(y=6x+2\) (em \(x=-1\)).<br>
+4) A reta dada tem inclinação \(-\frac12\), então a procurada tem inclinação \(2\): \(2x-3=2\Rightarrow x=\frac52\), \(f=-\frac54\). Reta: \(y=2x-\frac{25}4\).</div></details></li>
+</ol>
+</section>
+
+<!-- ============================================================ 7 -->
+<section class="cap" id="c7">
+<div class="cap-head"><div class="cap-num">7</div><div><h2>Funções inversas</h2>
+<div class="cap-meta"><span class="tag g">Guidorizzi cap. 8</span> · ~15 min</div></div></div>
+
+<div class="box ideia"><span class="t">Ideia central</span>
+<p>Se \(y=f(x)\) é invertível, a inversa “desfaz” \(f\): \(x=f^{-1}(y)\). A tangente à inversa é a tangente de \(f\) refletida em \(y=x\), então as inclinações viram <b>inversas</b>:</p>
+\[ (f^{-1})'(y)=\frac1{f'(x)}\quad\text{onde }y=f(x). \]</div>
+
+<p><span class="tag g">Guidorizzi §8.1–8.2</span> As trigonométricas não são injetoras, então o livro <b>restringe</b> o domínio antes de inverter. Por exemplo, \(\operatorname{sen}\) em \([-\frac\pi2,\frac\pi2]\) dá \(\operatorname{arcsen}:[-1,1]\to[-\frac\pi2,\frac\pi2]\).</p>
+
+<div class="tablewrap"><table class="f">
+<tr><td>\((\operatorname{arcsen}x)'=\dfrac1{\sqrt{1-x^2}}\)</td><td>\((\operatorname{arccos}x)'=-\dfrac1{\sqrt{1-x^2}}\)</td></tr>
+<tr><td>\((\operatorname{arctg}x)'=\dfrac1{1+x^2}\)</td><td>\((\ln x)'=\dfrac1x\) (inversa de \(e^x\))</td></tr>
+</table></div>
+
+<div class="box exemplo"><span class="t">Exemplo resolvido · de onde vem \((\operatorname{arctg}x)'\)</span>
+<p>Se \(y=\operatorname{arctg}x\), então \(\operatorname{tg}y=x\). Derivando implicitamente: \(\sec^2y\cdot y'=1\), logo</p>
+\[ y'=\frac1{\sec^2y}=\frac1{1+\operatorname{tg}^2y}=\frac1{1+x^2}. \]</div>
+
+<div class="box apostol"><span class="t">Apostol §6.20–6.21</span>
+<p>O Apostol prova a fórmula da derivada da inversa usando apenas a monotonia e a continuidade da inversa (§3.12–3.14), e depois deduz arcsen, arccos e arctg do mesmo modo. É a referência se você quiser a demonstração completa.</p></div>
+
+<h3>Exercícios</h3>
+<ol class="exs">
+<li><span class="src"><span class="tag x">Extra</span></span>Derive \(y=\operatorname{arcsen}(2x)\) e \(y=\operatorname{arctg}(x^2)\).
+<details><summary>Ver resposta</summary><div>\(\dfrac{2}{\sqrt{1-4x^2}}\) e \(\dfrac{2x}{1+x^4}\).</div></details></li>
+<li><span class="src"><span class="tag x">Extra</span></span>\(f(x)=x^3+x\) é invertível. Calcule \((f^{-1})'(2)\).
+<details><summary>Ver resposta</summary><div>\(f(1)=2\), então \(f^{-1}(2)=1\). Como \(f'(x)=3x^2+1\), \(f'(1)=4\) e \((f^{-1})'(2)=\frac14\).</div></details></li>
+</ol>
+</section>
+
+<!-- ============================================================ 8 -->
+<section class="cap" id="c8">
+<div class="cap-head"><div class="cap-num">8</div><div><h2>Estudo da variação das funções</h2>
+<div class="cap-meta"><span class="tag g">Guidorizzi cap. 9 e 15</span> · ~40 min · <b>essencial</b></div></div></div>
+
+<div class="box ideia"><span class="t">Ideia central</span>
+<p>O sinal de \(f'\) diz onde \(f\) <b>sobe ou desce</b>. O sinal de \(f''\) diz para que lado o gráfico <b>curva</b>. Com isso você esboça qualquer gráfico e resolve problemas de otimização.</p></div>
+
+<h3>Teorema do valor médio (TVM)</h3>
+<p><span class="tag g">Guidorizzi §9.1 e §15.2</span> Se \(f\) é contínua em \([a,b]\) e derivável em \(]a,b[\), existe \(c\in\,]a,b[\) com</p>
+\[ f'(c)=\frac{f(b)-f(a)}{b-a}. \]
+<p>Em palavras: em algum momento a velocidade instantânea é igual à velocidade média. O caso \(f(a)=f(b)\) é o <b>Teorema de Rolle</b> (§15.1), que dá \(f'(c)=0\).</p>
+{{fig:tvm|Em algum ponto \(c\), a tangente (vermelha) é paralela à secante \(AB\) (cinza).}}
+
+<div class="box apostol"><span class="t">Apostol §4.14 e §4.16</span>
+<p>O Apostol demonstra o TVM a partir de Rolle e, em seguida (§4.16), tira as consequências geométricas: derivada positiva implica função crescente, derivada nula implica função constante. O Guidorizzi usa os mesmos fatos na §9.2, mas deixa as demonstrações de Rolle e do TVM para o capítulo 15.</p></div>
+
+<h3>Crescimento e concavidade</h3>
+<p><span class="tag g">Guidorizzi §9.2–9.3</span></p>
+<div class="tablewrap"><table class="f">
+<tr><td>\(f'\gt0\) no intervalo</td><td>\(f\) estritamente crescente</td></tr>
+<tr><td>\(f'\lt0\) no intervalo</td><td>\(f\) estritamente decrescente</td></tr>
+<tr><td>\(f''\gt0\)</td><td>concavidade para cima (∪)</td></tr>
+<tr><td>\(f''\lt0\)</td><td>concavidade para baixo (∩)</td></tr>
+<tr><td>\(f''\) troca de sinal em \(p\)</td><td>\(p\) é ponto de inflexão</td></tr>
+</table></div>
+
+{{fig:variacao|\(f(x)=x^3-3x\). \(f'(x)=3(x-1)(x+1)\) zera em \(\pm1\); \(f''(x)=6x\) troca de sinal em \(0\).}}
+
+<div class="box"><span class="t">Roteiro para esboçar um gráfico (§9.5)</span>
+<p>1. Domínio e intersecções com os eixos. 2. Limites nas pontas e assíntotas. 3. \(f'\): onde cresce, onde decresce, pontos críticos. 4. \(f''\): concavidade e inflexões. 5. Junte tudo em uma tabela de sinais e desenhe.</p></div>
+
+<h3>Regras de L’Hospital</h3>
+<p><span class="tag g">Guidorizzi §9.4</span> Se \(\frac{f}{g}\) dá \(\frac00\) ou \(\frac\infty\infty\), então</p>
+\[ \lim\frac{f(x)}{g(x)}=\lim\frac{f'(x)}{g'(x)} \]
+<p>desde que o segundo limite exista. Atenção: <b>deriva-se em cima e embaixo separadamente</b>, não é a regra do quociente.</p>
+<p>Para outras indeterminações: \(0\cdot\infty\) vira quociente (\(fg=\frac{f}{1/g}\)). Já \(1^\infty\), \(0^0\) e \(\infty^0\) se resolvem tirando o \(\ln\): calcule \(\lim(g\ln f)\) e depois exponencie.</p>
+
+<div class="box exemplo"><span class="t">Exemplo resolvido</span>
+<p>\(\displaystyle\lim_{x\to+\infty}(x^2+1)^{1/\ln x}\) (forma \(\infty^0\)).</p>
+<p>Tirando o \(\ln\): \(\frac{\ln(x^2+1)}{\ln x}\), que é \(\frac\infty\infty\). Por L’Hospital: \(\frac{2x/(x^2+1)}{1/x}=\frac{2x^2}{x^2+1}\to2\). Então o limite original é \(e^2\).</p></div>
+
+<div class="box apostol"><span class="t">Apostol §7.10–7.14</span>
+<p>No Apostol, L’Hôpital aparece <b>depois</b> de Taylor. Antes da regra, ele mostra como resolver \(\frac00\) trocando cada função pelo seu polinômio de Taylor (§7.10). Por exemplo, \(\frac{x-\operatorname{sen}x}{x^3}=\frac{x^3/6+o(x^3)}{x^3}\to\frac16\). Essa técnica costuma ser mais rápida que aplicar L’Hospital três vezes.</p></div>
+
+<h3>Máximos e mínimos</h3>
+<p><span class="tag g">Guidorizzi §9.6–9.8</span> Candidatos a extremo: pontos onde \(f'=0\), pontos onde \(f'\) não existe e as extremidades do intervalo.</p>
+<p><b>Teste da 2ª derivada (§9.7):</b> se \(f'(p)=0\) e \(f''(p)\gt0\), \(p\) é mínimo local; se \(f''(p)\lt0\), é máximo local.</p>
+<p><b>Intervalo fechado \([a,b]\) (§9.8):</b> calcule \(f\) nos pontos críticos e nas extremidades. O maior valor é o máximo e o menor é o mínimo; Weierstrass garante que eles existem.</p>
+{{fig:maxmin|\(f(x)=\frac{x^4}{4}-x^3-2x^2+3\) em \([-2,3]\) (Guidorizzi, Ex. 9.8 – 1). Os pontos críticos \(-1\) e \(0\) são só extremos <b>locais</b>; os globais estão nas extremidades.}}
+
+<div class="box exemplo"><span class="t">Exemplo resolvido · otimização</span>
+<p>Entre todos os retângulos de perímetro \(2p\), qual tem área máxima? (Guidorizzi Ex. 9.6 – 2)</p>
+<p>Lados \(x\) e \(p-x\), com \(0\lt x\lt p\). Área \(A(x)=x(p-x)\), \(A'(x)=p-2x=0\Rightarrow x=\frac p2\). Como \(A''=-2\lt0\), é máximo. Resposta: o <b>quadrado</b> de lado \(\frac p2\).</p></div>
+
+<h3>Exercícios</h3>
+<ol class="exs">
+<li><span class="src"><span class="tag g">Guidorizzi Ex. 9.4 – 1</span></span>Calcule.
+<div class="itens l">
+<span>a) \(\displaystyle\lim_{x\to-1}\frac{4x^3+x^2+3}{x^5+1}\)</span>
+<span>b) \(\displaystyle\lim_{x\to1}\frac{x^{100}-x^2+x-1}{x^{10}-1}\)</span>
+<span>e) \(\displaystyle\lim_{x\to+\infty}\frac{\ln x}{e^{3x}}\)</span>
+<span>f) \(\displaystyle\lim_{x\to0^+}\operatorname{sen}x\ln x\)</span>
+<span>n) \(\displaystyle\lim_{x\to+\infty}x^3e^{-4x}\)</span>
+<span>r) \(\displaystyle\lim_{x\to0^+}(\cos3x)^{\frac1{\operatorname{sen}x}}\)</span></div>
+<details><summary>Ver resposta</summary><div>
+a) \(\frac00\). L’H: \(\frac{12x^2+2x}{5x^4}\to\frac{10}5=\mathbf2\).<br>
+b) \(\frac00\). L’H: \(\frac{100x^{99}-2x+1}{10x^9}\to\mathbf{\frac{99}{10}}\).<br>
+e) \(\frac{1/x}{3e^{3x}}\to\mathbf0\).<br>
+f) \(\frac{\ln x}{1/\operatorname{sen}x}\). L’H: \(\frac{1/x}{-\cos x/\operatorname{sen}^2x}=-\frac{\operatorname{sen}x}{x}\cdot\frac{\operatorname{sen}x}{\cos x}\to\mathbf0\).<br>
+n) \(\frac{x^3}{e^{4x}}\), L’H três vezes: \(\frac{6}{64e^{4x}}\to\mathbf0\).<br>
+r) \(\ln\) do limite: \(\frac{\ln\cos3x}{\operatorname{sen}x}\). L’H: \(\frac{-3\operatorname{tg}3x}{\cos x}\to0\). Logo o limite é \(e^0=\mathbf1\).</div></details></li>
+
+<li><span class="src"><span class="tag g">Guidorizzi Ex. 9.4 – 1(h) e 1(s)</span></span>
+<div class="itens l"><span>h) \(\displaystyle\lim_{x\to+\infty}(x^2+1)^{\frac1{\ln x}}\)</span><span>s) \(\displaystyle\lim_{x\to0^+}x^{\operatorname{tg}x^2}\)</span></div>
+<details><summary>Ver resposta</summary><div>h) \(e^2\) (exemplo resolvido acima).<br>
+s) \(\ln\): \(\operatorname{tg}(x^2)\ln x=\frac{\operatorname{tg}x^2}{x^2}\cdot x^2\ln x\to1\cdot0\), porque \(x^2\ln x\to0\) (L’H em \(\frac{\ln x}{x^{-2}}\)). Limite: \(e^0=\mathbf1\).</div></details></li>
+
+<li><span class="src"><span class="tag g">Guidorizzi Ex. 9.6 – 1</span></span>Estude quanto a máximos e mínimos locais e globais.
+<div class="itens l"><span>a) \(f(x)=\dfrac{x}{1+x^2}\)</span><span>b) \(f(x)=xe^{-2x}\)</span><span>d) \(f(x)=2x^3-9x^2+12x+3\)</span><span>g) \(f(x)=x^4-4x^3+4x^2+2\)</span><span>h) \(\operatorname{sen}x+\cos x,\ x\in[0,\pi]\)</span></div>
+<details><summary>Ver resposta</summary><div>
+a) \(f'=\frac{1-x^2}{(1+x^2)^2}\). Mínimo global em \(x=-1\) (valor \(-\frac12\)); máximo global em \(x=1\) (valor \(\frac12\)).<br>
+b) \(f'=e^{-2x}(1-2x)\). Máximo global em \(x=\frac12\) (valor \(\frac1{2e}\)); não há mínimo, pois \(f\to-\infty\) quando \(x\to-\infty\).<br>
+d) \(f'=6(x-1)(x-2)\). Máximo local em \(x=1\) (\(f=8\)), mínimo local em \(x=2\) (\(f=7\)). Não há extremos globais.<br>
+g) \(f'=4x(x-1)(x-2)\). Mínimos em \(x=0\) e \(x=2\) (\(f=2\), globais); máximo local em \(x=1\) (\(f=3\)).<br>
+h) \(f'=\cos x-\operatorname{sen}x=0\Rightarrow x=\frac\pi4\), \(f=\sqrt2\) (máximo global). Extremidades: \(f(0)=1\), \(f(\pi)=-1\) (mínimo global).</div></details></li>
+
+<li><span class="src"><span class="tag g">Guidorizzi Ex. 9.6 – 3, 4 e 5</span></span>
+3) O real positivo cuja diferença entre ele e seu quadrado é máxima.<br>
+4) O real positivo cuja soma com o inverso do seu quadrado é mínima.<br>
+5) A altura do cilindro circular reto de volume máximo inscrito numa esfera de raio \(R\).
+<details><summary>Ver resposta</summary><div>
+3) \(g(x)=x-x^2\), \(g'=1-2x=0\Rightarrow x=\frac12\).<br>
+4) \(g(x)=x+\frac1{x^2}\), \(g'=1-\frac2{x^3}=0\Rightarrow x=\sqrt[3]2\).<br>
+5) Com altura \(h\), o raio satisfaz \(r^2=R^2-\frac{h^2}4\). Então \(V=\pi\big(R^2-\frac{h^2}4\big)h\) e \(V'=\pi\big(R^2-\frac{3h^2}4\big)=0\Rightarrow h=\frac{2R}{\sqrt3}\).</div></details></li>
+
+<li><span class="src"><span class="tag g">Guidorizzi Ex. 9.8 – 1, 2 e 4</span></span>Determine os valores máximo e mínimo no intervalo dado.
+<div class="itens l"><span>1) \(\frac{x^4}4-x^3-2x^2+3\) em \([-2,3]\)</span><span>2) \(x^3-3x^2+3x-1\) em \([-2,1]\)</span><span>4) \(\operatorname{sen}x-\cos x\) em \([0,\pi]\)</span></div>
+<details><summary>Ver resposta</summary><div>
+1) \(f'=x(x-4)(x+1)\); críticos em \([-2,3]\): \(-1,0\). Valores: \(f(-2)=7\), \(f(-1)=\frac94\), \(f(0)=3\), \(f(3)=-\frac{87}4\). <b>Máx. 7</b> (em \(-2\)); <b>mín. \(-\frac{87}4\)</b> (em \(3\)). Veja a Figura do capítulo.<br>
+2) É \((x-1)^3\), crescente. Mín. \(-27\) (em \(-2\)); máx. \(0\) (em \(1\)).<br>
+4) \(f'=\cos x+\operatorname{sen}x=0\Rightarrow x=\frac{3\pi}4\), \(f=\sqrt2\). \(f(0)=-1\), \(f(\pi)=1\). Máx. \(\sqrt2\); mín. \(-1\).</div></details></li>
+</ol>
+</section>
+
+<!-- ============================================================ 9 -->
+<section class="cap" id="c9">
+<div class="cap-head"><div class="cap-num">9</div><div><h2>Primitivas</h2>
+<div class="cap-meta"><span class="tag g">Guidorizzi cap. 10</span> · ~10 min</div></div></div>
+
+<div class="box ideia"><span class="t">Ideia central</span>
+<p>Primitivar é <b>derivar ao contrário</b>. \(F\) é primitiva de \(f\) se \(F'=f\). Como a derivada de uma constante é zero, as primitivas vêm sempre com um \(+k\).</p></div>
+
+<p><span class="tag g">Guidorizzi §10.1</span> Por que exatamente “\(+k\)” e nada mais? Se \(F'=G'\) num intervalo, então \((F-G)'=0\), e pelo TVM \(F-G\) é constante. Ou seja, <b>duas primitivas diferem por uma constante</b>.</p>
+<p><span class="tag g">Guidorizzi §10.2</span> Notação: \(\displaystyle\int f(x)\,dx=F(x)+k\).</p>
+
+<div class="tablewrap"><table class="f">
+<tr><td>\(\int x^n\,dx=\frac{x^{n+1}}{n+1}+k\ \ (n\ne-1)\)</td><td>\(\int\frac1x\,dx=\ln|x|+k\)</td></tr>
+<tr><td>\(\int e^x\,dx=e^x+k\)</td><td>\(\int\operatorname{sen}x\,dx=-\cos x+k\)</td></tr>
+<tr><td>\(\int\cos x\,dx=\operatorname{sen}x+k\)</td><td>\(\int\sec^2x\,dx=\operatorname{tg}x+k\)</td></tr>
+<tr><td>\(\int\frac{dx}{1+x^2}=\operatorname{arctg}x+k\)</td><td>\(\int\frac{dx}{\sqrt{1-x^2}}=\operatorname{arcsen}x+k\)</td></tr>
+</table></div>
+
+<div class="box"><span class="t">Dica</span><p>Você sempre pode <b>conferir</b> uma primitiva derivando a resposta. Faça isso na prova.</p></div>
+
+<h3>Exercícios</h3>
+<ol class="exs">
+<li><span class="src"><span class="tag x">Extra</span></span>Encontre \(F\) com \(F'(x)=3x^2-\frac1x\) e \(F(1)=2\).
+<details><summary>Ver resposta</summary><div>\(F(x)=x^3-\ln|x|+k\). \(F(1)=1+k=2\Rightarrow k=1\). Para \(x\gt0\): \(F(x)=x^3-\ln x+1\).</div></details></li>
+<li><span class="src"><span class="tag x">Extra</span></span>Uma partícula tem \(a(t)=6t\), \(v(0)=1\) e \(s(0)=0\). Ache \(s(t)\).
+<details><summary>Ver resposta</summary><div>\(v=3t^2+1\) e \(s=t^3+t\).</div></details></li>
+</ol>
+</section>
+
+<!-- ============================================================ 10 -->
+<section class="cap" id="c10">
+<div class="cap-head"><div class="cap-num">10</div><div><h2>Integral de Riemann e Teorema Fundamental</h2>
+<div class="cap-meta"><span class="tag g">Guidorizzi cap. 11</span> · ~35 min · <b>essencial</b></div></div></div>
+
+<div class="box ideia"><span class="t">Ideia central</span>
+<p>A integral \(\int_a^bf\) é a <b>área com sinal</b> sob o gráfico: positiva acima do eixo, negativa abaixo. Ela é definida como limite de somas de retângulos. O Teorema Fundamental diz que, para calculá-la, basta uma primitiva.</p></div>
+
+<h3>Somas de Riemann</h3>
+<p><span class="tag g">Guidorizzi §11.1–11.3</span> Divida \([a,b]\) em pedaços de largura \(\Delta x_i\), escolha um ponto \(c_i\) em cada um e some as áreas dos retângulos:</p>
+\[ \sum_{i=1}^{n}f(c_i)\,\Delta x_i\;\xrightarrow{\ \max\Delta x_i\to0\ }\;\int_a^bf(x)\,dx . \]
+{{fig:riemann|Soma de Riemann com 6 retângulos, usando os pontos médios \(c_i\). Quanto mais finos os retângulos, mais a soma se aproxima da área sob a curva.}}
+
+<div class="box apostol"><span class="t">Apostol cap. 1 (§1.9–1.22)</span>
+<p>O Apostol começa o livro inteiro <b>pela integral</b>, antes de limite e de derivada, seguindo a ordem histórica de Arquimedes. Primeiro ele integra <b>funções em escada</b> (§1.12); depois define a integral de \(f\) “espremendo-a” entre funções em escada por cima e por baixo (integrais superior e inferior, §1.17). É uma construção mais rigorosa que a das somas de Riemann. O próprio Guidorizzi traz esse lado histórico no cap. 17 (Arquimedes, Pascal, Fermat).</p></div>
+
+<h3>Teorema Fundamental do Cálculo</h3>
+<p><span class="tag g">Guidorizzi §11.5</span> Se \(f\) é contínua em \([a,b]\) e \(F\) é uma primitiva de \(f\):</p>
+\[ \boxed{\int_a^bf(x)\,dx=F(b)-F(a)=\Big[F(x)\Big]_a^b} \]
+<p>E a outra metade: se \(f\) é contínua, \(\displaystyle\frac{d}{dx}\int_a^xf(t)\,dt=f(x)\). Derivar a área dá a altura.</p>
+
+<div class="box cuidado"><span class="t">Atenção aos nomes</span>
+<p>O Guidorizzi chama a fórmula \(\int_a^bf=F(b)-F(a)\) de <b>1º</b> Teorema Fundamental (§11.5) e \(\frac{d}{dx}\int_a^xf=f(x)\) de <b>2º</b> (usado no cap. 13). <span class="tag a">Apostol §5.1 e §5.3</span> O Apostol usa a numeração <b>contrária</b>: o 1º é a derivada da integral indefinida e o 2º é \(F(b)-F(a)\). Se o professor disser “primeiro teorema fundamental”, confira de qual livro ele está falando.</p></div>
+
+<h3>Áreas</h3>
+<p><span class="tag g">Guidorizzi §11.6</span> Área entre duas curvas, com \(g\le f\) em \([a,b]\):</p>
+\[ A=\int_a^b\big[f(x)-g(x)\big]dx. \]
+<p>Ou seja: a curva de cima menos a de baixo.</p>
+{{fig:area_entre|Área entre \(y=x\) e \(y=x^2\): \(A=\int_0^1(x-x^2)\,dx=\frac12-\frac13=\frac16\).}}
+
+<div class="box cuidado"><span class="t">Cuidado</span>
+<p>Se a função muda de sinal, \(\int_a^bf\) <b>não</b> é a área: as partes abaixo do eixo entram negativas. Para a área, separe nos zeros e some os módulos.</p></div>
+
+<div class="box apostol"><span class="t">Apostol §2.16 e §3.19</span>
+<p>Um conceito que o Apostol destaca e que cai em prova: o <b>valor médio</b> de \(f\) em \([a,b]\) é \(\frac1{b-a}\int_a^bf\). O teorema da média para integrais (§3.19) garante que \(f\) atinge esse valor em algum ponto, se for contínua.</p></div>
+
+<h3>Exercícios</h3>
+<ol class="exs">
+<li><span class="src"><span class="tag g">Guidorizzi Ex. 12.1 – 2</span></span>Calcule.
+<div class="itens l">
+<span>a) \(\int_0^1e^{2x}\,dx\)</span><span>b) \(\int_1^2\big(x+\frac1x\big)dx\)</span><span>d) \(\int_0^1\frac{dx}{1+x^2}\)</span><span>e) \(\int_0^{1/2}\frac{dx}{\sqrt{1-x^2}}\)</span><span>f) \(\int_1^2\frac{x^3+1}{x}\,dx\)</span></div>
+<details><summary>Ver resposta</summary><div>
+a) \(\big[\frac{e^{2x}}2\big]_0^1=\frac{e^2-1}2\). b) \(\frac32+\ln2\). d) \(\operatorname{arctg}1=\frac\pi4\). e) \(\operatorname{arcsen}\frac12=\frac\pi6\). f) \(\int_1^2(x^2+\frac1x)dx=\frac73+\ln2\).</div></details></li>
+
+<li><span class="src"><span class="tag g">Guidorizzi Ex. 11.6 – 1 a 4</span></span>Desenhe o conjunto \(A\) e calcule a área.<br>
+1) Limitado por \(x=1\), \(x=3\), o eixo \(Ox\) e \(y=x^3\).<br>
+2) Limitado por \(x=1\), \(x=4\), \(y=0\) e \(y=\sqrt x\).<br>
+3) \(\{(x,y)\mid x^2-1\le y\le0\}\).<br>
+4) \(\{(x,y)\mid 0\le y\le4-x^2\}\).
+<details><summary>Ver resposta</summary><div>
+1) \(\int_1^3x^3dx=\frac{81-1}4=20\). 2) \(\frac23(8-1)=\frac{14}3\). 3) \(\int_{-1}^1(1-x^2)dx=\frac43\). 4) \(\int_{-2}^2(4-x^2)dx=\frac{32}3\).</div></details></li>
+
+<li><span class="src"><span class="tag g">Guidorizzi Ex. 11.6 – 5, 6 e 7</span></span>
+5) \(0\le y\le|\operatorname{sen}x|\), \(0\le x\le2\pi\).<br>
+6) Região entre o eixo \(Ox\) e \(y=x^2-x\), \(0\le x\le2\).<br>
+7) Limitado por \(y=0\) e \(y=3-2x-x^2\), \(-1\le x\le2\).
+<details><summary>Ver resposta</summary><div>
+5) \(2\int_0^\pi\operatorname{sen}x\,dx=2\cdot2=4\).<br>
+6) \(x^2-x\lt0\) em \(]0,1[\) e \(\gt0\) em \(]1,2[\). Área \(=\int_0^1(x-x^2)+\int_1^2(x^2-x)=\frac16+\frac56=1\).<br>
+7) \(3-2x-x^2=-(x+3)(x-1)\) é positiva em \([-1,1]\) e negativa em \([1,2]\). Área \(=\frac{16}3+\frac73=\frac{23}3\).</div></details></li>
+
+<li><span class="src"><span class="tag x">Extra</span></span>Calcule \(\dfrac{d}{dx}\displaystyle\int_0^{x^2}\cos t\,dt\).
+<details><summary>Ver resposta</summary><div>Com \(G(u)=\int_0^u\cos t\,dt\), temos \(G'(u)=\cos u\). Pela cadeia: \(\cos(x^2)\cdot2x\).</div></details></li>
+</ol>
+</section>
+
+<!-- ============================================================ 11 -->
+<section class="cap" id="c11">
+<div class="cap-head"><div class="cap-num">11</div><div><h2>Técnicas de integração</h2>
+<div class="cap-meta"><span class="tag g">Guidorizzi cap. 12</span> · ~45 min · <b>muito cobrado</b></div></div></div>
+
+<div class="box ideia"><span class="t">Ideia central</span>
+<p>Toda técnica tenta transformar a integral em uma da tabela. Pergunte nesta ordem: <b>(1)</b> é imediata? <b>(2)</b> tem uma função e a derivada dela? Então use substituição. <b>(3)</b> é um produto de tipos diferentes? Partes. <b>(4)</b> tem \(\sqrt{a^2-x^2}\)? Substituição trigonométrica. <b>(5)</b> é uma fração de polinômios? Frações parciais.</p></div>
+
+<h3>Substituição</h3>
+<p><span class="tag g">Guidorizzi §12.2 e §11.7</span></p>
+\[ \begin{gathered}\int f(g(x))\,g'(x)\,dx=\int f(u)\,du,\\ u=g(x),\quad du=g'(x)\,dx.\end{gathered} \]
+<div class="box exemplo"><span class="t">Exemplo resolvido</span>
+<p>\(\displaystyle\int x\,e^{x^2}dx\). Com \(u=x^2\), \(du=2x\,dx\):</p>
+\[ \int x\,e^{x^2}dx=\frac12\int e^u\,du=\frac12e^{x^2}+k. \]
+<p>Na integral definida, troque também os limites (§11.7): \(\int_0^1xe^{x^2}dx=\frac12\int_0^1e^u\,du=\frac{e-1}2\).</p></div>
+
+<h3>Integração por partes</h3>
+<p><span class="tag g">Guidorizzi §12.3</span></p>
+\[ \int f\,g'\,dx=f\,g-\int f'\,g\,dx. \]
+<p>Escolha para \(f\) (a parte que você vai derivar) a que <b>simplifica ao derivar</b>. Uma ordem prática é <b>LIATE</b>: Logaritmo, Inversa trigonométrica, Algébrica, Trigonométrica, Exponencial.</p>
+<div class="box exemplo"><span class="t">Exemplo resolvido</span>
+<p>\(\displaystyle\int x\operatorname{sen}x\,dx\). Tome \(f=x\) e \(g'=\operatorname{sen}x\), logo \(f'=1\) e \(g=-\cos x\):</p>
+\[ \begin{aligned}\int x\operatorname{sen}x\,dx&=-x\cos x+\int\cos x\,dx\\&=-x\cos x+\operatorname{sen}x+k.\end{aligned} \]</div>
+
+<h3>Substituição trigonométrica</h3>
+<p><span class="tag g">Guidorizzi §12.4</span> Para \(\sqrt{a^2-x^2}\), use \(x=a\operatorname{sen}t\): o radical vira \(a\cos t\).</p>
+<div class="box exemplo"><span class="t">Exemplo resolvido · área do círculo</span>
+<p>\(\displaystyle\int_{-1}^{1}\sqrt{1-x^2}\,dx\), com \(x=\operatorname{sen}t\), \(dx=\cos t\,dt\), \(t\in[-\frac\pi2,\frac\pi2]\):</p>
+\[ \begin{aligned}\int_{-\pi/2}^{\pi/2}\cos^2t\,dt&=\int_{-\pi/2}^{\pi/2}\frac{1+\cos2t}{2}\,dt\\&=\frac\pi2 .\end{aligned} \]
+<p>É a área de meio círculo de raio 1. Faz sentido.</p></div>
+
+<h3>Frações parciais</h3>
+<p><span class="tag g">Guidorizzi §12.6–12.7</span> Fatore o denominador e quebre a fração em pedaços simples. (Se o grau de cima for maior ou igual ao de baixo, divida os polinômios antes.)</p>
+\[ \frac{1}{(x-\alpha)(x-\beta)}=\frac A{x-\alpha}+\frac B{x-\beta} \]
+\[ \begin{aligned}\frac1{(x-\alpha)(x-\beta)^2}&=\frac A{x-\alpha}+\frac B{x-\beta}\\&\quad+\frac C{(x-\beta)^2}\end{aligned} \]
+<div class="box exemplo"><span class="t">Exemplo resolvido</span>
+<p>\(\displaystyle\int\frac{dx}{x^2-1}\). Temos \(\frac1{(x-1)(x+1)}=\frac A{x-1}+\frac B{x+1}\). Fazendo \(x=1\): \(A=\frac12\). Fazendo \(x=-1\): \(B=-\frac12\). Então</p>
+\[ \begin{aligned}\int\frac{dx}{x^2-1}&=\frac12\ln|x-1|\\&\quad-\frac12\ln|x+1|+k\\&=\frac12\ln\Big|\frac{x-1}{x+1}\Big|+k.\end{aligned} \]</div>
+
+<div class="box apostol"><span class="t">Apostol §5.7, §5.9 e §6.23–6.24</span>
+<p>O Apostol justifica a substituição e as partes diretamente pelo Teorema Fundamental, com a notação de Leibniz (§5.6), e explica por que sempre é possível decompor uma fração racional em frações simples (§6.23). A §6.24 mostra como integrais com \(\operatorname{sen}\) e \(\cos\) viram racionais pela troca \(u=\operatorname{tg}\frac x2\). O Guidorizzi faz a mesma coisa na §12.11.</p></div>
+
+<h3>Exercícios</h3>
+<ol class="exs">
+<li><span class="src"><span class="tag g">Guidorizzi Ex. 12.2 – 1</span></span>Calcule.
+<div class="itens">
+<span>a) \(\int(3x-2)^3dx\)</span><span>e) \(\int x\operatorname{sen}x^2dx\)</span><span>f) \(\int xe^{x^2}dx\)</span><span>i) \(\int x^3\cos x^4dx\)</span><span>l) \(\int\cos^3x\operatorname{sen}x\,dx\)</span><span>p) \(\int\frac{x}{1+4x^2}dx\)</span><span>t) \(\int e^x\sqrt{1+e^x}\,dx\)</span><span>v) \(\int\frac{\operatorname{sen}x}{\cos^2x}dx\)</span></div>
+<details><summary>Ver resposta</summary><div>
+a) \(\frac{(3x-2)^4}{12}\). e) \(-\frac12\cos x^2\). f) \(\frac12e^{x^2}\). i) \(\frac14\operatorname{sen}x^4\). l) \(-\frac14\cos^4x\). p) \(\frac18\ln(1+4x^2)\). t) \(\frac23(1+e^x)^{3/2}\). v) \(\frac1{\cos x}=\sec x\). (Todas \(+k\).)</div></details></li>
+
+<li><span class="src"><span class="tag g">Guidorizzi Ex. 12.2 – 2</span></span>Calcule: a) \(\int_0^1xe^{-x^2}dx\); b) \(\int_0^{\pi/3}\operatorname{sen}^4x\cos x\,dx\).
+<details><summary>Ver resposta</summary><div>a) \(\frac12\big(1-\frac1e\big)\). b) \(\big[\frac{\operatorname{sen}^5x}5\big]_0^{\pi/3}=\frac15\big(\frac{\sqrt3}2\big)^5=\frac{9\sqrt3}{160}\).</div></details></li>
+
+<li><span class="src"><span class="tag g">Guidorizzi Ex. 12.3 – 1</span></span>Calcule (por partes).
+<div class="itens"><span>a) \(\int xe^xdx\)</span><span>b) \(\int x\operatorname{sen}x\,dx\)</span><span>c) \(\int x^2e^xdx\)</span><span>d) \(\int x\ln x\,dx\)</span><span>e) \(\int\ln x\,dx\)</span><span>l) \(\int e^x\cos x\,dx\)</span></div>
+<details><summary>Ver resposta</summary><div>
+a) \(e^x(x-1)\). b) \(-x\cos x+\operatorname{sen}x\). c) Partes duas vezes: \(e^x(x^2-2x+2)\). d) \(\frac{x^2}2\ln x-\frac{x^2}4\). e) Truque \(g'=1\): \(x\ln x-x\).<br>
+l) Partes duas vezes e a integral original reaparece: \(I=e^x\operatorname{sen}x+e^x\cos x-I\), logo \(I=\frac{e^x(\operatorname{sen}x+\cos x)}2\). (Todas \(+k\).)</div></details></li>
+
+<li><span class="src"><span class="tag g">Guidorizzi Ex. 12.3 – 7(a) e 7(b)</span></span>a) \(\int_0^1xe^xdx\); b) \(\int_1^2\ln x\,dx\).
+<details><summary>Ver resposta</summary><div>a) \([e^x(x-1)]_0^1=0-(-1)=1\). b) \([x\ln x-x]_1^2=2\ln2-1\).</div></details></li>
+
+<li><span class="src"><span class="tag g">Guidorizzi Ex. 12.4 – 1, 2 e 3</span></span>
+1) b) \(\int\frac{dx}{\sqrt{4-x^2}}\); d) \(\int\frac{dx}{4+x^2}\); a) \(\int\sqrt{1-4x^2}\,dx\).<br>
+2) Área de \(\{4x^2+y^2\le1\}\). 3) Área de \(\{\frac{x^2}{a^2}+\frac{y^2}{b^2}\le1\}\).
+<details><summary>Ver resposta</summary><div>
+1b) \(\operatorname{arcsen}\frac x2\). 1d) \(\frac12\operatorname{arctg}\frac x2\). 1a) Com \(2x=\operatorname{sen}t\): \(\frac14\big(\operatorname{arcsen}2x+2x\sqrt{1-4x^2}\big)\).<br>
+3) \(4\int_0^a\frac ba\sqrt{a^2-x^2}\,dx=\pi ab\). 2) É uma elipse com \(a=\frac12\) e \(b=1\): área \(\frac\pi2\).</div></details></li>
+
+<li><span class="src"><span class="tag g">Guidorizzi Ex. 12.6 – 1</span></span>Calcule.
+<div class="itens"><span>a) \(\int\frac{2x-3}{(x-1)^3}dx\)</span><span>b) \(\int\frac{x+1}{x(x-2)(x+3)}dx\)</span><span>d) \(\int\frac{2}{(x+2)(x-1)^2}dx\)</span></div>
+<details><summary>Ver resposta</summary><div>
+a) \(2x-3=2(x-1)-1\), então o integrando é \(\frac2{(x-1)^2}-\frac1{(x-1)^3}\). Resultado: \(-\frac2{x-1}+\frac1{2(x-1)^2}+k\).<br>
+b) \(A=-\frac16\) (\(x=0\)), \(B=\frac3{10}\) (\(x=2\)), \(C=-\frac2{15}\) (\(x=-3\)). Resultado: \(-\frac16\ln|x|+\frac3{10}\ln|x-2|-\frac2{15}\ln|x+3|+k\).<br>
+d) \(\frac A{x+2}+\frac B{x-1}+\frac C{(x-1)^2}\): \(C=\frac23\), \(A=\frac29\), \(B=-\frac29\). Resultado: \(\frac29\ln\big|\frac{x+2}{x-1}\big|-\frac2{3(x-1)}+k\).</div></details></li>
+</ol>
+</section>
+
+<!-- ============================================================ 12 -->
+<section class="cap" id="c12">
+<div class="cap-head"><div class="cap-num">12</div><div><h2>Aplicações da integral</h2>
+<div class="cap-meta"><span class="tag g">Guidorizzi cap. 13</span> · ~30 min</div></div></div>
+
+<div class="box ideia"><span class="t">Ideia central</span>
+<p>Sempre o mesmo raciocínio: <b>fatie</b> o objeto em pedaços pequenos, escreva a contribuição de um pedaço (\(dV\), \(dL\), \(dA\)) e <b>some com a integral</b>.</p></div>
+
+<h3>Volume de sólido de revolução</h3>
+<p><span class="tag g">Guidorizzi §13.1</span> Girando \(0\le y\le f(x)\), \(a\le x\le b\), em torno do eixo \(x\), cada fatia é um disco de raio \(f(x)\):</p>
+\[ V=\pi\int_a^b\big[f(x)\big]^2dx. \]
+{{fig:discos|Girando \(y=\sqrt x\) em torno do eixo \(x\). Cada fatia é um disco de raio \(f(x)\) e volume \(\pi f(x)^2\,dx\).}}
+
+<p><span class="tag g">Guidorizzi §13.2</span> Girando em torno do eixo \(y\), use <b>cascas cilíndricas</b>: \(V=2\pi\int_a^bx\,f(x)\,dx\).</p>
+
+<h3>Comprimento de curva</h3>
+<p><span class="tag g">Guidorizzi §13.5</span></p>
+\[ L=\int_a^b\sqrt{1+[f'(x)]^2}\,dx. \]
+<p>Vem de Pitágoras aplicado a um pedacinho da curva: \(dL=\sqrt{dx^2+dy^2}\).</p>
+
+<h3>Área em coordenadas polares</h3>
+<p><span class="tag g">Guidorizzi §13.7</span> Para \(r=r(\theta)\), \(\alpha\le\theta\le\beta\), as fatias são setores circulares:</p>
+\[ A=\frac12\int_\alpha^\beta r(\theta)^2\,d\theta. \]
+{{fig:cardioide|Cardioide \(r=1+\cos\theta\). Área: \(\frac12\int_0^{2\pi}(1+\cos\theta)^2d\theta=\frac{3\pi}2\).}}
+
+<div class="box apostol"><span class="t">Apostol §2.9–2.12</span>
+<p>O Apostol apresenta polares (§2.9–2.10) e volumes (§2.12) logo no capítulo 2, antes das derivadas, e define volume pelo <b>método das secções</b>: se a área da seção em \(x\) é \(A(x)\), então \(V=\int_a^bA(x)\,dx\). O disco é o caso \(A(x)=\pi f(x)^2\). O Guidorizzi trata o caso geral na §13.3.</p></div>
+
+<h3>Exercícios</h3>
+<ol class="exs">
+<li><span class="src"><span class="tag g">Guidorizzi Ex. 13.1 – 1</span></span>Volume do sólido obtido girando em torno do eixo \(x\) o conjunto:
+<div class="itens l"><span>a) \(1\le x\le3,\ 0\le y\le x\)</span><span>b) \(\frac12\le x\le2,\ 0\le y\le\frac1{x^2}\)</span><span>c) \(1\le x\le4,\ 0\le y\le\sqrt x\)</span><span>d) \(2x^2+y^2\le1,\ y\ge0\)</span></div>
+<details><summary>Ver resposta</summary><div>
+a) \(\pi\int_1^3x^2dx=\frac{26\pi}3\) (um tronco de cone). b) \(\pi\int_{1/2}^2x^{-4}dx=\pi\big[-\frac1{3x^3}\big]_{1/2}^2=\frac{21\pi}8\). c) \(\pi\int_1^4x\,dx=\frac{15\pi}2\).<br>
+d) \(y^2=1-2x^2\), com \(|x|\le\frac1{\sqrt2}\): \(\pi\int_{-1/\sqrt2}^{1/\sqrt2}(1-2x^2)dx=\frac{2\sqrt2\,\pi}3\).</div></details></li>
+<li><span class="src"><span class="tag x">Extra</span></span>Comprimento do gráfico de \(f(x)=\frac23x^{3/2}\), \(0\le x\le3\).
+<details><summary>Ver resposta</summary><div>\(f'=\sqrt x\), então \(L=\int_0^3\sqrt{1+x}\,dx=\frac23\big[(1+x)^{3/2}\big]_0^3=\frac23(8-1)=\frac{14}3\).</div></details></li>
+<li><span class="src"><span class="tag x">Extra</span></span>Confirme a área da cardioide: \(\frac12\int_0^{2\pi}(1+\cos\theta)^2d\theta\).
+<details><summary>Ver resposta</summary><div>\((1+\cos\theta)^2=1+2\cos\theta+\cos^2\theta\). Em \([0,2\pi]\): \(\int1=2\pi\), \(\int\cos=0\), \(\int\cos^2=\pi\). Área \(=\frac12(3\pi)=\frac{3\pi}2\).</div></details></li>
+</ol>
+</section>
+
+<!-- ============================================================ 13 -->
+<section class="cap" id="c13">
+<div class="cap-head"><div class="cap-num">13</div><div><h2>Equações diferenciais de 1ª ordem</h2>
+<div class="cap-meta"><span class="tag g">Guidorizzi cap. 14</span> · ~25 min</div></div></div>
+
+<div class="box ideia"><span class="t">Ideia central</span>
+<p>Uma equação diferencial relaciona uma função com a sua derivada. A resposta é uma <b>família de funções</b>; uma condição inicial escolhe uma delas.</p></div>
+
+<h3>Variáveis separáveis</h3>
+<p><span class="tag g">Guidorizzi §14.2–14.5</span> Para \(\frac{dy}{dx}=g(x)\,h(y)\):</p>
+<p>1. <b>Soluções constantes</b> (§14.3): os \(y=c\) com \(h(c)=0\). Não esqueça delas.<br>
+2. <b>Demais soluções</b> (§14.5): separe e integre, \(\displaystyle\int\frac{dy}{h(y)}=\int g(x)\,dx\).</p>
+
+<div class="box exemplo"><span class="t">Exemplo resolvido · resfriamento</span>
+<p>\(\frac{dT}{dt}=-2(T-10)\), com \(T(0)=16\) (Guidorizzi Ex. 14.5 – 1(d), com condição inicial).</p>
+<p>Constante: \(T=10\). As outras: \(\int\frac{dT}{T-10}=\int-2\,dt\Rightarrow\ln|T-10|=-2t+c\Rightarrow T=10+Ce^{-2t}\). Com \(T(0)=16\), \(C=6\):</p>
+\[ T(t)=10+6e^{-2t}. \]</div>
+{{fig:edo|Soluções \(T=10+Ce^{-2t}\) para vários \(C\). Todas tendem à temperatura do ambiente, \(T=10\). Em vermelho, a que tem \(T(0)=16\).}}
+
+<h3>Lineares de 1ª ordem</h3>
+<p><span class="tag g">Guidorizzi §14.6</span> Para \(y'+p(x)\,y=q(x)\), multiplique tudo pelo <b>fator integrante</b> \(e^{P(x)}\), com \(P'=p\). O lado esquerdo vira \(\big(e^{P}y\big)'\), e basta integrar:</p>
+\[ y=e^{-P(x)}\Big[\int q(x)\,e^{P(x)}dx+C\Big]. \]
+
+<div class="box apostol"><span class="t">Apostol §8.3–8.6 e §8.23</span>
+<p>O Apostol começa pelas lineares (§8.4) e prova o <b>teorema de unicidade</b>: dada a condição inicial, a solução é única. Depois aplica a decaimento radioativo, queda com resistência do ar e circuitos (§8.6). As separáveis aparecem só na §8.23. Se a sua disciplina cobra modelagem, os problemas físicos da §8.6–8.7 são um ótimo complemento.</p></div>
+
+<h3>Exercícios</h3>
+<ol class="exs">
+<li><span class="src"><span class="tag g">Guidorizzi Ex. 14.5 – 1</span></span>Resolva.
+<div class="itens"><span>a) \(\frac{dx}{dt}=xt\)</span><span>b) \(\frac{dy}{dx}=y^2\)</span><span>c) \(\frac{dy}{dx}=x^2+1\)</span><span>d) \(\frac{dT}{dt}=-2(T-10)\)</span><span>f) \(\frac{dy}{dx}=-\frac yx,\ x\gt0\)</span><span>h) \(\frac{dy}{dx}=e^{-y}\)</span></div>
+<details><summary>Ver resposta</summary><div>
+a) \(x=Ce^{t^2/2}\) (\(C=0\) dá a solução constante). b) \(y=0\) ou \(y=-\frac1{x+C}\). c) \(y=\frac{x^3}3+x+C\). d) \(T=10+Ce^{-2t}\). f) \(y=\frac Cx\). h) \(e^y=x+C\), isto é, \(y=\ln(x+C)\).</div></details></li>
+<li><span class="src"><span class="tag g">Guidorizzi Ex. 14.5 – 2(c)</span></span>Determine \(y=y(x)\) com \(\frac{dy}{dx}=3y^2\) e \(y(0)=\frac12\).
+<details><summary>Ver resposta</summary><div>\(\int y^{-2}dy=\int3\,dx\Rightarrow-\frac1y=3x+C\). Como \(y(0)=\frac12\), \(C=-2\). Logo \(y=\frac1{2-3x}\), para \(x\lt\frac23\).</div></details></li>
+<li><span class="src"><span class="tag x">Extra</span></span>Resolva \(y'+2y=4\), com \(y(0)=0\).
+<details><summary>Ver resposta</summary><div>Fator \(e^{2x}\): \((e^{2x}y)'=4e^{2x}\Rightarrow e^{2x}y=2e^{2x}+C\Rightarrow y=2+Ce^{-2x}\). Com \(y(0)=0\): \(y=2-2e^{-2x}\).</div></details></li>
+</ol>
+</section>
+
+<!-- ============================================================ 14 -->
+<section class="cap" id="c14">
+<div class="cap-head"><div class="cap-num">14</div><div><h2>Fórmula de Taylor</h2>
+<div class="cap-meta"><span class="tag g">Guidorizzi cap. 16</span> · ~25 min</div></div></div>
+
+<div class="box ideia"><span class="t">Ideia central</span>
+<p>Perto de \(x_0\), qualquer função suave se parece com um polinômio. A tangente é a aproximação de grau 1; somando termos, a aproximação melhora.</p></div>
+
+<p><span class="tag g">Guidorizzi §16.1–16.3</span> O polinômio de Taylor de ordem \(n\) em torno de \(x_0\) é</p>
+\[ \begin{aligned}P_n(x)={}&f(x_0)+f'(x_0)(x-x_0)\\&+\frac{f''(x_0)}{2!}(x-x_0)^2+\cdots\\&+\frac{f^{(n)}(x_0)}{n!}(x-x_0)^n.\end{aligned} \]
+<p>E o erro tem a <b>forma de Lagrange</b>: existe \(\bar x\) entre \(x_0\) e \(x\) com</p>
+\[ f(x)-P_n(x)=\frac{f^{(n+1)}(\bar x)}{(n+1)!}(x-x_0)^{n+1}. \]
+
+{{fig:taylor|\(e^x\) (azul) e os polinômios \(P_1=1+x\), \(P_2=1+x+\frac{x^2}2\), \(P_3=P_2+\frac{x^3}6\). Perto de \(0\) todos colam; quanto maior a ordem, maior a região em que a aproximação é boa.}}
+
+<div class="tablewrap"><table class="f">
+<tr><td>\(e^x\)</td><td>\(1+x+\frac{x^2}{2!}+\frac{x^3}{3!}+\cdots\)</td></tr>
+<tr><td>\(\operatorname{sen}x\)</td><td>\(x-\frac{x^3}{3!}+\frac{x^5}{5!}-\cdots\)</td></tr>
+<tr><td>\(\cos x\)</td><td>\(1-\frac{x^2}{2!}+\frac{x^4}{4!}-\cdots\)</td></tr>
+<tr><td>\(\ln(1+x)\)</td><td>\(x-\frac{x^2}2+\frac{x^3}3-\cdots\)</td></tr>
+</table></div>
+
+<div class="box exemplo"><span class="t">Exemplo resolvido · estimativa com erro</span>
+<p>Estime \(e^{0{,}1}\) com \(P_2\) e limite o erro.</p>
+<p>\(P_2(0{,}1)=1+0{,}1+0{,}005=1{,}105\). Erro: \(\frac{e^{\bar x}}{3!}(0{,}1)^3\le\frac{e^{0{,}1}}{6}\cdot0{,}001\lt\frac{3}{6}\cdot0{,}001=0{,}0005\). (O valor real é \(1{,}10517\ldots\))</p></div>
+
+<div class="box apostol"><span class="t">Apostol §7.2–7.6 e §7.9</span>
+<p>O Apostol escreve o resto como uma <b>integral</b>, \(E_n(x)=\frac1{n!}\int_{x_0}^x(x-t)^nf^{(n+1)}(t)\,dt\) (§7.5), e introduz a notação \(o(x^n)\) (§7.9), que torna o cálculo de limites com Taylor muito prático. Também mostra a aproximação polinomial do \(\ln\) (§6.10) bem antes do capítulo de Taylor.</p></div>
+
+<h3>Exercícios</h3>
+<ol class="exs">
+<li><span class="src"><span class="tag g">Guidorizzi Ex. 16.3 – 1</span></span>Polinômio de Taylor de ordem 5 em volta de \(x_0\):
+<div class="itens l"><span>a) \(\operatorname{sen}x,\ x_0=0\)</span><span>b) \(\cos x,\ x_0=0\)</span><span>c) \(\ln x,\ x_0=1\)</span></div>
+<details><summary>Ver resposta</summary><div>
+a) \(x-\frac{x^3}6+\frac{x^5}{120}\). b) \(1-\frac{x^2}2+\frac{x^4}{24}\) (o termo de grau 5 é zero).<br>
+c) \((x-1)-\frac{(x-1)^2}2+\frac{(x-1)^3}3-\frac{(x-1)^4}4+\frac{(x-1)^5}5\).</div></details></li>
+<li><span class="src"><span class="tag x">Extra</span></span>Use a aproximação linear para estimar \(\sqrt{4{,}1}\).
+<details><summary>Ver resposta</summary><div>\(f(x)=\sqrt x\), \(x_0=4\): \(f(4)=2\), \(f'(4)=\frac14\). \(\sqrt{4{,}1}\approx2+\frac14(0{,}1)=2{,}025\). (O valor real é \(2{,}0248\ldots\))</div></details></li>
+<li><span class="src"><span class="tag x">Extra</span></span>Calcule \(\displaystyle\lim_{x\to0}\frac{x-\operatorname{sen}x}{x^3}\) com Taylor.
+<details><summary>Ver resposta</summary><div>\(x-\operatorname{sen}x=\frac{x^3}6-\frac{x^5}{120}+\cdots\). Dividindo por \(x^3\): \(\to\frac16\).</div></details></li>
+</ol>
+</section>
+
+<!-- ============================================================ formulário -->
+<section class="cap" id="form">
+<div class="cap-head"><div class="cap-num">∑</div><div><h2>Formulário e roteiro de estudo</h2>
+<div class="cap-meta">Para revisar na véspera</div></div></div>
+
+<h3>Limites que você precisa saber de cor</h3>
+\[ \begin{gathered}\lim_{x\to0}\frac{\operatorname{sen}x}{x}=1,\qquad \lim_{x\to0}\frac{1-\cos x}{x}=0,\\ \lim_{x\to\infty}\Big(1+\frac1x\Big)^x=e,\qquad \lim_{h\to0}\frac{e^h-1}h=1 .\end{gathered} \]
+
+<h3>Derivadas</h3>
+<div class="tablewrap"><table class="f">
+<tr><td>\((x^n)'=nx^{n-1}\)</td><td>\((e^x)'=e^x\)</td><td>\((\ln x)'=\frac1x\)</td></tr>
+<tr><td>\((\operatorname{sen}x)'=\cos x\)</td><td>\((\cos x)'=-\operatorname{sen}x\)</td><td>\((\operatorname{tg}x)'=\sec^2x\)</td></tr>
+<tr><td>\((\operatorname{arcsen}x)'=\frac1{\sqrt{1-x^2}}\)</td><td>\((\operatorname{arctg}x)'=\frac1{1+x^2}\)</td><td>\((a^x)'=a^x\ln a\)</td></tr>
+<tr><td>\((fg)'=f'g+fg'\)</td><td>\(\big(\frac fg\big)'=\frac{f'g-fg'}{g^2}\)</td><td>\((f\circ g)'=f'(g)\,g'\)</td></tr>
+</table></div>
+
+<h3>Integrais</h3>
+<div class="tablewrap"><table class="f">
+<tr><td>\(\int x^ndx=\frac{x^{n+1}}{n+1}\)</td><td>\(\int\frac{dx}x=\ln|x|\)</td><td>\(\int e^xdx=e^x\)</td></tr>
+<tr><td>\(\int\operatorname{sen}x\,dx=-\cos x\)</td><td>\(\int\cos x\,dx=\operatorname{sen}x\)</td><td>\(\int\sec^2x\,dx=\operatorname{tg}x\)</td></tr>
+<tr><td>\(\int\frac{dx}{1+x^2}=\operatorname{arctg}x\)</td><td>\(\int\frac{dx}{\sqrt{1-x^2}}=\operatorname{arcsen}x\)</td><td>\(\int\operatorname{sen}^2x\,dx=\frac x2-\frac{\operatorname{sen}2x}4\)</td></tr>
+<tr><td colspan="3">\(\int f\,g'=fg-\int f'g\) &nbsp;·&nbsp; \(V=\pi\int f^2\) &nbsp;·&nbsp; \(L=\int\sqrt{1+f'^2}\) &nbsp;·&nbsp; \(A_{\text{polar}}=\frac12\int r^2d\theta\)</td></tr>
+</table></div>
+
+<h3>Roteiro sugerido (um semestre)</h3>
+<div class="tablewrap"><table class="f">
+<tr><td><b>Semanas 1–2</b></td><td>Caps. 1–3 deste paper: funções, limites, limite fundamental.</td></tr>
+<tr><td><b>Semana 3</b></td><td>Caps. 4–5: TVI, Weierstrass, exponencial e log. <b>Revisão para a P1.</b></td></tr>
+<tr><td><b>Semanas 4–6</b></td><td>Caps. 6–7: derivadas, cadeia, implícita, inversas. Faça <i>muitos</i> exercícios das listas 7.7, 7.11 e 7.13 do Guidorizzi.</td></tr>
+<tr><td><b>Semanas 7–8</b></td><td>Cap. 8: TVM, L’Hospital, gráficos, otimização. <b>P2.</b></td></tr>
+<tr><td><b>Semanas 9–11</b></td><td>Caps. 9–11: primitivas, integral, TFC e técnicas. A lista 12 do Guidorizzi é longa; priorize 12.2, 12.3 e 12.6.</td></tr>
+<tr><td><b>Semanas 12–14</b></td><td>Caps. 12–14: aplicações, EDOs, Taylor (depende da ementa). <b>P3.</b></td></tr>
+</table></div>
+
+<div class="box"><span class="t">Como estudar bem com este material</span>
+<p>1. Leia o capítulo uma vez, sem anotar. 2. Refaça os exemplos resolvidos <b>sem olhar</b>. 3. Faça os exercícios e só depois abra as respostas. 4. Para cada assunto em que travar, faça mais 5 itens da mesma lista no Guidorizzi: o número da lista está em cada exercício.</p></div>
+
+<footer>
+<p><b>Referências.</b> GUIDORIZZI, H. L. <i>Um Curso de Cálculo</i>, Vol. 1, 5ª ed. Rio de Janeiro: LTC (referência principal; capítulos, seções e exercícios citados como “Guidorizzi §x.y” e “Ex. x.y – n”). APOSTOL, T. M. <i>Cálculo I: Cálculo com funções de uma variável, com uma introdução à Álgebra Linear</i>. Barcelona: Reverté (referência secundária; citado como “Apostol §x.y”).</p>
+<p>Os enunciados marcados como “Guidorizzi Ex.” foram transcritos do livro para estudo; as respostas e resoluções foram escritas para este paper. Exercícios marcados como “Extra” não são dos livros.</p>
+</footer>
+</section>
+
+</main>
+
+<div class="fab ui">
+  <button id="tema" type="button" aria-label="Alternar tema claro/escuro">◐</button>
+  <a href="#sumario" aria-label="Ir para o sumário">☰</a>
+</div>
+
+<script>
+(function(){
+  var root=document.documentElement, KEY='calc1-tema';
+  try{var t=localStorage.getItem(KEY); if(t) root.setAttribute('data-theme',t);}catch(e){}
+  document.getElementById('tema').addEventListener('click',function(){
+    var cur=root.getAttribute('data-theme');
+    if(!cur){cur=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}
+    var nxt=cur==='dark'?'light':'dark';
+    root.setAttribute('data-theme',nxt);
+    try{localStorage.setItem(KEY,nxt);}catch(e){}
+  });
+  var bar=document.getElementById('progress');
+  function upd(){var h=document.documentElement; var max=h.scrollHeight-h.clientHeight; bar.style.width=(max>0?(h.scrollTop/max*100):0)+'%';}
+  addEventListener('scroll',upd,{passive:true}); upd();
+})();
+</script>
+</body>
+</html>
