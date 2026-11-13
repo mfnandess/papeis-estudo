@@ -14,9 +14,14 @@ papers/
 │   │   ├── paper.md
 │   │   ├── exercicios.md
 │   │   └── figuras/           #   SVGs usados pelo paper
-│   ├── claude/                # versão celular/tablet (ver claude/README.md)
 │   └── referencias/           # livros-texto em PDF (só local, ignorado pelo git)
 └── machine-learning/
+    ├── islp/                  # paper teórico + caderno de exercícios
+    │   ├── index.html         #   paper (gerado a partir de paper.md)
+    │   ├── exercicios.html    #   exercícios (gerado a partir de exercicios.md)
+    │   ├── paper.md
+    │   ├── exercicios.md
+    │   └── figuras/           #   SVGs usados pelo paper
     └── referencias/           # livros-texto em PDF (só local, ignorado pelo git)
 ```
 
@@ -36,4 +41,13 @@ papers/
 |---|---|
 | Paper teórico (17 capítulos + 6 apêndices, 12 figuras) | [`calculo-1/guidorizzi/`](https://mfnandess.github.io/papeis-estudo/calculo-1/guidorizzi/) |
 | Caderno de exercícios (45 resolvidos) | [`calculo-1/guidorizzi/exercicios.html`](https://mfnandess.github.io/papeis-estudo/calculo-1/guidorizzi/exercicios.html) |
-| Cálculo 1 sem sofrimento (versão Claude) | [`calculo-1/claude/`](https://mfnandess.github.io/papeis-estudo/calculo-1/claude/) |
+
+## Machine Learning
+
+- **Referência principal:** JAMES, G.; WITTEN, D.; HASTIE, T.; TIBSHIRANI, R.; TAYLOR, J. *An Introduction to Statistical Learning — with Applications in Python (ISLP)*. Springer, 2023.
+- **Referência complementar:** RASCHKA, S.; LIU, Y.; MIRJALILI, V. *Machine Learning with PyTorch and Scikit-Learn*. Packt, 2022.
+
+| Paper | Online |
+|---|---|
+| Paper teórico (13 capítulos ISLP + complementos Raschka Cap. 1–19, 12 figuras) | [`machine-learning/islp/`](https://mfnandess.github.io/papeis-estudo/machine-learning/islp/) |
+| Caderno de exercícios (45 resolvidos) | [`machine-learning/islp/exercicios.html`](https://mfnandess.github.io/papeis-estudo/machine-learning/islp/exercicios.html) |
