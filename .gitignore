@@ -1,10 +1,11 @@
-# OS files
+# Arquivos do sistema
 .DS_Store
 Thumbs.db
 
-# Livros-texto de referência locais (arquivos grandes / direitos autorais)
-*z-library*.pdf
-Um Curso de Cálculo*.pdf
-CÁLCULO I*.pdf
+# Livros-texto de referência (grandes / direitos autorais) — ficam só localmente
+referencias/
+*.pdf
+
+# Python
 *.pyc
 __pycache__/

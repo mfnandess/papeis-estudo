@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Gera claude/index.html a partir de claude/src/paper.html.
+"""Gera calculo-1/claude/index.html a partir de calculo-1/claude/src/paper.html.
 
 As figuras são desenhadas aqui (SVG inline, calculadas numericamente) para
 que se adaptem ao tema claro/escuro da página. No texto-fonte, uma figura é
 inserida com:   {{fig:nome|Legenda da figura}}
 
-Uso:  python3 claude/build.py
+Uso:  python3 calculo-1/claude/build.py
 """
 import math
 import pathlib

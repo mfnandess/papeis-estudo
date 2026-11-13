@@ -1,21 +1,39 @@
-# Cálculo Diferencial e Integral I — Paper de Estudo e Caderno de Exercícios
+# Papers de Estudo
 
-Estudo acadêmico completo de **Cálculo Diferencial e Integral de Uma Variável Real (Cálculo 1)**, baseado em:
+Materiais de estudo organizados por matéria. Leitura online pelo GitHub Pages: **https://mfnandess.github.io/papeis-estudo/**
 
-- **Referência Principal:** **GUIDORIZZI, Hamilton Luiz.** *Um Curso de Cálculo — Volume 1*. 5ª edição. Rio de Janeiro: LTC, 2001/2013 (Capítulos 1 a 17 e Apêndices 1 a 6).
-- **Referência Complementar:** **APOSTOL, Tom M.** *Cálculo I: Cálculo com funções de uma variável, com uma introdução à Álgebra Linear*. 2ª edição. Barcelona: Editorial Reverté (com indicação explícita `[Complemento — Apostol, Cálculo I, Seção X.Y]` em cada mudança de referência).
+## Estrutura
 
----
+```
+papers/
+├── index.html                 # portal (lista todas as matérias)
+├── calculo-1/
+│   ├── guidorizzi/            # paper teórico + caderno de exercícios
+│   │   ├── index.html         #   paper (gerado a partir de paper.md)
+│   │   ├── exercicios.html    #   exercícios (gerado a partir de exercicios.md)
+│   │   ├── paper.md
+│   │   ├── exercicios.md
+│   │   └── figuras/           #   SVGs usados pelo paper
+│   ├── claude/                # versão celular/tablet (ver claude/README.md)
+│   └── referencias/           # livros-texto em PDF (só local, ignorado pelo git)
+└── machine-learning/
+    └── referencias/           # livros-texto em PDF (só local, ignorado pelo git)
+```
 
-## Leitura Online (GitHub Pages — Desktop, Tablet e Celular)
+## Adicionar uma nova matéria
 
-- **[Paper Teórico Principal (`index.html`)](https://mfnandess.github.io/papeis-estudo/)**
-- **[Caderno de Exercícios Resolvidos (`exercicios.html`)](https://mfnandess.github.io/papeis-estudo/exercicios.html)**
+1. Crie `<materia>/` (nome em minúsculas, com hífen: `algebra-linear`, `machine-learning`).
+2. Coloque os PDFs de referência em `<materia>/referencias/` — o `.gitignore` já os exclui.
+3. Cada paper fica numa subpasta própria (`<materia>/<paper>/index.html`), com suas figuras e fontes dentro dela.
+4. Adicione o link no `index.html` da raiz.
 
----
+## Cálculo I
 
-## Arquivos do Repositório
+- **Referência principal:** GUIDORIZZI, H. L. *Um Curso de Cálculo — Vol. 1*. 5ª ed. LTC.
+- **Referência complementar:** APOSTOL, T. M. *Cálculo I*. 2ª ed. Reverté.
 
-1. [`Paper_Calculo_1_Guidorizzi.md`](./Paper_Calculo_1_Guidorizzi.md) / [`index.html`](./index.html) — Tratado teórico-prático cobrindo os 17 capítulos e 6 apêndices de Guidorizzi (5ª ed.), com 12 figuras vetoriais (`.svg`) e exercícios de fixação ao final de cada capítulo.
-2. [`Caderno_Exercicios_Calculo_1.md`](./Caderno_Exercicios_Calculo_1.md) / [`exercicios.html`](./exercicios.html) — 45 problemas clássicos e demonstrações resolvidos passo a passo.
-3. [`assets/figuras/`](./assets/figuras/) — 12 diagramas matemáticos em SVG.
+| Paper | Online |
+|---|---|
+| Paper teórico (17 capítulos + 6 apêndices, 12 figuras) | [`calculo-1/guidorizzi/`](https://mfnandess.github.io/papeis-estudo/calculo-1/guidorizzi/) |
+| Caderno de exercícios (45 resolvidos) | [`calculo-1/guidorizzi/exercicios.html`](https://mfnandess.github.io/papeis-estudo/calculo-1/guidorizzi/exercicios.html) |
+| Cálculo 1 sem sofrimento (versão Claude) | [`calculo-1/claude/`](https://mfnandess.github.io/papeis-estudo/calculo-1/claude/) |

@@ -96,7 +96,7 @@ Ao final da Seção 3.1, Guidorizzi fixa uma convenção que vigora em todo o li
 
 Se $p \in D_f$, resulta imediatamente que **$f$ é contínua em $p$ se, e somente se, $\lim_{x \to p} f(x) = f(p)$**.
 
-![Figura 1: Continuidade e Limite em p](./assets/figuras/fig01_continuidade_limite_eps_delta.svg)
+![Figura 1: Continuidade e Limite em p](./figuras/fig01_continuidade_limite_eps_delta.svg)
 *Figura 1 — (a) Definição $\varepsilon$-$\delta$ de continuidade em $p$ (Seção 3.2). (b) Existência de limite em $p_1$ apesar de $f(p_1) \neq L$ versus descontinuidade de salto em $p_2$, onde os limites laterais diferem (Seções 3.3 e 3.4).*
 
 ---
@@ -118,7 +118,7 @@ Se $p \in D_f$, resulta imediatamente que **$f$ é contínua em $p$ se, e soment
 - **O 1º Limite Fundamental (Seção 3.8):** Da desigualdade $0 < \operatorname{sen} x < x < \operatorname{tg} x$ para $0 < x < r$, dividindo por $\operatorname{sen} x$ e usando a paridade de $\cos x$ e de $\frac{\operatorname{sen} x}{x}$, obtém-se $\cos x < \frac{\operatorname{sen} x}{x} < 1$ para $0 < |x| < r$. Pelo Teorema do Confronto:
   $$\lim_{x \to 0} \frac{\operatorname{sen} x}{x} = 1 \qquad \text{e, consequentemente,} \qquad \lim_{x \to 0} \frac{1 - \cos x}{x^2} = \frac{1}{2}$$
 
-![Figura 2: O 1º Limite Fundamental](./assets/figuras/fig02_limite_fundamental_trigonometrico.svg)
+![Figura 2: O 1º Limite Fundamental](./figuras/fig02_limite_fundamental_trigonometrico.svg)
 *Figura 2 — (a) Comparação de áreas no círculo unitário: $\operatorname{sen} x < x < \operatorname{tg} x$. (b) Compressão de $\frac{\operatorname{sen} x}{x}$ entre $\cos x$ e $1$ em torno de $x = 0$ (Seção 3.8).*
 
 #### Exercícios de Fixação (Capítulo 3)
@@ -160,7 +160,7 @@ No Capítulo 5 (com demonstrações completas no **Apêndice 2**, Seções A2.1 
 > $$f(x_1) \le f(x) \le f(x_2)$$
 > *Isto é, toda função contínua num intervalo fechado $[a, b]$ é limitada e assume em $[a, b]$ valor mínimo global $f(x_1)$ e valor máximo global $f(x_2)$.*
 
-![Figura 3: Teoremas de Bolzano, Valor Intermediário e Weierstrass](./assets/figuras/fig03_teoremas_globais_bolzano_weierstrass.svg)
+![Figura 3: Teoremas de Bolzano, Valor Intermediário e Weierstrass](./figuras/fig03_teoremas_globais_bolzano_weierstrass.svg)
 *Figura 3 — (a) Teorema do Anulamento (Bolzano) e Teorema do Valor Intermediário (TVI). (b) Teorema de Weierstrass: mínimo global $m = f(x_1)$ e máximo global $M = f(x_2)$ atingidos em $[a, b]$ (Capítulo 5).*
 
 > **[Complemento — Apostol, *Cálculo I*, Seção 3.17 e Guidorizzi, Apêndice 4, Seção A4.3]:**  
@@ -190,7 +190,7 @@ No Capítulo 5 (com demonstrações completas no **Apêndice 2**, Seções A2.1 
 > $$\ln x = \int_{1}^{x} \frac{1}{t}\,dt \quad (x > 0)$$
 > Nessa abordagem, $(\ln x)' = \frac{1}{x}$ decorre imediatamente do Teorema Fundamental do Cálculo, o número $e$ é definido como o único real positivo tal que $\ln e = \int_1^e \frac{1}{t}\,dt = 1$, e a função exponencial $e^x$ é definida como a função inversa de $\ln x$.
 
-![Figura 4: Funções Exponencial e Logarítmica](./assets/figuras/fig04_exponencial_logaritmo_numero_e.svg)
+![Figura 4: Funções Exponencial e Logarítmica](./figuras/fig04_exponencial_logaritmo_numero_e.svg)
 *Figura 4 — (a) Gráficos de $y = e^x$ e $y = \ln x$ simétricos em relação à reta $y = x$ (Seções 6.1–6.2). (b) [Complemento — Apostol, Seção 6.3] O logaritmo natural como área sob a hipérbole $y = 1/t$ de $1$ até $x$.*
 
 #### Exercícios de Fixação (Capítulo 6)
@@ -209,7 +209,7 @@ No Capítulo 5 (com demonstrações completas no **Apêndice 2**, Seções A2.1 
 - **Reta Tangente e Reta Normal ao Gráfico em $(p, f(p))$ (Seção 7.16):**
   $$y - f(p) = f'(p)(x - p) \quad (\text{Reta Tangente}) \qquad \text{e} \qquad y - f(p) = -\frac{1}{f'(p)}(x - p) \quad (\text{Reta Normal, se } f'(p) \neq 0)$$
 
-![Figura 5: Reta Tangente, Reta Normal e Diferencial](./assets/figuras/fig05_derivada_secante_tangente_diferencial.svg)
+![Figura 5: Reta Tangente, Reta Normal e Diferencial](./figuras/fig05_derivada_secante_tangente_diferencial.svg)
 *Figura 5 — (a) A reta secante $s$ tende à reta tangente $T$ quando $h \to 0$, sendo a reta normal $N$ perpendicular a $T$ em $M(p, f(p))$ (Seções 7.2 e 7.16). (b) A diferencial $dy = f'(x)\,\Delta x$ comparada ao acréscimo real $\Delta y$ (Seção 7.14).*
 
 ---
@@ -252,7 +252,7 @@ Aplicando o Teorema 6.1 às inversas trigonométricas nos seus intervalos princi
 3. **Arco-tangente ($y = \operatorname{arctg} x \iff x = \operatorname{tg} y$, $x \in \mathbb{R}$, $y \in \,]-\frac{\pi}{2}, \frac{\pi}{2}[$):**
    $$\operatorname{arctg}' x = \frac{1}{\sec^2(\operatorname{arctg} x)} = \frac{1}{1 + x^2} \quad (\forall x \in \mathbb{R})$$
 
-![Figura 6: Funções Trigonométricas Inversas](./assets/figuras/fig06_funcoes_inversas_trigonometricas.svg)
+![Figura 6: Funções Trigonométricas Inversas](./figuras/fig06_funcoes_inversas_trigonometricas.svg)
 *Figura 6 — (a) Gráficos de $\operatorname{arcsen} x$ e $\arccos x$ em $[-1, 1]$. (b) Gráfico de $\operatorname{arctg} x$ em $\mathbb{R}$, com assíntotas horizontais $y = \pm\frac{\pi}{2}$ (Seção 8.2).*
 
 #### Exercícios de Fixação (Capítulo 8)
@@ -276,7 +276,7 @@ Aplicando o Teorema 6.1 às inversas trigonométricas nos seus intervalos princi
    $$\big[f(b) - f(a)\big]g'(c) = \big[g(b) - g(a)\big]f'(c)$$
    *ou, caso $g(b) \neq g(a)$ e $g'(c) \neq 0$, $\dfrac{f(b) - f(a)}{g(b) - g(a)} = \dfrac{f'(c)}{g'(c)}$.*
 
-![Figura 7: Teorema do Valor Médio, Concavidade e Inflexão](./assets/figuras/fig07_rolle_tvm_concavidade_inflexao.svg)
+![Figura 7: Teorema do Valor Médio, Concavidade e Inflexão](./figuras/fig07_rolle_tvm_concavidade_inflexao.svg)
 *Figura 7 — (a) Teorema do Valor Médio: tangente em $c$ paralela à corda secante $S$ (Seções 9.1 e 15.2). (b) Estudo de extremos locais, concavidade e ponto de inflexão (Seções 9.3, 9.6 e 9.7).*
 
 ---
@@ -323,7 +323,7 @@ No **Apêndice 4**, Guidorizzi demonstra que toda função integrável em $[a, b
 > **[Complemento — Apostol, *Cálculo I*, Cap. 1, Seções 1.8–1.17]:**  
 > Apostol constrói a integral equivalente pelo método de Darboux: define primeiro a integral para **funções em escada** $s$ ($\int_a^b s(x)\,dx = \sum s_i \Delta x_i$) e, para uma função limitada $f$, define a integral inferior $\underline{I}(f) = \sup\{\int_a^b s \mid s \le f\}$ e a integral superior $\overline{I}(f) = \inf\{\int_a^b t \mid t \ge f\}$, sendo $f$ integrável quando $\underline{I}(f) = \overline{I}(f)$.
 
-![Figura 8: Soma de Riemann vs. Somas Inferior e Superior](./assets/figuras/fig08_soma_riemann_vs_escada_apostol.svg)
+![Figura 8: Soma de Riemann vs. Somas Inferior e Superior](./figuras/fig08_soma_riemann_vs_escada_apostol.svg)
 *Figura 8 — (a) Soma de Riemann $\sum f(c_i)\Delta x_i$ com pontos arbitrários $c_i \in [x_{i-1}, x_i]$ (Seção 11.2). (b) Aproximação por somas inferior e superior / funções em escada (Apostol, Cap. 1 e Guidorizzi, Apêndice 4).*
 
 ---
@@ -385,7 +385,7 @@ Para uma região $A = \{(x, y) \mid a \le x \le b, \; 0 \le y \le f(x)\}$ ($f(x)
 5. **Comprimento de Arco (Seções 13.5 e 13.6):**
    $$s = \int_{a}^{b} \sqrt{1 + \big[f'(x)\big]^2}\,dx \qquad \text{e, na forma paramétrica } x = x(t), y = y(t): \qquad s = \int_{t_0}^{t_1} \sqrt{\big[x'(t)\big]^2 + \big[y'(t)\big]^2}\,dt$$
 
-![Figura 9: Volumes de Revolução por Discos e por Cascas Cilíndricas](./assets/figuras/fig09_solidos_revolucao_discos_cascas.svg)
+![Figura 9: Volumes de Revolução por Discos e por Cascas Cilíndricas](./figuras/fig09_solidos_revolucao_discos_cascas.svg)
 *Figura 9 — (a) Rotação em torno do eixo $x$ pelo método dos discos (Seção 13.1). (b) Rotação em torno do eixo $y$ pelo método das cascas cilíndricas (Seção 13.2).*
 
 ### 10.2 Coordenadas Polares e Centro de Massa (Seções 13.7 a 13.9)
@@ -394,7 +394,7 @@ $$\text{Área Polar: } A = \frac{1}{2}\int_{\alpha}^{\beta} \big[f(\theta)\big]^
 Para o centro de massa $(x_c, y_c)$ de $A = \{(x, y) \mid a \le x \le b, \; 0 \le y \le f(x)\}$ (Seção 13.9):
 $$x_c = \frac{\int_a^b x f(x)\,dx}{\text{área } A}, \qquad y_c = \frac{\frac{1}{2}\int_a^b [f(x)]^2\,dx}{\text{área } A}$$
 
-![Figura 10: Área em Coordenadas Polares e Cardioide](./assets/figuras/fig10_coordenadas_polares_cardioide.svg)
+![Figura 10: Área em Coordenadas Polares e Cardioide](./figuras/fig10_coordenadas_polares_cardioide.svg)
 *Figura 10 — (a) Elemento de área em coordenadas polares $dA = \frac{1}{2}[f(\theta)]^2\,d\theta$ (Seção 13.7). (b) A cardioide $r = a(1 + \cos\theta)$ (Seções 13.7 e 13.8).*
 
 #### Exercícios de Fixação (Capítulo 13)
@@ -414,7 +414,7 @@ Para a equação $\frac{dx}{dt} = g(t)h(x)$, onde $g$ é contínua em $I_1$ e $h
 Para a equação linear $\frac{dy}{dx} + a(x)y = b(x)$, com $a(x)$ e $b(x)$ contínuas num intervalo $I$, multiplica-se a equação pelo **fator integrante** $\mu(x) = e^{A(x)}$, onde $A(x) = \int a(x)\,dx$:
 $$e^{A(x)}\frac{dy}{dx} + a(x)e^{A(x)}y = e^{A(x)}b(x) \iff \frac{d}{dx}\Big[e^{A(x)}y\Big] = e^{A(x)}b(x) \implies y(x) = e^{-A(x)}\left(\int e^{A(x)}b(x)\,dx + k\right)$$
 
-![Figura 11: Soluções de EDOs de 1ª Ordem](./assets/figuras/fig11_edo_campo_direcoes_solucoes.svg)
+![Figura 11: Soluções de EDOs de 1ª Ordem](./figuras/fig11_edo_campo_direcoes_solucoes.svg)
 *Figura 11 — (a) Soluções constantes e não constantes de $\frac{dx}{dt} = x(2-x)$ (Seção 14.4) sobre o campo de direções [Complemento — Apostol, Seção 8.21]. (b) Família de soluções da EDO linear $y' + y = 1$ (Seção 14.6).*
 
 #### Exercícios de Fixação (Capítulo 14)
@@ -463,7 +463,7 @@ O Capítulo 17 da 5ª edição de Guidorizzi apresenta os três métodos histór
    Para calcular a área sob $y = x^k$ em $[0, b]$ sem depender da soma de potências $\sum i^k$, Fermat subdividiu $]0, b]$ pelos pontos de uma progressão geométrica $b, bE, bE^2, bE^3, \dots$ ($0 < E < 1$). A soma das áreas dos retângulos circunscritos é uma PG infinita de razão $E^{k+1}$, cuja soma vale:
    $$S(E) = \frac{b^{k+1}(1 - E)}{1 - E^{k+1}} = \frac{b^{k+1}}{1 + E + E^2 + \dots + E^k} \xrightarrow{E \to 1^-} \frac{b^{k+1}}{k + 1}$$
 
-![Figura 12: Polinômios de Taylor e Quadratura da Parábola de Arquimedes](./assets/figuras/fig12_polinomios_taylor_arquimedes.svg)
+![Figura 12: Polinômios de Taylor e Quadratura da Parábola de Arquimedes](./figuras/fig12_polinomios_taylor_arquimedes.svg)
 *Figura 12 — (a) Polinômios de Taylor/Mac-Laurin de ordens $1, 3, 5, 7$ aproximando $\operatorname{sen} x$ (Cap. 16). (b) Método de exaustão de Arquimedes para a quadratura da parábola (Seção 17.1).*
 
 ---
