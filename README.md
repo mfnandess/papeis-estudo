@@ -49,5 +49,5 @@ papers/
 
 | Paper | Online |
 |---|---|
-| Paper teórico (13 capítulos ISLP + complementos Raschka Cap. 1–19, 12 figuras) | [`machine-learning/islp/`](https://mfnandess.github.io/papeis-estudo/machine-learning/islp/) |
-| Caderno de exercícios (45 resolvidos) | [`machine-learning/islp/exercicios.html`](https://mfnandess.github.io/papeis-estudo/machine-learning/islp/exercicios.html) |
+| Paper teórico — Machine Learning Clássico (ISLP Cap. 1–9 e 12 + Raschka Cap. 1–10, 10 figuras) | [`machine-learning/islp/`](https://mfnandess.github.io/papeis-estudo/machine-learning/islp/) |
+| Caderno de exercícios (36 resolvidos) | [`machine-learning/islp/exercicios.html`](https://mfnandess.github.io/papeis-estudo/machine-learning/islp/exercicios.html) |

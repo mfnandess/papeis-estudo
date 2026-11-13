@@ -1,765 +1,843 @@
-# Aprendizado Estatístico e Machine Learning: Da Regressão Linear ao Deep Learning Moderno
-## Um Estudo Baseado em *An Introduction to Statistical Learning — with Applications in Python* (James, Witten, Hastie, Tibshirani & Taylor), com Complementos de *Machine Learning with PyTorch and Scikit-Learn* (Sebastian Raschka, Yuxi Liu & Vahid Mirjalili)
+# Machine Learning Clássico: Dos Fundamentos à Prática Algorítmica
+## Um Estudo Didático e Rigoroso Baseado em *An Introduction to Statistical Learning — with Applications in Python* (James, Witten, Hastie, Tibshirani & Taylor), com Complementos de *Machine Learning with PyTorch and Scikit-Learn* (Raschka, Liu & Mirjalili, Capítulos 1 a 10)
 
 ---
 
-> **Resumo**  
-> Este documento apresenta um tratado teórico e algorítmico completo de **Aprendizado Estatístico e Machine Learning**, estruturado fielmente a partir de *An Introduction to Statistical Learning — with Applications in Python (ISLP)* (1ª edição em Python / 2ª edição geral, 2023), de **Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani e Jonathan Taylor** (Capítulos 1 a 13). Sempre que uma formulação algorítmica clássica, pipeline de pré-processamento ou arquitetura moderna de *Deep Learning* e *Reinforcement Learning* (como Perceptron, Adaline, LDA supervisionado como redução de dimensão, AdaBoost, XGBoost, DBSCAN, t-SNE, Grafos Computacionais em PyTorch, *Transformers*, GANs, *Graph Neural Networks* e Processos de Decisão de Markov) é trazida da obra *Machine Learning with PyTorch and Scikit-Learn* (2022), de **Sebastian Raschka, Yuxi (Hayden) Liu e Vahid Mirjalili**, a mudança de referência é explicitamente indicada por **[Complemento — Raschka et al., *ML with PyTorch and Scikit-Learn*, Cap. X, Seção X.Y]**. Todo o restante do texto segue estritamente as definições, hipóteses e notações matemáticas do ISLP.
+> **Resumo e Como Estudar por Este Material**  
+> Este documento foi desenhado para ensinar **Machine Learning Clássico do absoluto zero até o domínio matemático e algorítmico completo**, sem exigir conhecimento prévio da área e sem misturar tópicos de *Deep Learning* (redes neurais profundas/CNNs). A espinha dorsal segue fielmente os **Capítulos 1 a 9 e 12 de *An Introduction to Statistical Learning — with Applications in Python (ISLP, 2023)***, enriquecida com os fundamentos de engenharia de atributos, otimização e algoritmos clássicos dos **Capítulos 1 a 10 de *Machine Learning with PyTorch and Scikit-Learn* (Raschka et al., 2022)** (sempre identificados por **[Complemento — Raschka et al., Cap. X]**).  
+> Em cada seção, seguimos sempre a mesma tríade pedagógica: **(1) Intuição do Zero** (qual problema real queremos resolver), **(2) Dicionário de Símbolos e Fórmulas Rigorosas** (o que significa cada letra da equação) e **(3) Exemplo Numérico Feito à Mão** (como a conta funciona na prática com números reais).
 
 ---
 
-## Sumário de Capítulos (ISLP, 2023 & Raschka et al., 2022)
+## Mapa do Curso (10 Capítulos de Machine Learning Clássico)
 
-| Seção | Capítulos (ISLP / Raschka) | Tópicos Centrais |
+| Seção | Capítulos de Referência | O que Você Vai Aprender (Do Zero ao Rigor) |
 | :--- | :--- | :--- |
-| **0. Fundamentos do Aprendizado** | Cap. 1 e Cap. 2 (Seções 2.1–2.3); Raschka Cap. 1 e 4 | Estimação de $f$, erro redutível e irredutível, *trade-off* viés-variância, classificador de Bayes, KNN e pré-processamento |
-| **1. Regressão Linear** | Cap. 3 (Seções 3.1–3.6); Raschka Cap. 9 | Mínimos Quadrados (MQO/OLS), erros padrão, testes $t$ e $F$, $R^2$, variáveis *dummy*, interações, diagnósticos, VIF e RANSAC |
-| **2. Classificação** | Cap. 4 (Seções 4.1–4.7); Raschka Cap. 2 e 3 | Regressão Logística, máxima verossimilhança, modelos generativos (LDA, QDA, Naive Bayes), ROC/AUC, Poisson, GLMs, Perceptron e Adaline |
-| **3. Métodos de Reamostragem** | Cap. 5 (Seções 5.1–5.3); Raschka Cap. 6 | Validação simples, LOOCV (atalho da alavancagem $h_i$), Validação Cruzada $k$-Fold, *Nested CV* e Bootstrap ($1 - (1-1/n)^n \to 0{,}632$) |
-| **4. Seleção e Regularização** | Cap. 6 (Seções 6.1–6.5); Raschka Cap. 4 e 5 | *Best Subset*, *Stepwise* ($C_p$, AIC, BIC, $R^2_{\text{adj}}$), Ridge ($\ell_2$), Lasso ($\ell_1$, limiarização suave e priores bayesianas), PCR, PLS e alta dimensão ($p \gg n$) |
-| **5. Além da Linearidade** | Cap. 7 (Seções 7.1–7.8) | Regressão polinomial, funções degrau, funções de base, *Cubic Splines*, *Natural Splines*, *Smoothing Splines*, LOESS e GAMs (*Backfitting*) |
-| **6. Árvores e Ensembles** | Cap. 8 (Seções 8.1–8.3); Raschka Cap. 7 | Árvores de regressão e classificação (CART), poda por custo-complexidade, Gini e entropia, Bagging (OOB), Random Forests, Boosting, BART, AdaBoost e XGBoost |
-| **7. Support Vector Machines** | Cap. 9 (Seções 9.1–9.6); Raschka Cap. 3 | Hiperplano de margem máxima, *Support Vector Classifier* (folgas $\epsilon_i$), *Kernel Trick* (polinomial e RBF), multiclasse (OVO/OVA) e Hinge Loss |
-| **8. Deep Learning: MLP, CNN e RNN** | Cap. 10 (Seções 10.1–10.9); Raschka Cap. 11–15 | Redes densas, ativações (ReLU, Sigmoid, Softmax), CNNs (convolução 2D e *pooling*), RNNs/LSTMs, *Backpropagation*, *Dropout*, *Double Descent* e PyTorch |
-| **9. Arquiteturas Modernas de DL e RL** | Cap. 10 (ISLP) e Raschka Cap. 16–19 | *Transformers* (*Scaled Dot-Product Self-Attention*, Multi-Head, GPT, BERT), GANs e WGAN-GP, *Graph Neural Networks* (GNNs) e *Reinforcement Learning* (MDP e Q-Learning) |
-| **10. Análise de Sobrevivência** | Cap. 11 (Seções 11.1–11.8) | Sobrevivência $T$ e censura à direita $Y = \min(T, C)$, estimador de Kaplan-Meier, teste Log-Rank, taxa de falha (*Hazard*) e Riscos Proporcionais de Cox |
-| **11. Aprendizado Não Supervisionado** | Cap. 12 (Seções 12.1–12.5); Raschka Cap. 5 e 10 | Componentes Principais (PCA, cargas, escores, PVE), completamento de matrizes via SVD, *K-Means* ($K$-Means++, silhueta), hierárquico, DBSCAN e t-SNE |
-| **12. Testes Múltiplos** | Cap. 13 (Seções 13.1–13.6) | Testes de hipóteses, Taxa de Erro Familiar (FWER), Bonferroni, método *step-down* de Holm, Taxa de Falsas Descobertas (FDR), Benjamini-Hochberg e permutação |
-| **13. Ecossistema Python Aplicado** | Labs Cap. 2–13 (ISLP) e Cap. 1–19 (Raschka) | Arquitetura de modelagem com `ISLP` (`ModelSpec`), `statsmodels`, `scikit-learn` (`Pipeline`, `GridSearchCV`), `lifelines` e `PyTorch` |
+| **0. O Que é Machine Learning?** | ISLP Cap. 1 e Cap. 2; Raschka Cap. 1 | A ideia central $Y = f(X) + \varepsilon$, dicionário completo de símbolos ($n, p, X, Y, \hat{Y}$), Regressão vs. Classificação, Não Supervisionado, Subajuste (*Underfitting*) vs. Sobreajuste (*Overfitting*), Decomposição Viés-Variância, Classificador de Bayes e algoritmo **KNN** passo a passo |
+| **1. Preparando os Dados** | Raschka Cap. 4 e Cap. 6; ISLP Cap. 2 | Como limpar dados reais: valores faltantes (`NaN`), variáveis categóricas (*One-Hot Encoding*), escalonamento (**Min-Max** vs. **Padronização Z-Score**) e a regra de ouro contra **Vazamento de Dados (*Data Leakage*)** entre treino e teste |
+| **2. Regressão Linear** | ISLP Cap. 3 (Seções 3.1–3.6); Raschka Cap. 9 | Como prever números contínuos: reta de **Mínimos Quadrados Ordinários (OLS)** feita à mão, erro-padrão, teste $t$, estatística $F$, métrica $R^2$, variáveis *dummy*, interações (sinergia) e diagnóstico dos 6 problemas clássicos (resíduos, alavancagem $h_i$, VIF e RANSAC) |
+| **3. Classificação** | ISLP Cap. 4 (Seções 4.1–4.7); Raschka Cap. 2 e 3 | Como prever categorias: por que a regressão linear falha, **Regressão Logística** (função sigmoide, *odds*, *logit* e máxima verossimilhança), **LDA**, **QDA**, **Naive Bayes**, Matriz de Confusão, Sensibilidade, Especificidade, **Curva ROC / AUC**, Perceptron e Adaline |
+| **4. Validação Cruzada e Bootstrap** | ISLP Cap. 5 (Seções 5.1–5.3); Raschka Cap. 6 | Como medir se o modelo realmente aprendeu: divisão Treino/Validação, **LOOCV** (e a fórmula mágica da alavancagem $h_i$), **Validação Cruzada $k$-Fold** ($k=5$ ou $10$) e **Bootstrap** (amostragem com reposição e a origem dos $63{,}2\%$) |
+| **5. Seleção de Variáveis e Regularização (Ridge & Lasso)** | ISLP Cap. 6 (Seções 6.1–6.5); Raschka Cap. 4 | Como evitar sobreajuste quando há muitas variáveis: *Best Subset*, *Forward/Backward Stepwise*, critérios $C_p$, AIC, BIC e $R^2_{\text{adj}}$, **Regressão Ridge ($\ell_2$)**, **Lasso ($\ell_1$)** (por que o losango zera coeficientes e faz seleção automática de variáveis), PCR e PLS |
+| **6. Modelos Não Lineares, Splines e GAMs** | ISLP Cap. 7 (Seções 7.1–7.8) | Como capturar curvas suaves sem explodir a variância: Regressão Polinomial, Funções Escada, **Splines Cúbicas**, **Splines Naturais**, **Smoothing Splines**, Regressão Local (**LOESS**) e **Modelos Aditivos Generalizados (GAMs)** |
+| **7. Árvores de Decisão, Random Forest e Boosting** | ISLP Cap. 8 (Seções 8.1–8.3); Raschka Cap. 7 | Modelos baseados em regras de decisão: **Árvores de Regressão e Classificação (CART)**, poda por custo-complexidade, Índice de **Gini** e **Entropia**, **Bagging** (erro *Out-of-Bag*), **Random Forests** ($m \approx \sqrt{p}$), **Gradient Boosting**, **AdaBoost** e **XGBoost** |
+| **8. Máquinas de Vetores de Suporte (SVM)** | ISLP Cap. 9 (Seções 9.1–9.6); Raschka Cap. 3 | Separando classes com a maior margem de segurança possível: **Hiperplano de Margem Máxima**, Vetores de Suporte, Margem Suave (folgas $\epsilon_i$ e parâmetro $C$), o **Truque do Kernel (*Kernel Trick*)** Polinomial e Radial (RBF) e a perda **Hinge Loss** |
+| **9. Aprendizado Não Supervisionado (PCA e Clustering)** | ISLP Cap. 12 (Seções 12.1–12.5); Raschka Cap. 5 e 10 | Aprendendo padrões sem rótulos $Y$: **Análise de Componentes Principais (PCA)** (cargas, escores e proporção de variância explicada PVE), **Agrupamento *K-Means*** ($K$-Means++ e silhueta), **Agrupamento Hierárquico** (dendrogramas) e **DBSCAN** |
 
 ---
 
-## 0. Preliminares e Fundamentos do Aprendizado Estatístico (Capítulos 1 e 2)
+## 0. O Que é Machine Learning? Fundamentos, Notação, Viés-Variância e KNN (ISLP Cap. 1 e 2; Raschka Cap. 1)
 
-### 0.1 O Modelo Estatístico $Y = f(X) + \varepsilon$, Erro Redutível e Erro Irredutível (Seções 1.1 e 2.1)
-Suponha que observamos uma resposta quantitativa $Y$ e $p$ preditores distintos $X = (X_1, X_2, \dots, X_p)$ em uma amostra de $n$ observações. Na Seção 2.1, o ISLP postula a relação fundamental:
+### 0.1 A Intuição Fundamental e o Dicionário de Símbolos (Seções 1.1 e 2.1)
+
+Imagine que você trabalha em uma imobiliária e quer estimar o **preço de venda de um apartamento** a partir da sua **área em $\text{m}^2$**, do **número de quartos** e da **distância até o metrô**; ou imagine um médico que deseja prever se um paciente **tem ou não diabetes** a partir da **glicemia**, do **IMC** e da **idade**.
+
+Em **Machine Learning (Aprendizado de Máquina)** ou **Aprendizado Estatístico (*Statistical Learning*)**, nós não programamos regras fixas manualmente (como `se área > 100 então preço = 500 mil`). Em vez disso, fornecemos ao computador uma tabela com **exemplos históricos reais** (os **dados de treinamento**) para que um algoritmo descubra automaticamente a relação matemática entre as características de entrada e o resultado de saída.
+
+Para ler qualquer livro ou artigo de Machine Learning sem nunca travar na notação, guarde este **Dicionário Fundamental de Símbolos** (usado em todo o ISLP):
+
+1. **$n$ (número de observações / exemplos / linhas da tabela):** É a quantidade total de exemplos que temos no nosso banco de dados. Por exemplo, se coletamos dados de $200$ imóveis, então $n = 200$. Usamos o índice $i$ ($i = 1, 2, \dots, n$) para nos referirmos ao $i$-ésimo exemplo (a $i$-ésima linha da tabela).
+2. **$p$ (número de variáveis preditoras / atributos / *features* / colunas de entrada):** É a quantidade de características que medimos em cada exemplo para fazer a previsão. Se medimos *Área* ($X_1$), *Quartos* ($X_2$) e *Distância ao metrô* ($X_3$), então temos $p = 3$ preditores. Usamos o índice $j$ ($j = 1, 2, \dots, p$) para indicar a $j$-ésima variável.
+3. **$x_{ij}$ (um valor específico na tabela de entrada):** Representa o valor da **$j$-ésima variável** medido na **$i$-ésima observação** (linha $i$, coluna $j$).
+4. **$x_i$ (o vetor de características da $i$-ésima observação):** É a lista com todas as $p$ medidas do indivíduo $i$:
+   $$x_i = \begin{pmatrix} x_{i1} \\ x_{i2} \\ \vdots \\ x_{ip} \end{pmatrix} \in \mathbb{R}^p$$
+5. **$X$ (a matriz de dados / matriz de desenho $n \times p$):** É a tabela inteira de entradas com $n$ linhas (exemplos) e $p$ colunas (atributos):
+   $$X = \begin{pmatrix} x_{11} & x_{12} & \dots & x_{1p} \\ x_{21} & x_{22} & \dots & x_{2p} \\ \vdots & \vdots & \ddots & \vdots \\ x_{n1} & x_{n2} & \dots & x_{np} \end{pmatrix}$$
+6. **$Y$ ou $y_i$ (a variável resposta / alvo / *target* / *label*):** É o resultado que queremos prever para a observação $i$.
+7. **O chapéu $\;\hat{}\;$ (*hat*), como em $\hat{f}$ e $\hat{Y}$:** Na Estatística e no Machine Learning, **toda letra com um chapéu ($\hat{f}, \hat{y}_i, \hat{\beta}$) significa uma estimativa ou predição calculada pelo nosso modelo** a partir dos dados! Assim:
+   - $y_i$ é o valor **real** observado na realidade;
+   - $\hat{y}_i = \hat{f}(x_i)$ é o valor **previsto** pelo computador;
+   - $e_i = y_i - \hat{y}_i$ é o **erro (ou resíduo)** que o modelo cometeu no exemplo $i$.
+
+---
+
+### 0.2 Os Três Tipos de Problemas em Machine Learning
+
+Antes de escolher um algoritmo, a primeira pergunta é sempre: **qual é a natureza da resposta $Y$?**
+
+1. **Aprendizado Supervisionado — Regressão ($Y$ é um número contínuo/quantitativo):**  
+   Temos entradas $X$ e respostas $Y$ numéricas (ex.: preço de uma casa em reais, temperatura amanhã em °C, vendas em milhares de unidades). O objetivo é ajustar uma curva ou superfície $\hat{f}(X)$ que produza números próximos de $Y$.
+2. **Aprendizado Supervisionado — Classificação ($Y$ é uma categoria/rótulo qualitativo):**  
+   Temos entradas $X$ e respostas $Y$ pertencentes a um conjunto finito de classes $\mathcal{C} = \{1, 2, \dots, K\}$ (ex.: e-mail é *Spam* ou *Não-Spam*; tumor é *Benigno* ou *Maligno*; dígito escrito à mão é $\{0, 1, \dots, 9\}$).
+3. **Aprendizado Não Supervisionado (Não existe coluna resposta $Y$, apenas $X$):**  
+   Recebemos apenas as medidas $X = \{x_1, x_2, \dots, x_n\}$ sem nenhum rótulo prévio. O objetivo é descobrir estrutura oculta nos dados: agrupar clientes com hábitos de compra parecidos (**Clustering / Agrupamento**, como o *K-Means*) ou resumir dezenas de variáveis correlacionadas em 2 ou 3 eixos principais para visualização (**Redução de Dimensionalidade**, como a **PCA**).
+
+---
+
+### 0.3 O Modelo Matemático Central: $Y = f(X) + \varepsilon$, Erro Redutível e Erro Irredutível (Seção 2.1.1)
+
+Na Seção 2.1 do ISLP, quando $Y$ é quantitativa, postulamos que a natureza gera os dados segundo a equação mestra:
 $$Y = f(X) + \varepsilon$$
-onde **$f$ é uma função fixa, mas desconhecida**, de $X_1, \dots, X_p$ (que representa a informação sistemática que $X$ fornece sobre $Y$), e **$\varepsilon$ é um termo de erro aleatório**, independente de $X$ e com média zero ($\mathbb{E}(\varepsilon) = 0$) e variância $\operatorname{Var}(\varepsilon) = \sigma^2$.
+Vamos entender o que cada peça significa:
+- **$f(X)$ é a função verdadeira (desconhecida):** Representa a parte **sistemática e previsível** que as variáveis $X = (X_1, \dots, X_p)$ fornecem sobre $Y$.
+- **$\varepsilon$ (épsilon) é o termo de erro aleatório (ruído):** Representa tudo aquilo que afeta $Y$ mas **não está medido em $X$** (por exemplo, o humor do comprador do imóvel no dia da visita, variações de medição ou sorte pura). Assumimos que $\varepsilon$ tem **média zero** ($\mathbb{E}[\varepsilon] = 0$, ou seja, ora joga para cima, ora para baixo sem vício sistemático) e **variância $\operatorname{Var}(\varepsilon) = \sigma_\varepsilon^2$**, sendo independente de $X$.
 
-Existem duas razões principais para estimar $f$ (Seção 2.1.1):
-1. **Predição (*Prediction*):** Dado um conjunto de entradas $X$, predizemos $Y$ por $\hat{Y} = \hat{f}(X)$, onde $\hat{f}$ representa nossa estimativa para $f$ (tratada frequentemente como uma "caixa-preta" se o único objetivo for a acurácia preditiva). Fixados $\hat{f}$ e os preditores $X$, a média dos quadrados do erro de predição decompõe-se exatamente em duas parcelas:
-   $$\mathbb{E}(Y - \hat{Y})^2 = \mathbb{E}\big[f(X) + \varepsilon - \hat{f}(X)\big]^2 = \underbrace{\big[f(X) - \hat{f}(X)\big]^2}_{\text{Erro Redutível}} + \underbrace{\operatorname{Var}(\varepsilon)}_{\text{Erro Irredutível } (\sigma^2)}$$
-   O **erro redutível** decorre da imprecisão de $\hat{f}$ como aproximação de $f$ e pode ser diminuído escolhendo uma técnica de aprendizado estatístico mais adequada. O **erro irredutível** $\operatorname{Var}(\varepsilon) = \sigma^2$ é uma cota inferior estrita para o erro esperado de qualquer estimador $\hat{f}$, pois $\varepsilon$ contém variáveis não medidas e variação aleatória intrínseca.
-2. **Inferência (*Inference*):** O objetivo é compreender a estrutura da associação entre $Y$ e $X_1, \dots, X_p$: quais preditores estão efetivamente associados à resposta, se a relação é positiva ou negativa, e se o modelo é adequadamente linear ou exige termos não lineares e interações.
+Quando treinamos um algoritmo de Machine Learning nos dados, obtemos uma função estimada $\hat{f}(X)$ e fazemos predições $\hat{Y} = \hat{f}(X)$. Por que nossas previsões $\hat{Y}$ nunca acertam $100\%$ de $Y$? A álgebra responde com uma das identidades mais bonitas da área:
 
-Na Seção 2.1.2, distinguem-se duas classes de métodos para estimar $f$ a partir dos dados de treinamento $\{(x_1, y_1), \dots, (x_n, y_n)\}$:
-- **Métodos Paramétricos:** Reduzem o problema de estimar uma função arbitrária $f$ em dimensão infinita ao problema de estimar um conjunto finito de parâmetros. Primeiro, assume-se uma forma funcional (por exemplo, linear: $f(X) = \beta_0 + \beta_1 X_1 + \dots + \beta_p X_p$); segundo, ajusta-se (*fits* ou *trains*) o modelo aos dados de treino estimando os $p + 1$ coeficientes $\beta_0, \beta_1, \dots, \beta_p$. Se a forma escolhida estiver distante da verdadeira $f$, o viés será elevado; se usarmos modelos paramétricos excessivamente flexíveis, ocorrerá **sobreajuste (*overfitting*)** ao ruído $\varepsilon$.
-- **Métodos Não Paramétricos:** Não assumem forma funcional explícita para $f$ (ex.: *Thin-Plate Splines*, KNN, árvores não podadas). Eles buscam uma estimativa $\hat{f}$ que se aproxime dos dados tanto quanto possível sem ser excessivamente abrupta, exigindo, porém, um número de observações $n$ muito maior do que o necessário para métodos paramétricos.
+> **Teorema 0.1 (Decomposição em Erro Redutível e Erro Irredutível — ISLP, Seção 2.1.1):**  
+> *Para um preditor $X$ fixado e uma função estimada $\hat{f}$, a média do quadrado do erro de predição $\mathbb{E}\big[(Y - \hat{Y})^2\big]$ separa-se exatamente em duas partes:*
+> $$\mathbb{E}\!\left[(Y - \hat{Y})^2\right] = \underbrace{\big[f(X) - \hat{f}(X)\big]^2}_{\text{Erro Redutível}} + \underbrace{\operatorname{Var}(\varepsilon)}_{\text{Erro Irredutível } (\sigma_\varepsilon^2)}$$
 
-> **Trade-Off entre Acurácia Preditiva e Interpretabilidade (Seção 2.1.3):**  
-> Métodos mais restritivos (como **Lasso**, **Seleção de Subconjuntos** e **Mínimos Quadrados**) produzem uma faixa restrita de formas para $\hat{f}$ (lineares e esparsas), sendo ideais para **inferência** pela alta interpretabilidade. Métodos altamente flexíveis (como **Bagging**, **Boosting**, **SVMs com Kernels** e **Deep Learning**) podem estimar superfícies fortemente não lineares com excelente acurácia preditiva, mas perdem a interpretabilidade individual de cada preditor.
+- **Por que essa fórmula vale?** Basta substituir $Y = f(X) + \varepsilon$ e $\hat{Y} = \hat{f}(X)$:
+  $$\mathbb{E}\!\left[(f(X) + \varepsilon - \hat{f}(X))^2\right] = \mathbb{E}\!\left[\big((f(X) - \hat{f}(X)) + \varepsilon\big)^2\right] = \big[f(X) - \hat{f}(X)\big]^2 + 2\big(f(X) - \hat{f}(X)\big)\underbrace{\mathbb{E}[\varepsilon]}_{=0} + \underbrace{\mathbb{E}[\varepsilon^2]}_{=\operatorname{Var}(\varepsilon)}.$$
+- **O que isso ensina na prática?**
+  1. O **Erro Redutível** $[f(X) - \hat{f}(X)]^2$ depende da qualidade do nosso modelo: quanto mais próximo $\hat{f}(X)$ estiver da verdadeira $f(X)$, menor ele será.
+  2. O **Erro Irredutível** $\operatorname{Var}(\varepsilon) = \sigma_\varepsilon^2$ é uma **barreira física intransponível**: mesmo que você descobrisse a função perfeita $\hat{f}(X) = f(X)$, suas previsões ainda errariam em média $\sigma_\varepsilon^2$ por causa do ruído $\varepsilon$!
+
+#### Predição versus Inferência e Métodos Paramétricos versus Não Paramétricos (Seções 2.1.1–2.1.3)
+- **Predição (*Prediction*):** Nosso foco principal é acertar o valor futuro $\hat{Y}$ com o menor erro possível (ex.: prever se uma transação de cartão é fraude em milissegundos), mesmo que $\hat{f}$ seja uma "caixa-preta" complexa.
+- **Inferência (*Inference*):** Nosso foco é **entender o fenômeno** e responder perguntas como: *"Quais variáveis $X_j$ realmente causam impacto em $Y$? Qual é o tamanho exato do aumento nas vendas para cada R\$ 1.000 investidos em anúncios de TV?"* Modelos lineares simples são excelentes para inferência, pois cada variável tem um peso direto e interpretável.
+- **Métodos Paramétricos (ex.: Regressão Linear, Logística):** Fazemos uma suposição prévia sobre o formato de $f$ (por exemplo, assumimos que $f(X) = \beta_0 + \beta_1 X_1 + \dots + \beta_p X_p$ é uma reta/plano). O problema infinito de achar uma função qualquer reduz-se a calcular apenas $p + 1$ números ($\beta_0, \beta_1, \dots, \beta_p$). **Vantagem:** rápido, fácil de interpretar e exige poucos dados. **Risco:** se a relação verdadeira for muito curva, o modelo linear nunca conseguirá acompanhá-la (**alto viés / subajuste**).
+- **Métodos Não Paramétricos (ex.: KNN, Splines, Árvores de Decisão):** Não impõem uma fórmula fixa prévia; a forma de $\hat{f}$ se molda livremente aos dados. **Vantagem:** captura formatos complexos. **Risco:** exige muitos dados e, se deixado solto demais, decora até o ruído aleatório (**alta variância / sobreajuste**).
 
 ---
 
-### 0.2 Qualidade do Ajuste, Decomposição Viés-Variância, Classificador de Bayes e KNN (Seção 2.2)
+### 0.4 Avaliação de Modelos: Erro de Treino vs. Erro de Teste e o Trade-Off Viés-Variância (Seção 2.2)
 
-#### 1. Regressão: MSE de Treinamento vs. MSE de Teste e a Decomposição Viés-Variância (Seções 2.2.1–2.2.2)
-No contexto de regressão, a medida padrão de ajuste nos dados de treinamento é o **Erro Quadrático Médio de Treinamento (*Training MSE*)**:
+Em problemas de **Regressão**, medimos a qualidade de um modelo pelo **Erro Quadrático Médio (*Mean Squared Error* — MSE)**, que é a média dos quadrados das diferenças entre o valor real $y_i$ e o valor previsto $\hat{f}(x_i)$:
 $$\operatorname{MSE}_{\text{treino}} = \frac{1}{n}\sum_{i=1}^{n} \big(y_i - \hat{f}(x_i)\big)^2$$
-Todavia, o que realmente importa é a precisão das predições quando aplicamos o método a dados de teste não vistos $(x_0, y_0)$, medida pelo **MSE de Teste Esperado** $\mathbb{E}(y_0 - \hat{f}(x_0))^2$. À medida que a **flexibilidade** do método (medida, por exemplo, pelos **graus de liberdade**) aumenta, o $\operatorname{MSE}_{\text{treino}}$ decresce monotonicamente, enquanto o $\operatorname{MSE}_{\text{teste}}$ apresenta uma curva característica em **formato de U**.
+- **Por que elevamos ao quadrado?** Porque erros para mais ($+3$) e para menos ($-3$) não podem se cancelar na soma, e porque erros grandes (como errar por $10$, que vira $100$) são fortemente penalizados.
 
-> **Teorema 0.1 (Decomposição Viés-Variância — Equação 2.7, Seção 2.2.2):**  
-> *Para qualquer ponto de teste fixo $x_0$, o erro quadrático médio de teste esperado, tomado sobre a distribuição de conjuntos de treinamento possíveis e sobre o erro aleatório na observação de teste $y_0 = f(x_0) + \varepsilon_0$, satisfaz:*
-> $$\mathbb{E}\big(y_0 - \hat{f}(x_0)\big)^2 = \operatorname{Var}\big(\hat{f}(x_0)\big) + \Big[\operatorname{Viés}\big(\hat{f}(x_0)\big)\Big]^2 + \operatorname{Var}(\varepsilon)$$
+> **A Armadilha Fundamental do Machine Learning:**  
+> **Nunca julgue um modelo pelo seu erro de treinamento ($\operatorname{MSE}_{\text{treino}}$)!**  
+> Um aluno que decora as respostas da lista de exercícios tira $10$ na lista de casa (treino), mas pode tirar $2$ na prova com questões inéditas (teste). Da mesma forma, se usarmos uma curva extremamente flexível (como um polinômio de grau $13$ passando por todos os pontos na Figura 1a), o $\operatorname{MSE}_{\text{treino}}$ cai para **zero**, mas nas regiões entre os pontos a curva oscila violentamente para perseguir o ruído $\varepsilon_i$. Esse fenômeno chama-se **Sobreajuste (*Overfitting*)**.
+
+O que realmente importa é o **MSE de Teste** em novas observações $(x_0, y_0)$ que **não foram usadas para treinar o modelo**:
+$$\operatorname{MSE}_{\text{teste}} = \operatorname{Média}\!\left[\big(y_0 - \hat{f}(x_0)\big)^2\right]$$
+
+> **Teorema 0.2 (A Decomposição Viés-Variância do Erro de Teste — Equação 2.7 do ISLP):**  
+> *Para qualquer ponto de teste $x_0$, o MSE de teste esperado (caso pudéssemos repetir o treinamento em diversos bancos de dados sorteados da mesma população) é sempre a soma de três quantidades positivas:*
+> $$\mathbb{E}\!\left[\big(y_0 - \hat{f}(x_0)\big)^2\right] = \underbrace{\operatorname{Var}\!\big(\hat{f}(x_0)\big)}_{\text{Variância}} + \underbrace{\left[\operatorname{Viés}\!\big(\hat{f}(x_0)\big)\right]^2}_{\text{Viés ao Quadrado}} + \underbrace{\operatorname{Var}(\varepsilon)}_{\text{Erro Irredutível}}$$
 > *onde:*
-> - **$\operatorname{Var}(\hat{f}(x_0)) = \mathbb{E}\big[\hat{f}(x_0) - \mathbb{E}\hat{f}(x_0)\big]^2$ (Variância):** *mede o quanto a estimativa $\hat{f}(x_0)$ mudaria se a estimássemos usando um conjunto de treinamento diferente. Métodos muito flexíveis seguem de perto os dados de treino e possuem alta variância;*
-> - **$\operatorname{Viés}(\hat{f}(x_0)) = \mathbb{E}\big[\hat{f}(x_0)\big] - f(x_0)$ (Viés):** *refere-se ao erro introduzido ao aproximar um problema real complexo por um modelo mais simples. Métodos pouco flexíveis possuem alto viés.*
+> - **Viés ($\operatorname{Viés}(\hat{f}(x_0)) = \mathbb{E}[\hat{f}(x_0)] - f(x_0)$):** *É o erro de aproximação causado por usar um modelo simples demais para um problema complexo (ex.: ajustar uma reta a uma curva senoidal). **Alto viés = Subajuste (Underfitting)**.*
+> - **Variância ($\operatorname{Var}(\hat{f}(x_0)) = \mathbb{E}\big[(\hat{f}(x_0) - \mathbb{E}[\hat{f}(x_0)])^2\big]$):** *Mede o quanto a curva $\hat{f}$ muda drasticamente se trocarmos alguns pontos da amostra de treino. Modelos excessivamente flexíveis mudam totalmente de formato a cada nova amostra. **Alta variância = Sobreajuste (Overfitting)**.*
 
-*Demonstração:* Escrevendo $y_0 - \hat{f}(x_0) = \big(f(x_0) - \hat{f}(x_0)\big) + \varepsilon_0$ e usando que $\varepsilon_0$ é independente de $\hat{f}(x_0)$ com $\mathbb{E}[\varepsilon_0] = 0$ e $\mathbb{E}[\varepsilon_0^2] = \operatorname{Var}(\varepsilon)$:
-$$\mathbb{E}\big(y_0 - \hat{f}(x_0)\big)^2 = \mathbb{E}\big[f(x_0) - \hat{f}(x_0)\big]^2 + 2\,\mathbb{E}\big[f(x_0) - \hat{f}(x_0)\big]\underbrace{\mathbb{E}[\varepsilon_0]}_{=0} + \mathbb{E}[\varepsilon_0^2].$$
-Na primeira parcela, somando e subtraindo $\mu = \mathbb{E}[\hat{f}(x_0)]$:
-$$\mathbb{E}\big[(f(x_0) - \mu) - (\hat{f}(x_0) - \mu)\big]^2 = (f(x_0) - \mu)^2 - 2(f(x_0) - \mu)\underbrace{\mathbb{E}[\hat{f}(x_0) - \mu]}_{=0} + \mathbb{E}\big[(\hat{f}(x_0) - \mu)^2\big] = \big[\operatorname{Viés}(\hat{f}(x_0))\big]^2 + \operatorname{Var}(\hat{f}(x_0)). \quad \blacksquare$$
-
-#### 2. Classificação: Classificador de Bayes e K-Vizinhos Mais Próximos (KNN, Seção 2.2.3)
-Quando $y_i$ é qualitativa (assumindo valores num conjunto discreto de classes $\mathcal{C} = \{1, 2, \dots, K\}$), quantifica-se a acurácia pela **Taxa de Erro de Treinamento**:
-$$\text{Erro}_{\text{treino}} = \frac{1}{n}\sum_{i=1}^{n} I(y_i \neq \hat{y}_i), \qquad \text{onde } I(y_i \neq \hat{y}_i) = \begin{cases} 1, & \text{se } y_i \neq \hat{y}_i \\ 0, & \text{se } y_i = \hat{y}_i \end{cases}$$
-sendo a **Taxa de Erro de Teste** sobre novas observações $(x_0, y_0)$ dada por $\operatorname{Ave}\big(I(y_0 \neq \hat{y}_0)\big)$.
-
-> **Teorema 0.2 (O Classificador de Bayes e a Taxa de Erro de Bayes — Equações 2.10 e 2.11, Seção 2.2.3):**  
-> *A taxa de erro de teste esperada $\mathbb{E}\big[I(y_0 \neq \hat{y}_0)\big]$ é minimizada, em média, pelo classificador que atribui cada observação $x_0$ à classe $j$ para a qual a probabilidade condicional é máxima:*
-> $$\hat{y}_0 = \arg\max_{j \in \{1, \dots, K\}} \Pr(Y = j \mid X = x_0)$$
-> *No caso binário ($K = 2$), o **Classificador de Bayes** prediz a classe $1$ se $\Pr(Y = 1 \mid X = x_0) > 0{,}5$, e a classe $2$ caso contrário; o lugar geométrico dos pontos onde $\Pr(Y = 1 \mid X = x_0) = 0{,}5$ denomina-se **Fronteira de Decisão de Bayes**. A menor taxa de erro de teste possível, análoga ao erro irredutível $\operatorname{Var}(\varepsilon)$, é a **Taxa de Erro de Bayes**:*
-> $$\text{Erro}_{\text{Bayes}} = 1 - \mathbb{E}\left(\max_{j} \Pr(Y = j \mid X)\right)$$
-
-Como na prática a distribuição condicional verdadeira de $Y$ dado $X$ é desconhecida, o classificador de **K-Vizinhos Mais Próximos (*K-Nearest Neighbors* — KNN)** dado um inteiro positivo $K$ e uma observação de teste $x_0$:
-1. Identifica o conjunto $\mathcal{N}_0$ dos $K$ pontos dos dados de treinamento mais próximos de $x_0$ (usualmente segundo a distância euclidiana $\|x_i - x_0\|_2 = \sqrt{\sum_{j=1}^p (x_{ij} - x_{0j})^2}$);
-2. Estima a probabilidade condicional da classe $j$ como a fração de pontos em $\mathcal{N}_0$ cujas respostas iguais a $j$:
-   $$\widehat{\Pr}(Y = j \mid X = x_0) = \frac{1}{K}\sum_{i \in \mathcal{N}_0} I(y_i = j)$$
-3. Classifica $x_0$ na classe com a maior probabilidade estimada (regra da maioria).
-
-A flexibilidade do KNN é governada por **$1/K$** (ou $N/K$): para **$K = 1$**, a fronteira de decisão é excessivamente recortada (**baixo viés, mas altíssima variância**, com taxa de erro de treino exatamente igual a $0$); para **$K$ grande**, a fronteira torna-se quase linear (**baixa variância, mas alto viés**).
-
-![Figura 1: Trade-off Viés-Variância e Fronteiras de Decisão do KNN](./figuras/fig01_bias_variance_knn_flexibilidade.svg)
-*Figura 1 — (a) Decomposição do MSE de teste em $\text{Viés}^2$, Variância e Erro Irredutível $\sigma^2$, comparada ao MSE de treinamento (Seção 2.2.2). (b) Fronteira de decisão ótima de Bayes comparada ao classificador KNN com $K=1$ (alta variância) e $K=15$ (alto viés) (Seção 2.2.3).*
-
-> **[Complemento — Raschka et al., *ML with PyTorch and Scikit-Learn*, Cap. 1 e Cap. 4, Seções 4.1–4.4]:**  
-> Além do aprendizado supervisionado e não supervisionado, Raschka et al. destacam no Capítulo 1 o terceiro grande pilar: o **Aprendizado por Reforço (*Reinforcement Learning*)**, no qual um agente interage com um ambiente buscando maximizar um sinal de recompensa acumulado (detalhado na Seção 9.4 deste paper).  
-> No **Capítulo 4**, Raschka sistematiza o pré-processamento indispensável antes do ajuste de modelos sensíveis à escala (como KNN, SVM, Regressão Regularizada, PCA e Redes Neurais):
-> 1. **Tratamento de Dados Ausentes (`NaN`):** remoção de linhas/colunas (`dropna`) ou imputação pela média, mediana ou moda (`SimpleImputer`), ou ainda por KNN/SVD;
-> 2. **Codificação de Variáveis Categóricas:** mapeamento explícito de variáveis *ordinais* mantendo a ordem e **One-Hot Encoding** de variáveis *nominais*, descartando uma coluna de referência (`drop_first=True`) para evitar colinearidade perfeita com o intercepto;
-> 3. **Escalonamento de Atributos (*Feature Scaling*):**
->    - **Normalização Min-Max ($\in [0, 1]$):** $\quad x_{\text{norm}}^{(i)} = \dfrac{x^{(i)} - x_{\min}}{x_{\max} - x_{\min}}$;
->    - **Padronização (*Standardization* / Z-score):** $\quad x_{\text{std}}^{(i)} = \dfrac{x^{(i)} - \mu_x}{\sigma_x}$ (média $0$ e desvio-padrão $1$, preservando informações sobre *outliers* e mantendo os pesos bem-condicionados para o Gradiente Descendente). **Regra Áurea contra *Data Leakage*:** os parâmetros $\mu_x$ e $\sigma_x$ devem ser estimados **exclusivamente no conjunto de treinamento** (`scaler.fit(X_train)`) e aplicados para transformar tanto o treino quanto o teste (`scaler.transform(X_test)`).
-
-#### Exercícios de Fixação (Capítulos 1 e 2)
-1. *(ISLP, Seção 2.4, Ex. 1)* Indique se um método estatístico altamente flexível tende a superar ou ser superado por um método inflexível quando: (a) $n$ é extremamente grande e $p$ é pequeno; (b) $p$ é extremamente grande e $n$ é pequeno; (c) a relação verdadeira é altamente não linear; (d) a variância do erro $\sigma^2 = \operatorname{Var}(\varepsilon)$ é extremamente alta. *(Gabarito: (a) Flexível é melhor; (b) Inflexível é melhor, pois o flexível sofrerá overfitting severo; (c) Flexível é melhor pelo menor viés; (d) Inflexível é melhor para não ajustar o forte ruído $\varepsilon$).*
-2. *(ISLP, Seção 2.4, Ex. 7)* Dados 6 pontos em $\mathbb{R}^3$: $x_1=(0,3,0)$ [Red], $x_2=(2,0,0)$ [Red], $x_3=(0,1,3)$ [Red], $x_4=(0,1,2)$ [Green], $x_5=(-1,0,1)$ [Green] e $x_6=(1,1,1)$ [Red], classifique $x_0 = (0,0,0)$ por KNN com $K=1$ e $K=3$. *(Gabarito: Distâncias euclidianas a $x_0$: $d_1=3$, $d_2=2$, $d_3=\sqrt{10}$, $d_4=\sqrt{5}$, $d_5=\sqrt{2}$, $d_6=\sqrt{3}$. Para $K=1$, o mais próximo é $x_5$ ($\sqrt{2}$), logo **Green**; para $K=3$, os vizinhos são $\{x_5, x_6, x_2\}$ com 2 Red e 1 Green, logo **Red**).*
+Como mostra a **Figura 1b**, quando aumentamos a flexibilidade do modelo, o **Viés$^2$ cai** e a **Variância sobe**. O ponto ótimo de Machine Learning está sempre no fundo do **"U"** da curva de MSE de teste, onde Viés e Variância se equilibram!
 
 ---
 
-## 1. Regressão Linear (Capítulo 3)
+### 0.5 Classificação: O Classificador Ideal de Bayes e o Algoritmo KNN Passo a Passo (Seção 2.2.3)
 
-### 1.1 Regressão Linear Simples: Estimadores de Mínimos Quadrados, Erros Padrão e $R^2$ (Seção 3.1)
-Na Regressão Linear Simples, modelamos uma resposta quantitativa $Y$ com base num único preditor $X$ via $Y \approx \beta_0 + \beta_1 X$. Dadas as $n$ observações de treinamento $(x_1, y_1), \dots, (x_n, y_n)$, seja $\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_i$ a predição para a $i$-ésima observação e seja $e_i = y_i - \hat{y}_i$ o **$i$-ésimo resíduo**. O critério de **Mínimos Quadrados Ordinários (MQO / OLS)** escolhe $\hat{\beta}_0$ e $\hat{\beta}_1$ de modo a minimizar a **Soma dos Quadrados dos Resíduos (*Residual Sum of Squares* — RSS)**:
-$$\operatorname{RSS} = e_1^2 + e_2^2 + \dots + e_n^2 = \sum_{i=1}^{n} (y_i - \hat{\beta}_0 - \hat{\beta}_1 x_i)^2$$
+Quando a resposta $y_i$ é uma **categoria** (ex.: $Y \in \{\text{Azul}, \text{Vermelho}\}$), não faz sentido subtrair $y_i - \hat{y}_i$. Em vez disso, medimos a **Taxa de Erro (*Error Rate*)**, que é simplesmente a fração (porcentagem) de exemplos em que o modelo previu a classe errada:
+$$\text{Taxa de Erro}_{\text{treino}} = \frac{1}{n}\sum_{i=1}^{n} \mathbb{I}(y_i \neq \hat{y}_i), \qquad \text{onde } \mathbb{I}(y_i \neq \hat{y}_i) = \begin{cases} 1, & \text{se } y_i \neq \hat{y}_i \text{ (errou)} \\ 0, & \text{se } y_i = \hat{y}_i \text{ (acertou)} \end{cases}$$
+O símbolo $\mathbb{I}(\text{condição})$ chama-se **função indicadora**: vale $1$ quando a condição dentro dos parênteses é verdadeira e $0$ quando é falsa.
 
-> **Teorema 1.1 (Estimadores de Mínimos Quadrados — Equações 3.4, Seção 3.1.1):**  
-> *Derivando $\operatorname{RSS}(\beta_0, \beta_1)$ parcialmente em relação a $\beta_0$ e $\beta_1$ e igualando a zero, obtêm-se os únicos minimizadores (desde que os $x_i$ não sejam todos idênticos):*
+#### 1. O Classificador de Bayes (O Padrão-Ouro Teórico)
+Qual seria o melhor classificador possível se conhecêssemos exatamente as probabilidades da natureza? Seria o **Classificador de Bayes** (Equação 2.10 do ISLP): dado um novo ponto $x_0$, ele calcula a probabilidade condicional de cada classe $j \in \{1, \dots, K\}$ dado $X = x_0$, denotada por $\Pr(Y = j \mid X = x_0)$, e escolhe a classe mais provável:
+$$\hat{y}_0 = \arg\max_{j \in \{1, \dots, K\}} \Pr(Y = j \mid X = x_0)$$
+*(Nota: o símbolo $\arg\max_j$ significa "o valor do índice $j$ que torna a expressão máxima").* No caso de $2$ classes ($0$ e $1$), basta prever a classe $1$ se $\Pr(Y = 1 \mid X = x_0) > 0{,}50$ ($50\%$), e a linha onde $\Pr(Y = 1 \mid X = x_0) = 0{,}50$ é a **Fronteira de Decisão de Bayes** (linha pontilhada preta na Figura 1c). A menor taxa de erro possível na natureza é a **Taxa de Erro de Bayes**: $1 - \mathbb{E}\!\left[\max_j \Pr(Y = j \mid X)\right]$.
+
+#### 2. O Algoritmo KNN (*K-Nearest Neighbors* / $K$-Vizinhos Mais Próximos)
+Na vida real, nós não sabemos a fórmula verdadeira de $\Pr(Y = j \mid X = x_0)$. Como estimá-la do jeito mais intuitivo possível? Olhando para os **$K$ exemplos de treinamento mais parecidos (mais próximos)** com o novo ponto $x_0$!
+
+Dado um número inteiro $K \ge 1$ escolhido por você e um novo ponto $x_0 = (x_{01}, \dots, x_{0p})^T$:
+1. **Passo 1 (Calcular Distâncias):** Calcule a distância euclidiana (Teorema de Pitágoras em $p$ dimensões) de $x_0$ até cada ponto $x_i$ do banco de treinamento:
+   $$d(x_i, x_0) = \|x_i - x_0\|_2 = \sqrt{(x_{i1} - x_{01})^2 + (x_{i2} - x_{02})^2 + \dots + (x_{ip} - x_{0p})^2}$$
+2. **Passo 2 (Identificar os $K$ Vizinhos):** Ordene as distâncias da menor para a maior e selecione o conjunto $\mathcal{N}_0$ formado pelos **$K$ pontos de treino com as menores distâncias** até $x_0$.
+3. **Passo 3 (Votação / Média):**
+   - **Se for Classificação:** Estime a probabilidade da classe $j$ pela fração dos $K$ vizinhos que pertencem à classe $j$:
+     $$\widehat{\Pr}(Y = j \mid X = x_0) = \frac{1}{K}\sum_{i \in \mathcal{N}_0} \mathbb{I}(y_i = j)$$
+     e classifique $x_0$ na classe majoritária entre os $K$ vizinhos!
+   - **Se for Regressão (Seção 3.5 do ISLP):** Preveja a média aritmética dos valores $y_i$ dos $K$ vizinhos: $\hat{f}(x_0) = \frac{1}{K}\sum_{i \in \mathcal{N}_0} y_i$.
+
+> **Como escolher $K$ no KNN? (O Papel de $1/K$ na Flexibilidade):**  
+> - **$K = 1$ (Máxima Flexibilidade $\implies$ Baixo Viés, Altíssima Variância):** O algoritmo olha apenas para o único vizinho mais próximo. No treino, a taxa de erro é sempre $0\%$ (pois o vizinho mais próximo de cada ponto de treino é ele mesmo!), mas a fronteira de decisão fica cheia de "ilhas" recortadas ao redor de ruídos (curva laranja na Figura 1c — *overfitting*).  
+> - **$K$ Grande, ex.: $K = 15$ ou $50$ (Baixa Flexibilidade $\implies$ Baixa Variância, Alto Viés):** Fazemos a média sobre muitos pontos, alisando a fronteira de decisão (curva verde tracejada na Figura 1c). Se $K$ for exageradamente grande, a fronteira fica rígida demais (*underfitting*).
+
+---
+
+### 0.6 Exemplo Numérico Resolvido Passo a Passo (KNN Feito à Mão)
+
+Vamos resolver juntos um exemplo concreto (baseado no Exercício 2.4.7 do ISLP): temos uma tabela de treino com $n = 4$ pacientes, $p = 2$ exames ($X_1$ e $X_2$) e o diagnóstico $Y \in \{\text{Saudável}, \text{Doente}\}$:
+- Paciente 1: $x_1 = (1, 2)$, $y_1 = \text{Saudável}$
+- Paciente 2: $x_2 = (2, 1)$, $y_2 = \text{Saudável}$
+- Paciente 3: $x_3 = (0, 1)$, $y_3 = \text{Doente}$
+- Paciente 4: $x_4 = (-1, 0)$, $y_4 = \text{Doente}$
+
+Chega um **novo paciente $x_0 = (0, 0)$**. Qual é o diagnóstico previsto pelo KNN com **$K = 1$** e com **$K = 3$**?
+1. **Calculamos a distância euclidiana de cada paciente até $x_0 = (0, 0)$:**
+   - $d(x_1, x_0) = \sqrt{(1 - 0)^2 + (2 - 0)^2} = \sqrt{1 + 4} = \sqrt{5} \approx \mathbf{2{,}24}$ (Saudável)
+   - $d(x_2, x_0) = \sqrt{(2 - 0)^2 + (1 - 0)^2} = \sqrt{4 + 1} = \sqrt{5} \approx \mathbf{2{,}24}$ (Saudável)
+   - $d(x_3, x_0) = \sqrt{(0 - 0)^2 + (1 - 0)^2} = \sqrt{0 + 1} = \mathbf{1{,}00}$ (Doente)
+   - $d(x_4, x_0) = \sqrt{(-1 - 0)^2 + (0 - 0)^2} = \sqrt{1 + 0} = \mathbf{1{,}00}$ (Doente — empate na menor distância)
+   *(Se o Paciente 4 estivesse em $(-1, 1)$, sua distância seria $\sqrt{2} \approx 1{,}41$).* Vamos considerar $x_4 = (-1, 1)$ para distâncias distintas: $d_3 = 1{,}00$, $d_4 = 1{,}41$, $d_1 = 2{,}24$, $d_2 = 2{,}24$.
+2. **Para $K = 1$:** O único vizinho mais próximo é o Paciente 3 ($d_3 = 1{,}00$, Doente). Logo, $\hat{Y} = \mathbf{\text{Doente}}$ (probabilidade estimada $1/1 = 100\%$).
+3. **Para $K = 3$:** Os 3 vizinhos mais próximos são os Pacientes $\{3, 4, 1\}$, cujas classes são $\{\text{Doente}, \text{Doente}, \text{Saudável}\}$. Logo, $\widehat{\Pr}(\text{Doente} \mid x_0) = \frac{2}{3} \approx 66{,}7\%$ e $\widehat{\Pr}(\text{Saudável} \mid x_0) = \frac{1}{3} \approx 33{,}3\% \implies \hat{Y} = \mathbf{\text{Doente}}$.
+
+![Figura 1: O que é ML, Trade-off Viés-Variância e KNN](./figuras/fig01_o_que_e_ml_bias_variance_knn.svg)
+*Figura 1 — (a) Ajuste polinomial de graus 1 (subajuste/alto viés), 4 (equilíbrio ideal) e 13 (sobreajuste/alta variância) sobre dados gerados por $Y = f(X) + \varepsilon$. (b) Decomposição do MSE de teste em $\text{Viés}^2$, Variância e Erro Irredutível $\sigma_\varepsilon^2$ (Equação 2.7 do ISLP). (c) Classificador KNN com $K=1$ versus $K=15$ comparado à Fronteira de Bayes (Seção 2.2.3 do ISLP).*
+
+#### Exercícios de Fixação (Seção 0)
+1. *(ISLP, Seção 2.4, Ex. 1)* Um modelo altamente flexível será melhor ou pior que um modelo inflexível quando: (a) a amostra $n$ é enorme e $p$ é pequeno? (b) $p$ é enorme e $n$ é pequeno? (c) a variância do ruído $\sigma_\varepsilon^2$ é muito alta? *(Gabarito: (a) Melhor, pois o grande $n$ controla a variância e aproveita o baixo viés; (b) Pior, pois com poucos dados e muitas variáveis o modelo flexível decora o ruído; (c) Pior, pois perseguirá o ruído intenso).*
+2. *(ISLP, Seção 2.4, Ex. 2)* Classifique cada problema como **Regressão ou Classificação** e como **Inferência ou Predição**: (a) Relacionar o salário de 500 CEOs com lucro da empresa, número de funcionários e setor para entender quais fatores mais afetam a remuneração; (b) Lançar um novo produto e prever se ele será um *Sucesso* ou *Fracasso* com base em 20 produtos similares. *(Gabarito: (a) Regressão e Inferência; (b) Classificação e Predição).*
+
+---
+
+## 1. Preparando os Dados para Machine Learning (Raschka Cap. 4 e Cap. 6)
+
+> **[Complemento — Raschka et al., *ML with PyTorch and Scikit-Learn*, Cap. 4, Seções 4.1–4.4 e Cap. 6]:**  
+> Antes de aplicar KNN, Regressão Linear, Regressão Logística, SVM ou PCA em problemas reais, os dados brutos quase sempre precisam passar por **três etapas obrigatórias de pré-processamento**: tratamento de dados ausentes, codificação de textos/categorias em números e escalonamento de variáveis.
+
+### 1.1 Tratamento de Dados Faltantes (`NaN`) e Variáveis Categóricas (Seções 4.1 e 4.2 de Raschka)
+
+1. **Dados Faltantes (*Missing Values*):** Em planilhas reais, é comum que algumas células estejam em branco (`NaN` ou `NULL`). Se simplesmente apagarmos todas as linhas com algum dado faltante, podemos perder grande parte da amostra; se apagarmos colunas inteiras, podemos perder variáveis importantes. A solução padrão é a **Imputação (*Imputation*)**: substituir o valor ausente na coluna $j$ pela **média** (ou pela **mediana**, se houver valores extremos) dos valores observados naquela coluna (no conjunto de treinamento!), ou pela **moda** (valor mais frequente) se a coluna for categórica.
+2. **Variáveis Categóricas Ordinais vs. Nominais e o *One-Hot Encoding*:**  
+   Algoritmos matemáticos operam sobre números, não sobre palavras como `"P"`, `"M"`, `"G"` ou `"Azul"`, `"Verde"`, `"Vermelho"`.
+   - **Variáveis Ordinais (têm ordem natural):** Como tamanho de camiseta $P < M < G$, convertemos mantendo a ordem: $P = 1, M = 2, G = 3$.
+   - **Variáveis Nominais (NÃO têm ordem natural):** Como `Cor` $\in \{\text{Azul}, \text{Verde}, \text{Vermelho}\}$. Se codificássemos $\text{Azul}=1, \text{Verde}=2, \text{Vermelho}=3$, o algoritmo acharia erroneamente que `"Vermelho"` é maior que `"Verde"` e que a média entre Azul e Vermelho é Verde!  
+     A solução correta é criar **Variáveis Indicadoras (*Dummy Variables* / *One-Hot Encoding*, ISLP Seção 3.3.1)**: criamos colunas binárias $\{0, 1\}$. Para uma variável com $L$ categorias, usamos **$L - 1$ colunas binárias** (descartando $1$ categoria como referência/*baseline* para evitar redundância matemática perfeita com o intercepto $\beta_0$, pois se não é Azul nem Verde, obrigatoriamente é Vermelho):
+     $$\text{Azul} \mapsto (1, 0), \qquad \text{Verde} \mapsto (0, 1), \qquad \text{Vermelho (referência)} \mapsto (0, 0).$$
+
+---
+
+### 1.2 Escalonamento de Atributos (*Feature Scaling*): Normalização Min-Max vs. Padronização Z-Score (Seção 4.3 de Raschka)
+
+Por que precisamos colocar todas as variáveis na mesma escala?  
+Pense no algoritmo **KNN** tentando prever se uma pessoa vai comprar um carro usando duas variáveis: $X_1 = \text{Idade (em anos, de } 20 \text{ a } 70)$ e $X_2 = \text{Salário Anual (em reais, de } 30.000 \text{ a } 200.000)$. Quando calculamos a distância euclidiana:
+$$d^2 = (\Delta \text{Idade})^2 + (\Delta \text{Salário})^2 = (50 - 30)^2 + (80.000 - 50.000)^2 = 400 + 900.000.000,$$
+a diferença de salário ($900$ milhões!) **engole completamente** a diferença de idade ($400$). O KNN vai ignorar a idade apenas porque o salário foi medido em reais e não em centenas de milhares de reais! O mesmo problema afeta o **Gradiente Descendente**, a **Regressão Ridge/Lasso**, as **SVMs** e a **PCA**.
+
+Existem duas técnicas clássicas para colocar todas as colunas $j = 1, \dots, p$ em escalas comparáveis:
+
+1. **Normalização Min-Max (reescala os dados para o intervalo fechado $[0, 1]$):**
+   $$x_{ij}^{\text{norm}} = \frac{x_{ij} - x_{\min, j}}{x_{\max, j} - x_{\min, j}}$$
+   - O menor valor da coluna vira $0$ e o maior vira $1$.
+   - **Ponto fraco grave:** Se houver um único valor discrepante (*outlier*) muito alto (como um milionário na amostra), $x_{\max, j}$ fica gigante e **esmaga todas as pessoas normais num cantinho minúsculo perto de $0$** (Figura 2a)!
+2. **Padronização (*Standardization* / *Z-Score* — o método padrão em Machine Learning):**  
+   Subtraímos a média amostral $\bar{x}_j = \frac{1}{n}\sum_{i=1}^n x_{ij}$ da coluna e dividimos pelo seu desvio-padrão $s_j = \sqrt{\frac{1}{n-1}\sum_{i=1}^n (x_{ij} - \bar{x}_j)^2}$:
+   $$x_{ij}^{\text{std}} = \frac{x_{ij} - \bar{x}_j}{s_j}$$
+   - **O que significa $x_{ij}^{\text{std}}$?** Indica **quantos desvios-padrão** a observação $i$ está acima ($+$) ou abaixo ($-$) da média da coluna $j$.
+   - A nova coluna padronizada passa a ter **média exatamente igual a $0$** e **desvio-padrão exatamente igual a $1$**. Além de não esmagar os dados normais na presença de *outliers*, centrar os dados em zero faz com que algoritmos de otimização (como Gradiente Descendente) caminhem em linha reta para o mínimo, sem zigue-zaguear (Figura 2b).
+
+---
+
+### 1.3 A Regra de Ouro contra Vazamento de Dados (*Data Leakage*) e Exemplo Numérico
+
+> **Regra de Ouro (Raschka Cap. 4 e Cap. 6):**  
+> Ao dividir seus dados em **Conjunto de Treino ($\mathcal{T}$)** e **Conjunto de Teste ($\mathcal{V}$)**, a média $\bar{x}_{\mathcal{T}}$ e o desvio-padrão $s_{\mathcal{T}}$ (assim como qualquer imputação de dados faltantes ou seleção de variáveis) devem ser calculados **EXCLUSIVAMENTE usando os dados de treino $\mathcal{T}$**!  
+> Quando for avaliar o modelo nos dados de teste $\mathcal{V}$, você deve padronizar o teste usando **a média e o desvio-padrão que vieram do treino**:
+> $$x_{\text{treino}}^{\text{std}} = \frac{x_{\text{treino}} - \bar{x}_{\mathcal{T}}}{s_{\mathcal{T}}}, \qquad x_{\text{teste}}^{\text{std}} = \frac{x_{\text{teste}} - \bar{x}_{\mathcal{T}}}{s_{\mathcal{T}}}$$
+> Usar dados do teste para calcular $\bar{x}$ ou $s$ antes de separar os conjuntos chama-se **Vazamento de Dados (*Data Leakage*)**, pois faz informações do futuro "vazarem" para o treinamento e invalida a avaliação.
+
+#### Exemplo Numérico Feito à Mão
+Suponha que no conjunto de **treino** temos $n = 3$ salários (em mil R\$): $x_{\text{treino}} = \{10, 20, 30\}$, e no conjunto de **teste** chega um novo cliente com salário $x_{\text{teste}} = 40$. Como padronizar ambos?
+1. Calculamos a média e o desvio-padrão **apenas no treino**:
+   $$\bar{x}_{\mathcal{T}} = \frac{10 + 20 + 30}{3} = 20, \qquad s_{\mathcal{T}} = \sqrt{\frac{(10-20)^2 + (20-20)^2 + (30-20)^2}{3 - 1}} = \sqrt{\frac{100 + 0 + 100}{2}} = \sqrt{100} = 10.$$
+2. Padronizamos o **treino**:
+   $$x_{\text{treino}}^{\text{std}} = \left\{\frac{10 - 20}{10},\; \frac{20 - 20}{10},\; \frac{30 - 20}{10}\right\} = \mathbf{\{-1{,}0;\; 0{,}0;\; +1{,}0\}}.$$
+3. Padronizamos o novo ponto de **teste** $x_{\text{teste}} = 40$ usando $\bar{x}_{\mathcal{T}} = 20$ e $s_{\mathcal{T}} = 10$:
+   $$x_{\text{teste}}^{\text{std}} = \frac{40 - 20}{10} = \mathbf{+2{,}0} \quad (\text{isto é, } 2 \text{ desvios-padrão acima da média do treino}).$$
+
+![Figura 2: Pré-processamento, Escalonamento e Prevenção de Data Leakage](./figuras/fig02_preprocessamento_escala_pipeline.svg)
+*Figura 2 — (a) Comparação entre Normalização Min-Max e Padronização Z-Score na presença de um outlier ($x_5 = 250$). (b) Trajetória do Gradiente Descendente sem padronização (elipses alongadas e zigue-zague) versus com padronização (círculos concêntricos e convergência direta). (c) Fluxo correto de pré-processamento sem Data Leakage (Raschka Cap. 4 e Cap. 6).*
+
+#### Exercícios de Fixação (Seção 1)
+1. *(Raschka, Cap. 4)* Quais algoritmos abaixo são **insensíveis** à escala das variáveis (isto é, funcionam igual com metros ou milímetros sem precisar padronizar): KNN, Árvores de Decisão, Regressão Ridge ou PCA? *(Gabarito: **Árvores de Decisão** e ensembles de árvores como Random Forest, pois um corte do tipo $X_1 < 5\text{ m}$ é idêntico a $X_1 < 5000\text{ mm}$; já KNN, Ridge, Lasso, SVM e PCA dependem crucialmente da padronização).*
+
+---
+
+## 2. Regressão Linear Simples e Múltipla (ISLP Cap. 3; Raschka Cap. 9)
+
+### 2.1 Regressão Linear Simples: A Reta de Mínimos Quadrados Passo a Passo (Seção 3.1)
+
+Comecemos pelo modelo supervisionado mais fundamental da história da ciência: prever uma resposta numérica $Y$ (ex.: `Vendas` de um produto) usando uma única variável preditora $X$ (ex.: `Investimento em TV`) por meio de uma **equação de reta**:
+$$Y \approx \beta_0 + \beta_1 X$$
+- **O que significam $\beta_0$ e $\beta_1$?**
+  - **$\beta_0$ (Intercepto / Coeficiente Linear):** É o valor esperado de $Y$ quando $X = 0$ (as vendas básicas quando o gasto com TV é zero).
+  - **$\beta_1$ (Inclinação / Coeficiente Angular / Peso):** É a **variação média em $Y$ quando aumentamos $X$ em exatamente $1$ unidade**. Se $\beta_1 = 0{,}05$, cada $1$ mil reais a mais em TV gera, em média, $0{,}05$ mil unidades a mais de vendas.
+
+Como não conhecemos os verdadeiros $\beta_0$ e $\beta_1$ da natureza, usamos as $n$ observações da nossa amostra $\{(x_1, y_1), \dots, (x_n, y_n)\}$ para encontrar estimativas $\hat{\beta}_0$ e $\hat{\beta}_1$, traçando a reta ajustada:
+$$\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_i$$
+Para cada ponto $i$, a distância vertical entre o ponto real $y_i$ e a nossa reta $\hat{y}_i$ é o **resíduo** $e_i = y_i - \hat{y}_i$ (segmentos vermelhos tracejados na Figura 3a). Qual é a "melhor" reta possível? O método dos **Mínimos Quadrados Ordinários (MQO / *Ordinary Least Squares* — OLS)** escolhe $\hat{\beta}_0$ e $\hat{\beta}_1$ que tornam a **Soma dos Quadrados dos Resíduos (*Residual Sum of Squares* — RSS)** a menor possível:
+$$\operatorname{RSS}(\beta_0, \beta_1) = \sum_{i=1}^{n} e_i^2 = \sum_{i=1}^{n} \big(y_i - \beta_0 - \beta_1 x_i\big)^2$$
+
+> **Teorema 2.1 (Fórmulas dos Estimadores de Mínimos Quadrados — Equação 3.4 do ISLP):**  
+> *Derivando $\operatorname{RSS}(\beta_0, \beta_1)$ em relação a $\beta_0$ e $\beta_1$ e igualando ambas as derivadas a zero (como fizemos no Cálculo 1!), encontramos a única solução ótima:*
 > $$\hat{\beta}_1 = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^{n} (x_i - \bar{x})^2}, \qquad \hat{\beta}_0 = \bar{y} - \hat{\beta}_1 \bar{x}$$
-> *onde $\bar{y} = \frac{1}{n}\sum_{i=1}^n y_i$ e $\bar{x} = \frac{1}{n}\sum_{i=1}^n x_i$ são as médias amostrais. Em particular, **a reta de mínimos quadrados sempre passa pelo centroide amostral $(\bar{x}, \bar{y})$** (pois $\hat{\beta}_0 + \hat{\beta}_1\bar{x} = \bar{y}$).*
-
-#### 1. Precisão dos Coeficientes, Intervalos de Confiança e Teste $t$ (Seção 3.1.2)
-Sob o modelo populacional $Y = \beta_0 + \beta_1 X + \varepsilon$, onde os erros $\varepsilon_i$ são descorrelacionados com variância comum $\sigma^2 = \operatorname{Var}(\varepsilon)$, os estimadores $\hat{\beta}_0$ e $\hat{\beta}_1$ são **não viesados** ($\mathbb{E}(\hat{\beta}_0) = \beta_0$ e $\mathbb{E}(\hat{\beta}_1) = \beta_1$) e seus **erros padrão (*Standard Errors* — SE)** ao quadrado valem (Equação 3.8):
-$$\operatorname{SE}(\hat{\beta}_0)^2 = \sigma^2 \left[\frac{1}{n} + \frac{\bar{x}^2}{\sum_{i=1}^{n}(x_i - \bar{x})^2}\right], \qquad \operatorname{SE}(\hat{\beta}_1)^2 = \frac{\sigma^2}{\sum_{i=1}^{n}(x_i - \bar{x})^2}$$
-Note que $\operatorname{SE}(\hat{\beta}_1)$ é menor quando os valores de $x_i$ são mais dispersos em torno de $\bar{x}$, e $\operatorname{SE}(\hat{\beta}_0)$ coincide com $\sigma/\sqrt{n}$ se $\bar{x} = 0$. Na prática, $\sigma$ é estimado pelo **Erro Padrão Residual (*Residual Standard Error* — RSE)**:
-$$\operatorname{RSE} = \hat{\sigma} = \sqrt{\frac{\operatorname{RSS}}{n - 2}}$$
-- **Intervalo de Confiança de $95\%$:** $\hat{\beta}_1 \pm t_{n-2;\, 0,975}\cdot \operatorname{SE}(\hat{\beta}_1) \approx \hat{\beta}_1 \pm 2\cdot \operatorname{SE}(\hat{\beta}_1)$.
-- **Teste de Hipótese para $H_0: \beta_1 = 0$ vs. $H_a: \beta_1 \neq 0$:** Calcula-se a **estatística $t$**:
-  $$t = \frac{\hat{\beta}_1 - 0}{\operatorname{SE}(\hat{\beta}_1)}$$
-  que mede quantos desvios-padrão $\hat{\beta}_1$ está afastado de $0$, seguindo sob $H_0$ (e erros normais) uma distribuição $t$ de Student com $n - 2$ graus de liberdade.
-
-#### 2. Acurácia do Modelo: RSE e a Estatística $R^2$ (Seção 3.1.3)
-Enquanto o $\operatorname{RSE}$ mede a falta de ajuste absoluta na mesma unidade de $Y$, a estatística **$R^2$ (Coeficiente de Determinação)** mede a **proporção da variabilidade total de $Y$ que é explicada pela regressão sobre $X$** (Equação 3.17):
-$$R^2 = \frac{\operatorname{TSS} - \operatorname{RSS}}{\operatorname{TSS}} = 1 - \frac{\operatorname{RSS}}{\operatorname{TSS}}, \qquad \text{onde } \operatorname{TSS} = \sum_{i=1}^{n}(y_i - \bar{y})^2 \quad (\text{Soma Total dos Quadrados})$$
-Valendo sempre $0 \le R^2 \le 1$. Na **Regressão Linear Simples**, tem-se a identidade exata **$R^2 = r^2$**, onde $r = \operatorname{Cor}(X, Y) = \frac{\sum (x_i-\bar{x})(y_i-\bar{y})}{\sqrt{\sum (x_i-\bar{x})^2}\sqrt{\sum (y_i-\bar{y})^2}}$ é a correlação amostral de Pearson.
+> *onde $\bar{x} = \frac{1}{n}\sum_{i=1}^n x_i$ e $\bar{y} = \frac{1}{n}\sum_{i=1}^n y_i$ são as médias de $X$ e $Y$. Em particular, **toda reta de mínimos quadrados passa obrigatoriamente pelo ponto médio $(\bar{x}, \bar{y})$ dos dados** (pois $\hat{\beta}_0 + \hat{\beta}_1\bar{x} = \bar{y}$)!*
 
 ---
 
-### 1.2 Regressão Linear Múltipla, Estatística $F$ e Intervalos de Confiança vs. Predição (Seção 3.2)
-Para $p$ preditores, o modelo $Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \dots + \beta_p X_p + \varepsilon$ interpreta **$\beta_j$** como o efeito médio sobre $Y$ do aumento de uma unidade em $X_j$, **mantendo todos os demais preditores fixos** (*ceteris paribus*). Os coeficientes $\hat{\beta}_0, \dots, \hat{\beta}_p$ minimizam $\operatorname{RSS} = \sum_{i=1}^n (y_i - \hat{\beta}_0 - \sum_{j=1}^p \hat{\beta}_j x_{ij})^2$.
+### 2.2 Exemplo Numérico Completo de Regressão Linear Simples Feito à Mão
 
-> **[Complemento — Forma Matricial e Equações Normais, Raschka Cap. 9 e Álgebra Linear do OLS]:**  
-> Empilhando as observações no vetor $y \in \mathbb{R}^n$ e na matriz de desenho $X \in \mathbb{R}^{n \times (p+1)}$ (com primeira coluna de $1$s), tem-se $\operatorname{RSS}(\beta) = \|y - X\beta\|_2^2 = (y - X\beta)^T(y - X\beta)$. Igualando o gradiente $\nabla_\beta \operatorname{RSS}(\beta) = -2X^T(y - X\beta) = 0$, se $X$ tem posto coluna completo ($\operatorname{posto}(X) = p + 1 \le n$), o estimador de mínimos quadrados e sua matriz de covariância são dados por:
-> $$\hat{\beta} = (X^T X)^{-1} X^T y, \qquad \operatorname{Cov}(\hat{\beta}) = \sigma^2 (X^T X)^{-1}, \qquad \hat{y} = X\hat{\beta} = H y$$
-> onde $H = X(X^T X)^{-1}X^T$ é a **matriz de projeção ortogonal (matriz chapéu / *hat matrix*)**, e $\operatorname{RSE} = \sqrt{\dfrac{\operatorname{RSS}}{n - p - 1}}$.
+Vamos ajustar uma reta de regressão linear do zero com $n = 4$ lojas, onde $X$ é o gasto em anúncios (em mil R\$) e $Y$ é a receita mensal (em mil R\$):
+$$(x_1, y_1) = (1, 2), \quad (x_2, y_2) = (2, 3), \quad (x_3, y_3) = (3, 5), \quad (x_4, y_4) = (4, 6).$$
+1. **Passo 1 (Calcular as médias $\bar{x}$ e $\bar{y}$):**
+   $$\bar{x} = \frac{1 + 2 + 3 + 4}{4} = \mathbf{2{,}5}, \qquad \bar{y} = \frac{2 + 3 + 5 + 6}{4} = \mathbf{4{,}0}.$$
+2. **Passo 2 (Montar a tabelinha de desvios $(x_i - \bar{x})$ e $(y_i - \bar{y})$):**
 
-Na Seção 3.2.2, o ISLP estrutura as cinco questões fundamentais da Regressão Múltipla:
-1. **Ao menos um preditor é útil? (Teste Global $F$):** Para testar a hipótese nula conjunta **$H_0: \beta_1 = \beta_2 = \dots = \beta_p = 0$** contra $H_a:$ *pelo menos um $\beta_j \neq 0$*, utiliza-se a **estatística $F$** (Equação 3.23):
-   $$F = \frac{(\operatorname{TSS} - \operatorname{RSS}) / p}{\operatorname{RSS} / (n - p - 1)} \sim F_{p,\, n-p-1} \quad (\text{sob } H_0)$$
-   Quando $H_0$ é verdadeira, o numerador e o denominador têm esperança igual a $\sigma^2$, logo $F \approx 1$; quando $H_a$ é verdadeira, $\mathbb{E}[(\operatorname{TSS}-\operatorname{RSS})/p] > \sigma^2$, logo $F > 1$.  
-   *(Por que não olhar apenas para os $p$-valores individuais das estatísticas $t$? Porque se $p$ for grande — por exemplo, $p = 100$ — e $H_0$ for verdadeira, esperamos que cerca de $5\%$ dos $p$-valores individuais sejam $< 0{,}05$ puramente por acaso! A estatística $F$ ajusta para o número de preditores $p$ e não sofre desse problema quando $p < n$).*  
-   Para testar se um **subconjunto de $q$ coeficientes** é nulo ($H_0: \beta_{p-q+1} = \dots = \beta_p = 0$), sendo $\operatorname{RSS}_0$ a soma de resíduos do modelo reduzido sem essas $q$ variáveis, usa-se a estatística $F$ parcial (Equação 3.24):
-   $$F = \frac{(\operatorname{RSS}_0 - \operatorname{RSS}) / q}{\operatorname{RSS} / (n - p - 1)} \sim F_{q,\, n-p-1}$$
-   Quando $q = 1$, essa estatística $F$ parcial é exatamente igual ao **quadrado da estatística $t$** daquela variável ($F = t^2$).
-2. **Decidindo sobre Variáveis Importantes:** O $R^2$ sempre aumenta ao adicionar qualquer variável ao modelo (mesmo ruído puro), pois o $\operatorname{RSS}$ de treino nunca cresce. Por isso, a seleção entre $2^p$ submodelos possíveis utiliza critérios que penalizam o tamanho do modelo ($C_p$, AIC, BIC, $R^2$ ajustado e Validação Cruzada — estudados no Capítulo 6) via *Forward*, *Backward* ou *Mixed Selection*.
-3. **Incerteza na Predição: Intervalo de Confiança vs. Intervalo de Predição:** Dado $x_0 = (1, x_{01}, \dots, x_{0p})^T$, a predição pontual $\hat{y}_0 = x_0^T\hat{\beta}$ serve tanto para estimar a **resposta média** $f(x_0) = \mathbb{E}(Y \mid X = x_0)$ quanto para prever uma **resposta individual** $Y_0 = f(x_0) + \varepsilon_0$, mas com incertezas distintas:
-   - **Intervalo de Confiança (para a média $f(x_0)$):** incorpora apenas o **erro redutível** da estimação de $\hat{\beta}$, com variância $\operatorname{Var}(\hat{f}(x_0)) = \sigma^2 x_0^T(X^T X)^{-1}x_0$;
-   - **Intervalo de Predição (para uma nova observação $Y_0 = f(x_0) + \varepsilon_0$):** incorpora tanto o erro redutível quanto o **erro irredutível** $\operatorname{Var}(\varepsilon_0) = \sigma^2$, tendo variância $\sigma^2\big[1 + x_0^T(X^T X)^{-1}x_0\big]$. Logo, **o intervalo de predição é sempre substancialmente mais largo do que o intervalo de confiança**.
+| Loja $i$ | $x_i$ | $y_i$ | $x_i - \bar{x}$ | $y_i - \bar{y}$ | $(x_i - \bar{x})(y_i - \bar{y})$ | $(x_i - \bar{x})^2$ | Predição $\hat{y}_i$ | Resíduo $e_i = y_i - \hat{y}_i$ |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| 1 | $1$ | $2$ | $-1{,}5$ | $-2{,}0$ | $+3{,}0$ | $2{,}25$ | $1{,}9$ | $+0{,}1$ |
+| 2 | $2$ | $3$ | $-0{,}5$ | $-1{,}0$ | $+0{,}5$ | $0{,}25$ | $3{,}3$ | $-0{,}3$ |
+| 3 | $3$ | $5$ | $+0{,}5$ | $+1{,}0$ | $+0{,}5$ | $0{,}25$ | $4{,}7$ | $+0{,}3$ |
+| 4 | $4$ | $6$ | $+1{,}5$ | $+2{,}0$ | $+3{,}0$ | $2{,}25$ | $6{,}1$ | $-0{,}1$ |
+| **Soma** | $10$ | $16$ | $0{,}0$ | $0{,}0$ | **$\mathbf{7{,}0}$** | **$\mathbf{5{,}00}$** | $16{,}0$ | $0{,}0$ |
 
----
-
-### 1.3 Preditores Qualitativos, Interações, Diagnósticos de Problemas e KNN para Regressão (Seções 3.3 e 3.5)
-1. **Preditores Qualitativos (Fatores / Variáveis *Dummy*, Seção 3.3.1):** Um fator com $L$ níveis é representado por **$L - 1$ variáveis indicadoras (*dummy*)** binárias $\{0, 1\}$. O nível sem variável *dummy* associada atua como **linha de base (*baseline*)**, cujo efeito médio é absorvido pelo intercepto $\beta_0$.
-2. **Termos de Interação e Princípio Hierárquico (Seção 3.3.2):** Para relaxar a hipótese aditiva, inclui-se o produto $X_1 X_2$:
-   $$Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_1 X_2 + \varepsilon = \beta_0 + (\beta_1 + \beta_3 X_2)X_1 + \beta_2 X_2 + \varepsilon$$
-   Agora o efeito de $X_1$ sobre $Y$ ($\tilde{\beta}_1 = \beta_1 + \beta_3 X_2$) depende do nível de $X_2$ (**sinergia** em marketing).
-   > **Princípio Hierárquico (Seção 3.3.2):** *Se incluirmos uma interação $X_1 X_2$ num modelo (ou uma potência $X^d$), devemos **sempre incluir os efeitos principais** $X_1$ e $X_2$ (ou as potências inferiores $X, \dots, X^{d-1}$), mesmo que os $p$-valores associados aos coeficientes dos efeitos principais não sejam estatisticamente significativos.*
-3. **Seis Problemas Potenciais no Modelo de Regressão (Seção 3.3.3):**
-   - **(i) Não Linearidade da Relação:** Diagnosticada plotando os resíduos $e_i = y_i - \hat{y}_i$ contra os valores ajustados $\hat{y}_i$. Um padrão em U (ou curva sistemática) indica não linearidade, corrigível com transformações ($\log X, \sqrt{X}, X^2$) ou splines (Cap. 7).
-   - **(ii) Correlação dos Termos de Erro:** Comum em séries temporais, onde resíduos adjacentes têm sinais semelhantes (*tracking*). Faz com que os erros padrão $\operatorname{SE}(\hat{\beta}_j)$ subestimem a verdadeira incerteza, gerando intervalos de confiança estreitos demais e $p$-valores artificialmente baixos.
-   - **(iii) Variância Não Constante dos Erros (Heterocedasticidade):** Identificada pelo **formato de funil** no gráfico de resíduos vs. $\hat{y}_i$. Pode ser corrigida transformando a resposta com uma função côncava como $\log Y$ ou $\sqrt{Y}$, ou usando Mínimos Quadrados Ponderados (*Weighted Least Squares* — WLS).
-   - **(iv) *Outliers* (Valores Discrepantes em $y_i$):** Observações onde $|y_i - \hat{y}_i|$ é anormalmente grande, identificadas pelos **resíduos estudentizados (*studentized residuals*)** $e_i / \operatorname{SE}(e_i)$ cujo valor absoluto excede $3$.
-   - **(v) Pontos de Alta Alavancagem (*High Leverage Points*, discrepantes em $x_i$):** Quantificados pela **estatística de alavancagem (*leverage statistic*)** $h_i = H_{ii}$ (Equação 3.37, para regressão simples):
-     $$h_i = \frac{1}{n} + \frac{(x_i - \bar{x})^2}{\sum_{i'=1}^{n}(x_{i'} - \bar{x})^2}, \qquad \text{valendo sempre } \frac{1}{n} \le h_i \le 1 \quad \text{e} \quad \sum_{i=1}^{n} h_i = p + 1$$
-     Como a média das alavancagens é $(p+1)/n$, uma observação com $h_i \gg (p+1)/n$ tem alta alavancagem e combinada a um alto resíduo estudentizado distorce severamente a reta ajustada.
-   - **(vi) Colinearidade e Multicolinearidade:** Duas ou mais variáveis preditoras fortemente correlacionadas entre si inflam a variância $\operatorname{Var}(\hat{\beta}_j)$, reduzindo a estatística $t = \hat{\beta}_j / \operatorname{SE}(\hat{\beta}_j)$ e o poder do teste. Para detectar **multicolinearidade** envolvendo três ou mais variáveis, calcula-se o **Fator de Inflação da Variância (*Variance Inflation Factor* — VIF)** (Equação 3.28):
-     $$\operatorname{VIF}(\hat{\beta}_j) = \frac{1}{1 - R^2_{X_j \mid X_{-j}}}$$
-     onde $R^2_{X_j \mid X_{-j}}$ é o $R^2$ da regressão de $X_j$ sobre todos os outros $p-1$ preditores. Um $\operatorname{VIF} = 1$ indica ausência total de colinearidade; valores de **$\operatorname{VIF} > 5$ ou $10$** indicam colinearidade problemática (solucionada removendo uma das variáveis redundantes ou combinando-as num índice único).
-4. **Regressão KNN e a Maldição da Dimensionalidade (Seção 3.5):** O estimador não paramétrico de regressão KNN estima $\hat{f}(x_0) = \frac{1}{K}\sum_{x_i \in \mathcal{N}_0} y_i$. Embora supere a regressão linear quando $p = 1$ ou $2$ e a verdadeira $f$ é fortemente não linear, em dimensões moderadas ou altas ($p \ge 4$) a regressão linear supera o KNN porque as $K$ observações mais próximas ficam muito distantes de $x_0$ em $\mathbb{R}^p$ (**Maldição da Dimensionalidade**).
-
-![Figura 2: Regressão Linear por Mínimos Quadrados e Diagnóstico de Resíduos](./figuras/fig02_regressao_linear_ols_diagnosticos.svg)
-*Figura 2 — (a) Reta de Mínimos Quadrados Ordinários $\hat{y} = \hat{\beta}_0 + \hat{\beta}_1 x$ passando por $(\bar{x}, \bar{y})$, reta populacional e resíduos $e_i$ (Seção 3.1). (b) Gráfico de resíduos $e_i$ versus $\hat{y}_i$ exibindo não linearidade (curva em U) e heterocedasticidade (formato em funil) (Seção 3.3.3).*
-
-> **[Complemento — Raschka et al., *ML with PyTorch and Scikit-Learn*, Cap. 9, Seção 9.3]:**  
-> Como alternativa à remoção manual de *outliers*, Raschka apresenta o algoritmo **RANSAC (*RANdom SAmple Consensus*)**, que ajusta iterativamente o modelo linear apenas a um subconjunto de *inliers* selecionados aleatoriamente, testando os demais pontos contra um limiar de tolerância residual e reajustando o modelo no maior conjunto de consenso encontrado. Além disso, para dados de grande escala onde a inversão matricial $(X^T X)^{-1}$ de custo $\mathcal{O}(p^3)$ é proibitiva, resolve-se o OLS via Gradiente Descendente (`SGDRegressor`).
-
-#### Exercícios de Fixação (Capítulo 3)
-1. *(ISLP, Seção 3.7, Ex. 3)* Ajusta-se um modelo para o salário inicial (em milhares de dólares) com $X_1 = \text{GPA}$, $X_2 = \text{IQ}$, $X_3 = \text{Level}$ ($1$ para Faculdade, $0$ para Ensino Médio), $X_4 = X_1 X_2$ e $X_5 = X_1 X_3$, obtendo $\hat{\beta}_0 = 50, \hat{\beta}_1 = 20, \hat{\beta}_2 = 0{,}07, \hat{\beta}_3 = 35, \hat{\beta}_4 = 0{,}01, \hat{\beta}_5 = -10$. (a) Prediga o salário para Faculdade ($X_3=1$), $\text{IQ}=110$ e $\text{GPA}=4{,}0$. (b) Para quem o salário esperado é maior com $\text{GPA}$ alto? *(Gabarito: (a) $\hat{Y} = 50 + 20(4) + 0{,}07(110) + 35(1) + 0{,}01(440) - 10(4) = 137{,}1$ mil dólares; (b) Diferença Faculdade $-$ Ensino Médio $= 35 - 10\,\text{GPA}$, logo para $\text{GPA} > 3{,}5$ graduados do Ensino Médio ganham mais em média nesse modelo).*
-2. *(ISLP, Seção 3.7, Ex. 4)* Se a relação verdadeira entre $X$ e $Y$ for perfeitamente linear ($Y = \beta_0 + \beta_1 X + \varepsilon$), compare o $\operatorname{RSS}$ de treino e o $\operatorname{RSS}$ de teste de uma regressão linear versus uma regressão cúbica. *(Gabarito: No **treino**, a regressão cúbica terá $\operatorname{RSS}$ menor ou igual, pois contém o modelo linear como caso particular e ajusta mais graus de liberdade ao ruído; no **teste**, a regressão linear terá $\operatorname{RSS}$ esperado menor, pois ambos têm viés zero, mas a cúbica tem variância maior).*
+3. **Passo 3 (Calcular $\hat{\beta}_1$ e $\hat{\beta}_0$):**
+   $$\hat{\beta}_1 = \frac{7{,}0}{5{,}00} = \mathbf{1{,}4}, \qquad \hat{\beta}_0 = \bar{y} - \hat{\beta}_1\bar{x} = 4{,}0 - 1{,}4(2{,}5) = 4{,}0 - 3{,}5 = \mathbf{0{,}5}.$$
+   Portanto, nossa equação da reta ajustada é **$\hat{Y} = 0{,}5 + 1{,}4\,X$**! Se uma 5ª loja investir $X = 5$ mil reais, prevemos uma receita de $\hat{Y} = 0{,}5 + 1{,}4(5) = \mathbf{7{,}5\text{ mil reais}}$.
 
 ---
 
-## 2. Classificação (Capítulo 4)
+### 2.3 Inferência na Regressão: Erro-Padrão, Teste $t$, RSE e $R^2$ (Seções 3.1.2 e 3.1.3)
 
-### 2.1 Por Que Não Regressão Linear? E o Modelo de Regressão Logística (Seções 4.1 a 4.3)
-Se uma resposta qualitativa $Y$ possui $K \ge 3$ categorias sem ordem natural (ex.: *AVC*, *Overdose*, *Crise Epiléptica*), codificá-la por $Y \in \{1, 2, 3\}$ numa regressão linear impõe um ordenamento artificial e distâncias iguais entre as classes. Mesmo para uma **resposta binária** $Y \in \{0, 1\}$, a regressão linear $p(X) = \beta_0 + \beta_1 X$ pode produzir estimativas de probabilidade absurdas ($p(X) < 0$ ou $p(X) > 1$, Figura 3a).
+Depois de encontrar $\hat{\beta}_1 = 1{,}4$, surge uma pergunta crucial: **será que $X$ realmente afeta $Y$ na realidade ($\beta_1 \neq 0$), ou esse $1{,}4$ apareceu apenas por coincidência num sorteio pequeno de $4$ lojas?**
 
-Para garantir que $p(X) = \Pr(Y = 1 \mid X)$ pertença estritamente ao intervalo $(0, 1)$ para qualquer valor de $X = (X_1, \dots, X_p)$, a **Regressão Logística** utiliza a **função logística (ou sigmoide)** (Equações 4.2 e 4.7):
-$$p(X) = \frac{e^{\beta_0 + \beta_1 X_1 + \dots + \beta_p X_p}}{1 + e^{\beta_0 + \beta_1 X_1 + \dots + \beta_p X_p}} = \frac{1}{1 + e^{-(\beta_0 + \beta_1 X_1 + \dots + \beta_p X_p)}}$$
-Isolando a exponencial, obtém-se a **chance (*odds*)** e o **log-odds (ou *logit*)** (Equações 4.3 e 4.4):
-$$\frac{p(X)}{1 - p(X)} = e^{\beta_0 + \beta_1 X_1 + \dots + \beta_p X_p} \iff \ln\left(\frac{p(X)}{1 - p(X)}\right) = \beta_0 + \beta_1 X_1 + \dots + \beta_p X_p$$
-Assim, aumentar $X_j$ em uma unidade multiplica a chance (*odds*) por $e^{\beta_j}$ e aumenta o *log-odds* em $\beta_j$ unidades.
-- **Estimação por Máxima Verossimilhança (*Maximum Likelihood* — Seção 4.3.2):** Buscam-se os coeficientes $\hat{\beta}_0, \dots, \hat{\beta}_p$ que maximizam a **função de verossimilhança**:
-  $$\ell(\beta_0, \dots, \beta_p) = \prod_{i:\, y_i = 1} p(x_i) \prod_{i':\, y_{i'} = 0} \big(1 - p(x_{i'})\big) = \prod_{i=1}^{n} \big[p(x_i)\big]^{y_i}\big[1 - p(x_i)\big]^{1 - y_i}$$
-  O que equivale a minimizar a **log-verossimilhança negativa (Entropia Cruzada Binária / *Log-Loss*)**:
-  $$L(\beta) = -\ln \ell(\beta) = -\sum_{i=1}^{n} \Big[y_i \ln p(x_i) + (1 - y_i)\ln\big(1 - p(x_i)\big)\Big]$$
-  Na inferência sobre $H_0: \beta_j = 0$, utiliza-se a **estatística $z$ (teste de Wald)** $z = \hat{\beta}_j / \operatorname{SE}(\hat{\beta}_j) \stackrel{a}{\sim} \mathcal{N}(0, 1)$.
-- **Regressão Logística Multinomial (*Softmax* — Seção 4.3.5):** Para $K > 2$ classes, escolhendo a classe $K$ como *baseline*, $\ln\left(\frac{\Pr(Y=k|X=x)}{\Pr(Y=K|X=x)}\right) = \beta_{k0} + \sum_{j=1}^p \beta_{kj}x_j$ para $k = 1, \dots, K-1$. Na codificação simétrica **Softmax** (Equação 4.13, muito usada em *Deep Learning*):
-  $$\Pr(Y = k \mid X = x) = \frac{e^{\beta_{k0} + \beta_{k1}x_1 + \dots + \beta_{kp}x_p}}{\sum_{\ell=1}^{K} e^{\beta_{\ell 0} + \beta_{\ell 1}x_1 + \dots + \beta_{\ell p}x_p}}, \qquad k = 1, \dots, K$$
-
-> **[Complemento — Raschka et al., *ML with PyTorch and Scikit-Learn*, Cap. 2 e Cap. 3]:**  
-> Raschka introduz a evolução histórica dos classificadores lineares a partir do neurônio artificial:
-> 1. **Perceptron de Rosenblatt (1957, Cap. 2.1):** Calcula a entrada líquida $z = w^T x + b$ com ativação degrau $\phi(z) = 1$ se $z \ge 0$ e $0$ caso contrário, atualizando os pesos amostra a amostra por $\Delta w_j = \eta(y^{(i)} - \hat{y}^{(i)})x_j^{(i)}$. O Perceptron converge em número finito de passos **se, e somente se, as classes forem linearmente separáveis**.
-> 2. **Adaline (*ADAptive LInear NEuron*, Widrow & Hoff, 1960, Cap. 2.2):** Utiliza ativação linear contínua $\phi(z) = z$ para atualizar os pesos via Gradiente Descendente sobre a soma dos quadrados dos erros $L(w) = \frac{1}{2}\sum_i (y^{(i)} - \phi(z^{(i)}))^2$, garantindo convergência convexa mesmo quando os dados não são linearmente separáveis. Substituindo a ativação linear pela sigmoide $\sigma(z)$ e a perda quadrática pela log-verossimilhança negativa, o Adaline transforma-se exatamente na **Regressão Logística** (Cap. 3.3).
-
----
-
-### 2.2 Modelos Generativos para Classificação: LDA, QDA e Naive Bayes (Seção 4.4)
-Em vez de modelar diretamente a distribuição condicional $\Pr(Y = k \mid X = x)$ (abordagem **discriminativa** da Regressão Logística), os **modelos generativos** modelam a distribuição dos preditores $X$ separadamente dentro de cada classe $k$, expressa pela densidade condicional $f_k(x) \equiv \Pr(X = x \mid Y = k)$, e a probabilidade *a priori* $\pi_k = \Pr(Y = k)$, invertendo o condicionamento pelo **Teorema de Bayes** (Equação 4.15):
-$$\Pr(Y = k \mid X = x) = \frac{\pi_k f_k(x)}{\sum_{\ell=1}^{K} \pi_\ell f_\ell(x)}$$
-Por que usar modelos generativos? (i) Quando há separação substancial entre as classes, as estimativas da regressão logística tornam-se instáveis (divergem para $\pm\infty$), enquanto os modelos generativos permanecem bem-comportados; (ii) Se a distribuição dos preditores for aproximadamente normal e $n$ for pequeno, o modelo generativo é mais preciso que a regressão logística; (iii) Estendem-se naturalmente para $K > 2$ classes.
-
-1. **Análise Discriminante Linear (LDA) para $p = 1$ (Seção 4.4.1):** Assume-se que em cada classe $k$, $X \sim \mathcal{N}(\mu_k, \sigma^2)$ com **variância comum $\sigma^2 = \sigma_1^2 = \dots = \sigma_K^2$**:
-   $$f_k(x) = \frac{1}{\sqrt{2\pi}\sigma}\exp\left(-\frac{1}{2\sigma^2}(x - \mu_k)^2\right)$$
-   Tomando o logaritmo de $\pi_k f_k(x)$ e descartando as constantes que não dependem de $k$ (inclusive o termo quadrático $-\frac{x^2}{2\sigma^2}$, que se cancela graças à homocedasticidade $\sigma_k^2 = \sigma^2$!), maximizar $\Pr(Y = k \mid X = x)$ equivale a maximizar a **função discriminante linear $\delta_k(x)$** (Equação 4.18):
-   $$\delta_k(x) = x \cdot \frac{\mu_k}{\sigma^2} - \frac{\mu_k^2}{2\sigma^2} + \ln(\pi_k)$$
-   Para $K = 2$ e $\pi_1 = \pi_2 = 0{,}5$, a fronteira de decisão de Bayes $\delta_1(x) = \delta_2(x)$ reduz-se ao ponto médio **$x = \frac{\mu_1 + \mu_2}{2}$**. Na amostra, estimam-se $\hat{\pi}_k = n_k / n$, $\hat{\mu}_k = \frac{1}{n_k}\sum_{i: y_i = k} x_i$ e a variância agrupada (*pooled*) $\hat{\sigma}^2 = \frac{1}{n - K}\sum_{k=1}^K \sum_{i: y_i = k}(x_i - \hat{\mu}_k)^2$.
-2. **Análise Discriminante Linear (LDA) para $p > 1$ (Seção 4.4.2):** Assume-se que $X = (X_1, \dots, X_p)^T$ na classe $k$ segue uma distribuição Normal Multivariada $\mathcal{N}(\mu_k, \mathbf{\Sigma})$ com vetor de médias $\mu_k \in \mathbb{R}^p$ específico da classe e **matriz de covariância comum $\mathbf{\Sigma} \in \mathbb{R}^{p \times p}$** para todas as $K$ classes:
-   $$f_k(x) = \frac{1}{(2\pi)^{p/2}|\mathbf{\Sigma}|^{1/2}}\exp\left(-\frac{1}{2}(x - \mu_k)^T \mathbf{\Sigma}^{-1}(x - \mu_k)\right)$$
-   Novamente, o termo quadrático $-\frac{1}{2}x^T\mathbf{\Sigma}^{-1}x$ não depende de $k$, resultando na **função discriminante linear em $x$** (Equação 4.24):
-   $$\delta_k(x) = x^T \mathbf{\Sigma}^{-1}\mu_k - \frac{1}{2}\mu_k^T \mathbf{\Sigma}^{-1}\mu_k + \ln \pi_k$$
-   As fronteiras de decisão $\delta_k(x) = \delta_\ell(x)$ são **hiperplanos afins** em $\mathbb{R}^p$, exigindo a estimação de $Kp$ médias e $\frac{p(p+1)}{2}$ parâmetros de covariância em $\mathbf{\Sigma}$.
-3. **Análise Discriminante Quadrática (QDA — Seção 4.4.3):**Assume-se que na classe $k$, $X \sim \mathcal{N}(\mu_k, \mathbf{\Sigma}_k)$, onde **cada classe possui sua própria matriz de covariância $\mathbf{\Sigma}_k$**. Agora o termo quadrático em $x$ permanece na função discriminante (Equação 4.27):
-   $$\delta_k(x) = -\frac{1}{2}(x - \mu_k)^T \mathbf{\Sigma}_k^{-1}(x - \mu_k) - \frac{1}{2}\ln|\mathbf{\Sigma}_k| + \ln \pi_k$$
-   A fronteira de decisão do QDA é **quadrática**. Existe um claro **trade-off viés-variância entre LDA e QDA**: o QDA precisa estimar $K\frac{p(p+1)}{2}$ parâmetros de covariância (contra apenas $\frac{p(p+1)}{2}$ no LDA). Portanto, o LDA é menos flexível (menor variância, preferível quando $n$ é pequeno ou quando a matriz $\mathbf{\Sigma}$ realmente é compartilhada), enquanto o QDA é preferível quando $n$ é grande ou as covariâncias diferem marcadamente entre as classes.
-4. **Classificador Naive Bayes (Seção 4.4.4):** Assume que, **dentro de cada classe $k$, os $p$ preditores são condicionalmente independentes** (Equação 4.29):
-   $$f_k(x) = f_{k1}(x_1) \times f_{k2}(x_2) \times \dots \times f_{kp}(x_p) = \prod_{j=1}^{p} f_{kj}(x_j)$$
-   Isso reduz a estimação de uma densidade conjunta $p$-dimensional (intratável para $p$ grande) à estimação de $p$ densidades marginais unidimensionais $f_{kj}$ (via normais univariadas $\mathcal{N}(\mu_{kj}, \sigma_{kj}^2)$, histogramas/KDE ou proporções multinomiais), reduzindo drasticamente a variância ao custo de algum viés.
-
-#### Matriz de Confusão, Sensibilidade, Especificidade e Curva ROC (Seção 4.4.2)
-Num problema binário (ex.: $Y = 1$ Positivo / Inadimplente vs. $Y = 0$ Negativo / Adimplente), alterar o limiar de probabilidade $\tau$ na regra $\widehat{\Pr}(Y = 1 \mid X = x) > \tau$ altera o compromisso entre os dois tipos de erro:
-- **Sensibilidade (*Sensitivity* / *Recall* / Taxa de Verdadeiros Positivos — TPR):** $\quad \operatorname{TPR} = \dfrac{\operatorname{TP}}{\operatorname{TP} + \operatorname{FN}} = \Pr(\hat{Y} = 1 \mid Y = 1)$;
-- **Especificidade (*Specificity* / Taxa de Verdadeiros Negativos — TNR):** $\quad \operatorname{TNR} = \dfrac{\operatorname{TN}}{\operatorname{TN} + \operatorname{FP}} = \Pr(\hat{Y} = 0 \mid Y = 0) = 1 - \operatorname{FPR}$;
-- **Precisão (*Precision* / Valor Preditivo Positivo):** $\quad \operatorname{Precision} = \dfrac{\operatorname{TP}}{\operatorname{TP} + \operatorname{FP}} = \Pr(Y = 1 \mid \hat{Y} = 1)$.
-
-A **Curva ROC (*Receiver Operating Characteristic*)** plota $\operatorname{TPR}$ versus $\operatorname{FPR} = 1 - \text{Especificidade}$ para todos os limiares $\tau \in [0, 1]$, e seu desempenho global é resumido pela **AUC (*Area Under the ROC Curve*)**, que vale $0{,}5$ para um classificador aleatório e $1{,}0$ para um classificador perfeito.
-
-![Figura 3: Regressão Logística vs. Linear e Curva ROC/AUC](./figuras/fig03_classificacao_logistica_lda_qda_roc.svg)
-*Figura 3 — (a) Regressão Logística versus Regressão Linear para resposta binária no conjunto `Default` (Seções 4.2–4.3). (b) Curva ROC (Sensibilidade vs. Taxa de Falsos Positivos) e Área sob a Curva (AUC) para LDA e QDA (Seção 4.4.2).*
+1. **Erros Padrão dos Estimadores ($\operatorname{SE}(\hat{\beta}_0)$ e $\operatorname{SE}(\hat{\beta}_1)$, Equação 3.8):**  
+   Medem a incerteza (desvio-padrão) da estimativa $\hat{\beta}_1$ caso repetíssemos a pesquisa com outras amostras:
+   $$\operatorname{SE}(\hat{\beta}_1) = \sqrt{\frac{\sigma^2}{\sum_{i=1}^{n}(x_i - \bar{x})^2}}, \qquad \operatorname{SE}(\hat{\beta}_0) = \sqrt{\sigma^2\left[\frac{1}{n} + \frac{\bar{x}^2}{\sum_{i=1}^{n}(x_i - \bar{x})^2}\right]}$$
+   Como a variância verdadeira do ruído $\sigma^2 = \operatorname{Var}(\varepsilon)$ é desconhecida, nós a estimamos pelo **Erro Padrão Residual (*Residual Standard Error* — RSE)** (Equação 3.15):
+   $$\operatorname{RSE} = \hat{\sigma} = \sqrt{\frac{\operatorname{RSS}}{n - 2}}$$
+   *(Dividimos por $n - 2$ porque já gastamos $2$ graus de liberdade para estimar $\hat{\beta}_0$ e $\hat{\beta}_1$).* Com o erro-padrão, construímos o **Intervalo de Confiança de $95\%$** para a inclinação verdadeira: $\hat{\beta}_1 \pm 2\cdot\operatorname{SE}(\hat{\beta}_1)$ (ou usando o valor crítico exato $t_{n-2;\,0,975}$ da distribuição $t$ de Student).
+2. **Teste de Hipótese $t$ para $H_0: \beta_1 = 0$ (Ausência de relação entre $X$ e $Y$):**  
+   Calculamos a **estatística $t$** (Equação 3.14), que mede **a quantos desvios-padrão de distância o nosso $\hat{\beta}_1$ está do zero**:
+   $$t = \frac{\hat{\beta}_1 - 0}{\operatorname{SE}(\hat{\beta}_1)}$$
+   Se $|t|$ for grande (tipicamente $|t| > 2$), o **$p$-valor** (a probabilidade de observar um $|t|$ tão grande por puro acaso se $\beta_1$ fosse $0$) será muito pequeno ($p\text{-valor} < 0{,}05$ ou $< 0{,}01$), e **rejeitamos $H_0$**, concluindo que $X$ tem efeito estatisticamente significativo sobre $Y$!
+3. **A Métrica $R^2$ (Coeficiente de Determinação — Equação 3.17):**  
+   Como saber se a reta explica uma porcentagem alta ou baixa da variação de $Y$? Comparamos duas somas de quadrados:
+   - **$\operatorname{TSS} = \sum_{i=1}^n (y_i - \bar{y})^2$ (*Total Sum of Squares*):** É o erro quadrático que cometeríamos **antes da regressão**, se chutássemos simplesmente a média $\bar{y}$ para todo mundo.
+   - **$\operatorname{RSS} = \sum_{i=1}^n (y_i - \hat{y}_i)^2$ (*Residual Sum of Squares*):** É o erro quadrático que **sobrou** depois de ajustar a reta.
+   A proporção da variância total de $Y$ explicada pelo modelo é o **$R^2$**:
+   $$R^2 = \frac{\operatorname{TSS} - \operatorname{RSS}}{\operatorname{TSS}} = 1 - \frac{\operatorname{RSS}}{\operatorname{TSS}}, \qquad 0 \le R^2 \le 1$$
+   - No nosso exemplo das $4$ lojas: $\operatorname{TSS} = (-2)^2 + (-1)^2 + 1^2 + 2^2 = 10{,}0$, e $\operatorname{RSS} = 0{,}1^2 + (-0{,}3)^2 + 0{,}3^2 + (-0{,}1)^2 = 0{,}20$. Logo:
+     $$R^2 = 1 - \frac{0{,}20}{10{,}0} = \mathbf{0{,}98 \;\; (98\% \text{ da variação das vendas é explicada pelo gasto em anúncios!})}.$$
+   - Na regressão linear simples, $R^2$ coincide exatamente com o quadrado da correlação linear de Pearson $r = \operatorname{Cor}(X, Y)$, isto é, **$R^2 = r^2$**.
 
 ---
 
-### 2.3 Comparação Analítica dos Classificadores, Regressão de Poisson e Modelos Lineares Generalizados (GLMs, Seções 4.5 e 4.6)
-1. **Unificação Analítica dos Log-Odds (Seção 4.5.1, Equações 4.32–4.34):** Tomando a classe $K$ como referência, o logaritmo da razão de probabilidades posteriores $\ln\left(\frac{\Pr(Y=k|X=x)}{\Pr(Y=K|X=x)}\right)$ tem a estrutura:
-   - **Regressão Logística e LDA:** $\quad a_k + \sum_{j=1}^p b_{kj} x_j$ (ambos são **lineares em $x$**, diferindo apenas na forma de estimar os coeficientes: condicional via MLE na logística vs. conjunta Gaussiana no LDA);
-   - **Naive Bayes:** $\quad a_k + \sum_{j=1}^p g_{kj}(x_j)$ (soma de funções univariadas, ou seja, um **Modelo Aditivo Generalizado — GAM**);
-   - **QDA:** $\quad a_k + \sum_{j=1}^p b_{kj} x_j + \sum_{j=1}^p \sum_{\ell=1}^p c_{kj\ell} x_j x_\ell$ (inclui todos os termos quadráticos e interações de 2ª ordem, subsumindo o LDA e o Naive Bayes Gaussiano).
-2. **Regressão de Poisson para Dados de Contagem e GLMs (Seção 4.6):** Quando $Y \in \{0, 1, 2, \dots\}$ é uma **contagem** não negativa (como o número de aluguéis de bicicletas em `Bikeshare`), a variância cresce com a média e a regressão linear pode prever contagens negativas. Na **Regressão de Poisson**, assume-se $Y \sim \operatorname{Poisson}(\lambda)$ com $\Pr(Y = k) = \frac{e^{-\lambda}\lambda^k}{k!}$ ($\mathbb{E}(Y) = \operatorname{Var}(Y) = \lambda$) e modela-se o logaritmo da taxa esperada como função linear dos preditores (Equação 4.36):
-   $$\ln\big(\lambda(X_1, \dots, X_p)\big) = \beta_0 + \beta_1 X_1 + \dots + \beta_p X_p \iff \lambda(X) = e^{\beta_0 + \beta_1 X_1 + \dots + \beta_p X_p}$$
-   Um aumento de $1$ unidade em $X_j$ multiplica a contagem esperada $\mathbb{E}(Y|X)$ por **$e^{\beta_j}$**, estimando-se $\beta$ por máxima verossimilhança sobre $\ell(\beta) = \prod_{i=1}^n \frac{e^{-\lambda(x_i)}\lambda(x_i)^{y_i}}{y_i!}$.
-3. **Modelos Lineares Generalizados (*Generalized Linear Models* — GLMs, Seção 4.6.3):** Unificam a Regressão Linear, a Regressão Logística e a Regressão de Poisson modelando $Y \mid X$ numa distribuição da **família exponencial** e transformando a média condicional $\mu(X) = \mathbb{E}(Y \mid X)$ por uma **função de ligação (*link function*) $\eta$** linear nos preditores:
-   $$\eta\big(\mathbb{E}(Y \mid X_1, \dots, X_p)\big) = \beta_0 + \beta_1 X_1 + \dots + \beta_p X_p$$
-   onde $\eta(\mu) = \mu$ (identidade) na Regressão Linear Gaussiana, $\eta(\mu) = \ln\left(\frac{\mu}{1-\mu}\right)$ (*logit*) na Regressão Logística Binomial, e $\eta(\mu) = \ln(\mu)$ (*log*) na Regressão de Poisson.
+### 2.4 Regressão Linear Múltipla, Teste Global $F$, Interações e os 6 Problemas de Diagnóstico (Seções 3.2 e 3.3)
 
-#### Exercícios de Fixação (Capítulo 4)
-1. *(ISLP, Seção 4.8, Ex. 6)* Na regressão logística para receber nota A ($Y=1$) em função de $X_1 =$ horas de estudo e $X_2 = \text{GPA}$, obtiveram-se $\hat{\beta}_0 = -6, \hat{\beta}_1 = 0{,}05, \hat{\beta}_2 = 1$. (a) Estime a probabilidade de nota A para $X_1 = 40\text{ h}$ e $X_2 = 3{,}5$. (b) Quantas horas esse aluno precisa estudar para ter $50\%$ de chance de tirar A? *(Gabarito: (a) $z = -6 + 0{,}05(40) + 1(3{,}5) = -0{,}5 \implies \hat{p} = \frac{e^{-0,5}}{1+e^{-0,5}} \approx 0{,}3775$ ($37{,}75\%$); (b) $\hat{p} = 0{,}5 \iff z = 0 \iff -6 + 0{,}05 X_1 + 3{,}5 = 0 \implies X_1 = 50\text{ horas}$).*
-2. *(ISLP, Seção 4.8, Ex. 7)* Para prever se uma ação pagará dividendos ($Y=\text{Yes}$ ou $\text{No}$) a partir do lucro percentual $X$, sabe-se que $\pi_{\text{Yes}} = 0{,}80$, $\pi_{\text{No}} = 0{,}20$, $X \mid \text{Yes} \sim \mathcal{N}(10, 36)$ e $X \mid \text{No} \sim \mathcal{N}(0, 36)$. Calcule $\Pr(\text{Yes} \mid X = 4)$. *(Gabarito: Pelo Teorema de Bayes, $\Pr(\text{Yes}\mid X=4) = \frac{0,8 e^{-(4-10)^2/72}}{0,8 e^{-36/72} + 0,2 e^{-16/72}} = \frac{0,8 e^{-0,5}}{0,8 e^{-0,5} + 0,2 e^{-2/9}} \approx 0{,}7519$ ($75{,}2\%$)).*
+Quando temos $p$ variáveis preditoras simultâneas ($X_1 = \text{TV}$, $X_2 = \text{Rádio}$, $X_3 = \text{Jornal}$), ajustamos um **hiperplano**:
+$$Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \dots + \beta_p X_p + \varepsilon$$
+- **Interpretação Crucial de $\beta_j$ na Regressão Múltipla:** $\beta_j$ mede a variação média em $Y$ para um aumento de $1$ unidade em $X_j$, **mantendo todas as outras variáveis $X_{k \neq j}$ constantes (*ceteris paribus*)**!
+- **Forma Matricial das Equações Normais (Raschka Cap. 9):** Empilhando os dados na matriz $X \in \mathbb{R}^{n \times (p+1)}$ (com uma 1ª coluna de números $1$ para o intercepto $\beta_0$), o vetor de coeficientes $\hat{\beta} = (\hat{\beta}_0, \dots, \hat{\beta}_p)^T$ que minimiza $\operatorname{RSS}(\beta) = \|y - X\beta\|_2^2$ é dado em forma fechada por:
+  $$\hat{\beta} = (X^T X)^{-1} X^T y, \qquad \hat{y} = X\hat{\beta} = H y, \quad \text{onde } H = X(X^T X)^{-1}X^T \text{ é a matriz chapéu (hat matrix)}.$$
 
----
+#### 1. O Teste Global $F$ (Por que não olhar só para os testes $t$ individuais?)
+Para testar se **o modelo como um todo é inútil** ($H_0: \beta_1 = \beta_2 = \dots = \beta_p = 0$) contra a alternativa $H_a:$ *pelo menos uma variável importa*, calculamos a **estatística $F$** (Equação 3.23 do ISLP):
+$$F = \frac{(\operatorname{TSS} - \operatorname{RSS}) / p}{\operatorname{RSS} / (n - p - 1)}$$
+- Se $H_0$ for verdadeira, $F \approx 1$; se alguma variável for útil, $F \gg 1$.
+- **Atenção:** Se você tiver $p = 100$ variáveis de puro ruído aleatório ($\beta_j = 0$) e fizer $100$ testes $t$ individuais ao nível de $5\%$, cerca de $5$ variáveis darão $p\text{-valor} < 0{,}05$ por puro acaso! A estatística $F$ protege você contra esse alarme falso global.
 
-## 3. Métodos de Reamostragem: Validação Cruzada e Bootstrap (Capítulo 5)
+#### 2. Termos de Interação (Sinergia) e o Princípio Hierárquico (Seção 3.3.2)
+No modelo padrão $Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2$, o efeito de investir em TV ($X_1$) é sempre $\beta_1$, independentemente de quanto investimos em Rádio ($X_2$). Mas e se anunciar no Rádio aumentar a eficiência dos anúncios de TV (**sinergia**)? Basta adicionar o **termo de interação (produto) $X_1 \cdot X_2$**:
+$$Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 (X_1 \cdot X_2) + \varepsilon = \beta_0 + \underbrace{(\beta_1 + \beta_3 X_2)}_{\text{Inclinação efetiva de } X_1} X_1 + \beta_2 X_2 + \varepsilon$$
+> **Princípio Hierárquico (ISLP, Seção 3.3.2):** *Sempre que você incluir uma interação $X_1 \cdot X_2$ (ou uma potência $X^2, X^3$) no modelo, **mantenha obrigatoriamente os efeitos principais $X_1$ e $X_2$** no modelo, mesmo que os $p$-valores individuais de $\hat{\beta}_1$ ou $\hat{\beta}_2$ não sejam pequenos!*
 
-### 3.1 Validação Cruzada: Conjunto de Validação, LOOCV e $k$-Fold CV (Seção 5.1)
-Os métodos de reamostragem extraem repetidamente amostras do conjunto de treinamento para avaliar a acurácia de teste (**Model Assessment**) ou selecionar o nível ótimo de flexibilidade (**Model Selection**).
+#### 3. Os 6 Problemas Clássicos no Diagnóstico da Regressão (Seção 3.3.3 e Figura 3b)
+Sempre que ajustar uma regressão linear, faça o **Gráfico de Resíduos ($e_i = y_i - \hat{y}_i$) versus Valores Ajustados ($\hat{y}_i$)** e verifique:
+1. **Não Linearidade:** Se os resíduos formarem uma **curva em U** (ou parábola, curva vermelha na Figura 3b), a relação verdadeira não é linear. *Solução:* incluir potências ($X_j^2$), $\log(X_j)$ ou Splines (Seção 6).
+2. **Correlação dos Termos de Erro:** Comum em séries temporais, onde o erro de hoje depende do erro de ontem, fazendo os erros-padrão $\operatorname{SE}(\hat{\beta}_j)$ ficarem artificialmente pequenos.
+3. **Heterocedasticidade (Variância Não Constante dos Erros):** Os resíduos se espalham formando um **funil ou megafone** à medida que $\hat{y}_i$ cresce (triângulos azuis na Figura 3b). *Solução:* aplicar uma transformação côncava na resposta, como $\log(Y)$ ou $\sqrt{Y}$.
+4. **Outliers (Discrepantes no eixo vertical $Y$):** Pontos com resíduo estudentizado $|e_i / \operatorname{SE}(e_i)| > 3$. *(Em **[Complemento — Raschka Cap. 9.3]**, pode-se usar o algoritmo **RANSAC**, que ajusta a reta automaticamente apenas ao subconjunto de pontos bem-comportados — inliers).*
+5. **Pontos de Alta Alavancagem (*High Leverage* — Discrepantes no eixo horizontal $X$):** Medidos pela **alavancagem $h_i = H_{ii}$** (Equação 3.37 para $p=1$):
+   $$h_i = \frac{1}{n} + \frac{(x_i - \bar{x})^2}{\sum_{i'=1}^n (x_{i'} - \bar{x})^2}, \qquad \frac{1}{n} \le h_i \le 1, \quad \sum_{i=1}^n h_i = p + 1$$
+   Um ponto muito afastado de $\bar{x}$ ($h_i \gg \frac{p+1}{n}$) "puxa" a reta inteira na direção dele!
+6. **Colinearidade e Multicolinearidade:** Quando duas ou mais variáveis preditoras dão quase a mesma informação (ex.: `Limite do Cartão` e `Score de Crédito`), o modelo não consegue separar a contribuição de cada uma, explodindo a variância $\operatorname{Var}(\hat{\beta}_j)$. Detectamos isso pelo **VIF (*Variance Inflation Factor*, Equação 3.28)**:
+   $$\operatorname{VIF}(\hat{\beta}_j) = \frac{1}{1 - R^2_{X_j \mid X_{-j}}}$$
+   onde $R^2_{X_j \mid X_{-j}}$ é o $R^2$ da regressão da variável $X_j$ contra todas as outras variáveis de entrada. Um **$\operatorname{VIF} > 5$ ou $10$** indica multicolinearidade severa (*solução:* remover uma das variáveis redundantes ou usar Regressão Ridge).
 
-1. **Abordagem do Conjunto de Validação (*Validation Set Approach* — Seção 5.1.1):** Divide-se aleatoriamente o conjunto de $n$ observações num conjunto de treinamento e num conjunto de validação (*hold-out*). Possui **duas desvantagens**: (i) a estimativa da taxa de erro de teste tem **alta variância**, dependendo fortemente de quais observações caíram em cada metade; (ii) como apenas um subconjunto (ex.: $50\%$) das observações é usado para treinar o modelo, o método **tende a superestimar a taxa de erro de teste** (viés pessimista) do modelo ajustado sobre todas as $n$ observações.
-2. **Validação Cruzada *Leave-One-Out* (LOOCV — Seção 5.1.2):** Em cada passo $i \in \{1, \dots, n\}$, reserva-se uma única observação $(x_i, y_i)$ para validação e ajusta-se o modelo nas $n - 1$ observações restantes, obtendo $\operatorname{MSE}_i = (y_i - \hat{y}_i^{(-i)})^2$. A estimativa LOOCV do erro de teste é:
-   $$\operatorname{CV}_{(n)} = \frac{1}{n}\sum_{i=1}^{n} \operatorname{MSE}_i$$
-   Como usa $n - 1$ observações em cada ajuste, o LOOCV tem **viés quase nulo** e não sofre de aleatoriedade na partição. Além disso, para **Regressão Linear ou Polinomial por Mínimos Quadrados**, vale a **fórmula mágica do atalho analítico (Equação 5.2)**, que calcula o LOOCV com o custo de **um único ajuste** no conjunto completo:
-   $$\operatorname{CV}_{(n)} = \frac{1}{n}\sum_{i=1}^{n} \left(\frac{y_i - \hat{y}_i}{1 - h_i}\right)^2$$
-   onde $\hat{y}_i$ é o $i$-ésimo valor ajustado no conjunto completo e $h_i \in [1/n, 1[$ é a alavancagem da Equação (3.37) (pontos de alta alavancagem inflam o respectivo resíduo ao serem deixados de fora!).
-3. **Validação Cruzada $k$-Fold e seu Trade-Off Viés-Variância (Seções 5.1.3–5.1.5):** Divide-se aleatoriamente o conjunto de observações em $k$ grupos (*folds*) de tamanhos aproximadamente iguais. Para cada $i = 1, \dots, k$, trata-se o $i$-ésimo grupo como validação e ajusta-se o modelo nos outros $k - 1$ grupos:
-   $$\operatorname{CV}_{(k)} = \frac{1}{k}\sum_{i=1}^{k} \operatorname{MSE}_i \quad (\text{em regressão}) \qquad \text{ou} \qquad \operatorname{CV}_{(k)} = \frac{1}{n}\sum_{j=1}^{n} \operatorname{Err}_j \quad (\text{em classificação})$$
-   Além da enorme vantagem computacional (ajustar o modelo $k = 5$ ou $10$ vezes em vez de $n$ vezes), o **$k$-Fold CV frequentemente fornece estimativas mais precisas da taxa de erro de teste do que o LOOCV** devido ao **trade-off viés-variância**: embora o LOOCV tenha menor viés (treina com $n-1$ amostras contra $(k-1)n/k$ no $k$-Fold), no LOOCV fazemos a média das saídas de $n$ modelos ajustados sobre conjuntos de treinamento quase idênticos (diferindo em apenas 1 ponto!), logo as quantidades $\operatorname{MSE}_1, \dots, \operatorname{MSE}_n$ são **altamente correlacionadas positivamente**, e a média de variáveis altamente correlacionadas possui **maior variância** do que a média dos $k$ *folds* menos sobrepostos ($k = 5$ ou $k = 10$ são os valores empiricamente ótimos).
+![Figura 3: Regressão Linear OLS e Diagnósticos de Resíduos](./figuras/fig03_regressao_linear_ols_diagnosticos.svg)
+*Figura 3 — (a) Reta de Mínimos Quadrados Ordinários $\hat{y} = \hat{\beta}_0 + \hat{\beta}_1 x$ passando pelo centro $(\bar{x}, \bar{y})$ e minimizando a soma dos quadrados dos resíduos verticais $e_i$ (Seção 3.1). (b) Gráfico de resíduos $e_i$ versus valores ajustados $\hat{y}_i$ revelando não linearidade (curva em U) e heterocedasticidade (funil) (Seção 3.3.3).*
 
----
-
-### 3.2 O Bootstrap (Seção 5.2)
-O **Bootstrap** permite quantificar a incerteza (como o erro padrão ou intervalo de confiança) associada a qualquer estimador estatístico $\hat{\alpha}$, mesmo quando não existe fórmula analítica fechada ou quando as hipóteses paramétricas não se verificam.
-- **Mecanismo (Seção 5.2):** A partir do conjunto de dados original $Z$ com $n$ observações, sorteiam-se **$B$ amostras bootstrap $Z^{*1}, Z^{*2}, \dots, Z^{*B}$**, cada uma de tamanho $n$, **com reposição** (*sampling with replacement*). Em cada amostra $Z^{*b}$, calcula-se a estimativa $\hat{\alpha}^{*b}$, e estima-se o erro padrão de $\hat{\alpha}$ pelo desvio-padrão amostral das $B$ réplicas bootstrap (Equação 5.8):
-  $$\operatorname{SE}_B(\hat{\alpha}) = \sqrt{\frac{1}{B - 1}\sum_{r=1}^{B} \left(\hat{\alpha}^{*r} - \frac{1}{B}\sum_{r'=1}^{B} \hat{\alpha}^{*r'}\right)^2}$$
-- **Probabilidade de Inclusão no Bootstrap (Ex. 2 da Seção 5.4):** Em cada um dos $n$ sorteios independentes com reposição, a probabilidade de a $j$-ésima observação original **não** ser escolhida é $1 - \frac{1}{n}$. Logo, a probabilidade de a observação $j$ **não pertencer** à amostra bootstrap $Z^{*b}$ de tamanho $n$ é $\left(1 - \frac{1}{n}\right)^n \xrightarrow{n \to \infty} e^{-1} \approx 0{,}3679$, e a probabilidade de $j$ **pertencer** à amostra bootstrap é:
-  $$\Pr(j \in Z^{*b}) = 1 - \left(1 - \frac{1}{n}\right)^n \xrightarrow{n \to \infty} 1 - \frac{1}{e} \approx 0{,}6321 \quad (63{,}2\%)$$
-  Consequentemente, em média cerca de **$1/e \approx 36{,}8\%$ das observações ficam de fora** de cada amostra bootstrap (as chamadas observações **Out-of-Bag — OOB**).
-
-![Figura 4: Validação Cruzada k-Fold e Probabilidade de Inclusão no Bootstrap](./figuras/fig04_validacao_cruzada_kfold_bootstrap.svg)
-*Figura 4 — (a) Esquema das $k=5$ partições na Validação Cruzada $k$-Fold (Seção 5.1.3). (b) Convergência da probabilidade de inclusão no Bootstrap $1 - (1 - 1/n)^n \to 1 - e^{-1} \approx 0{,}632$ (Seção 5.2 e Ex. 5.4.2).*
-
-> **[Complemento — Raschka et al., *ML with PyTorch and Scikit-Learn*, Cap. 6, Seções 6.1–6.4]:**  
-> Raschka acrescenta três práticas fundamentais para avaliação e ajuste de hiperparâmetros em produção:
-> 1. **Stratified $k$-Fold Cross-Validation (`StratifiedKFold`):** Em problemas de classificação (especialmente com classes desbalanceadas), garante que as proporções das classes sejam preservadas dentro de cada *fold*.
-> 2. **Curvas de Aprendizado (*Learning Curves*) vs. Curvas de Validação (*Validation Curves*):** Plotar a acurácia de treino e validação em função do tamanho da amostra $n$ (*learning curve*) diagnostica se o modelo sofre de **alto viés (*underfitting*)** (ambas as curvas convergem para uma acurácia baixa; coletar mais dados não resolve, é preciso aumentar a complexidade do modelo) ou **alta variância (*overfitting*)** (há um grande *gap* entre a acurácia de treino e a de validação; coletar mais dados ou aumentar a regularização reduz o *gap*).
-> 3. **Validação Cruzada Aninhada (*Nested Cross-Validation*, ex.: $5 \times 2$ CV):** Usa um laço externo de $k_1$ *folds* exclusivamente para estimar o erro de generalização não viesado, e um laço interno de $k_2$ *folds* (`GridSearchCV`, `RandomizedSearchCV` ou `HalvingRandomSearchCV`) dentro de cada *fold* de treino externo para sintonizar os hiperparâmetros sem vazar informação dos *folds* de teste.
-
-#### Exercícios de Fixação (Capítulo 5)
-1. *(ISLP, Seção 5.4, Ex. 1 — Alocação de Portfólio de Variância Mínima)* Sejam $X$ e $Y$ os retornos de dois ativos financeiros com $\sigma_X^2 = \operatorname{Var}(X)$, $\sigma_Y^2 = \operatorname{Var}(Y)$ e $\sigma_{XY} = \operatorname{Cov}(X, Y)$. Prove que a fração $\alpha \in \mathbb{R}$ que minimiza o risco $\operatorname{Var}(\alpha X + (1 - \alpha)Y)$ é dada pela Equação (5.6): $\alpha = \frac{\sigma_Y^2 - \sigma_{XY}}{\sigma_X^2 + \sigma_Y^2 - 2\sigma_{XY}}$. *(Dica: Expanda $f(\alpha) = \alpha^2\sigma_X^2 + (1-\alpha)^2\sigma_Y^2 + 2\alpha(1-\alpha)\sigma_{XY}$ e resolva $f'(\alpha) = 0$).*
-2. *(ISLP, Seção 5.4, Ex. 2)* Calcule a probabilidade de a $j$-ésima observação estar presente numa amostra bootstrap quando $n = 5$, $n = 100$ e $n = 10\,000$. *(Gabarito: $1 - (1 - 1/5)^5 \approx 0{,}6723$; $1 - (1 - 1/100)^{100} \approx 0{,}63397$; $1 - (1 - 1/10000)^{10000} \approx 0{,}63214$).*
+#### Exercícios de Fixação (Seção 2)
+1. *(ISLP, Seção 3.7, Ex. 4)* Suponha que a relação verdadeira entre $X$ e $Y$ seja perfeitamente linear ($Y = \beta_0 + \beta_1 X + \varepsilon$), mas ajustamos também uma regressão cúbica ($Y = \beta_0 + \beta_1 X + \beta_2 X^2 + \beta_3 X^3$). Qual das duas terá menor **RSS de treino**? E menor **RSS de teste**? *(Gabarito: No **treino**, a regressão cúbica terá RSS menor ou igual, pois tem mais graus de liberdade para se ajustar ao ruído da amostra; no **teste**, a regressão linear terá menor RSS esperado, pois é o modelo verdadeiro sem variância extra).*
 
 ---
 
-## 4. Seleção de Modelos Lineares e Regularização (Capítulo 6)
+## 3. Classificação: Regressão Logística, LDA, QDA, Naive Bayes e ROC (ISLP Cap. 4; Raschka Cap. 2 e 3)
 
-Quando $n$ não é muito maior que $p$, o estimador de mínimos quadrados sofre de alta variância; se **$p > n$**, a matriz $X^T X$ é singular, existem infinitas soluções de mínimos quadrados com $\operatorname{RSS} = 0$ no treino e o sobreajuste no teste é extremo. Além disso, o OLS raramente zera coeficientes irrelevantes. O Capítulo 6 estuda três classes de métodos para aumentar a acurácia preditiva (reduzindo a variância) e a interpretabilidade (seleção de variáveis):
+### 3.1 Por Que Não Usar Regressão Linear? E a Regressão Logística Passo a Passo (Seções 4.1 a 4.3)
 
-### 4.1 Seleção de Subconjuntos e Critérios de Informação ($C_p$, AIC, BIC e $R^2$ Ajustado, Seção 6.1)
-1. **Algoritmos de Busca (Algoritmos 6.1 a 6.3):**
-   - **Seleção do Melhor Subconjunto (*Best Subset Selection*):** Para cada $k = 0, 1, \dots, p$, ajusta todos os $\binom{p}{k}$ modelos com exatamente $k$ preditores e escolhe o de menor $\operatorname{RSS}$ (ou maior $R^2$), chamado $\mathcal{M}_k$; por fim, escolhe o melhor entre $\mathcal{M}_0, \dots, \mathcal{M}_p$ via erro de validação cruzada ou critério penalizado ($C_p$, AIC, BIC, $R^2_{\text{adj}}$). Como avalia **$2^p$ modelos**, torna-se computacionalmente inviável para $p > 40$.
-   - **Seleção *Forward Stepwise* (Progressiva):** Parte do modelo nulo $\mathcal{M}_0$ e, em cada passo $k = 0, \dots, p-1$, acrescenta a $\mathcal{M}_k$ o único preditor dentre os $p - k$ restantes que proporciona a maior redução no $\operatorname{RSS}$, avaliando apenas **$1 + \sum_{k=0}^{p-1}(p - k) = 1 + \frac{p(p+1)}{2}$ modelos** (aplicável mesmo quando $p > n$, até $k = n - 1$).
-   - **Seleção *Backward Stepwise* (Regressiva):** Parte do modelo completo $\mathcal{M}_p$ com todos os $p$ preditores e remove iterativamente o preditor menos útil (também avaliando $1 + \frac{p(p+1)}{2}$ modelos, mas **exige estritamente $n > p$** para ajustar $\mathcal{M}_p$).
-2. **Estimando Indiretamente o Erro de Teste: $C_p$, AIC, BIC e $R^2$ Ajustado (Seção 6.1.3):** Para um modelo ajustado por mínimos quadrados contendo **$d$ preditores**, corrige-se o viés de otimismo do $\operatorname{RSS}$ de treino somando uma penalidade crescente em $d$ (Equações 6.2 a 6.5):
-   $$C_p = \frac{1}{n}\big(\operatorname{RSS} + 2d\hat{\sigma}^2\big), \qquad \operatorname{AIC} = \frac{1}{n}\big(\operatorname{RSS} + 2d\hat{\sigma}^2\big), \qquad \operatorname{BIC} = \frac{1}{n}\big(\operatorname{RSS} + \ln(n)d\hat{\sigma}^2\big)$$
-   $$R^2_{\text{ajustado}} = 1 - \frac{\operatorname{RSS} / (n - d - 1)}{\operatorname{TSS} / (n - 1)}$$
-   - Para modelos lineares com erros Gaussianos, **$C_p$ de Mallows e o AIC de Akaike são proporcionais**;
-   - Como $\ln(n) > 2$ para qualquer $n > 7$, o **BIC de Schwarz impõe uma penalidade mais pesada** a modelos com muitas variáveis do que o $C_p$/AIC, resultando na escolha de **modelos menores e mais parcimoniosos**;
-   - Diferentemente do $R^2$ comum, o **$R^2$ ajustado** só aumenta se a inclusão de uma nova variável reduzir $\operatorname{RSS}/(n - d - 1)$.
+Suponha que queremos prever se um cliente vai **atrasar a fatura do cartão de crédito** ($Y = 1$: *Sim / Inadimplente*; $Y = 0$: *Não / Adimplente*) a partir do saldo devedor $X$.  
+Se ajustarmos uma reta de regressão linear $p(X) = \beta_0 + \beta_1 X$ aos zeros e uns (linha laranja tracejada na **Figura 4a**), acontecem dois absurdos: para saldos muito baixos a reta prevê **probabilidades negativas** ($p(X) < 0$), e para saldos muito altos prevê **probabilidades maiores que $100\%$** ($p(X) > 1$)!
 
----
+Como transformar qualquer resultado da reta $\eta = \beta_0 + \beta_1 X \in (-\infty, +\infty)$ em uma probabilidade válida que fique sempre **presa dentro do intervalo $(0, 1)$**? A **Regressão Logística** passa a combinação linear por dentro da **Função Logística (ou Sigmoide)** $\sigma(z) = \frac{e^z}{1 + e^z} = \frac{1}{1 + e^{-z}}$, que tem formato de **"S"** suave (curva verde na Figura 4a):
 
-### 4.2 Métodos de Encolhimento (*Shrinkage*): Regressão Ridge ($\ell_2$) e o Lasso ($\ell_1$) (Seção 6.2)
-1. **Regressão Ridge (Penalização $\ell_2$ — Seção 6.2.1):** Estima $\hat{\beta}^R_\lambda$ minimizando a soma de resíduos acrescida de uma penalidade de encolhimento quadrática sobre os coeficientes (exceto o intercepto $\beta_0$, Equação 6.5):
-   $$\hat{\beta}^R_\lambda = \arg\min_{\beta} \left\{ \sum_{i=1}^{n}\left(y_i - \beta_0 - \sum_{j=1}^{p}\beta_j x_{ij}\right)^2 + \lambda \sum_{j=1}^{p}\beta_j^2 \right\} = \arg\min_{\beta} \big\{\operatorname{RSS} + \lambda \|\beta\|_2^2\big\}$$
-   onde $\lambda \ge 0$ é o **parâmetro de sintonização (*tuning parameter*)**. Na forma matricial centrada, $\hat{\beta}^R_\lambda = (X^T X + \lambda I_p)^{-1}X^T y$ (a soma de $\lambda I_p$ torna a matriz invertível mesmo se $p > n$!).  
-   **Invariância de Escala:** Enquanto no OLS multiplicar $X_j$ por uma constante $c$ simplesmente divide $\hat{\beta}_j$ por $c$ (deixando $X_j\hat{\beta}_j$ invariante), na Regressão Ridge (e no Lasso) os coeficientes $\hat{\beta}^R_{j,\lambda}$ dependem crucialmente da escala dos preditores! Por isso, **é obrigatório padronizar os preditores** ($\tilde{x}_{ij} = x_{ij} / s_j$) antes de aplicar Ridge ou Lasso.
-2. **O Lasso (Penalização $\ell_1$ e Seleção Automática de Variáveis — Seção 6.2.2):** Substitui a norma $\ell_2^2$ pela norma $\ell_1$ ($\|\beta\|_1 = \sum_{j=1}^p |\beta_j|$, Equação 6.7):
-   $$\hat{\beta}^L_\lambda = \arg\min_{\beta} \left\{ \sum_{i=1}^{n}\left(y_i - \beta_0 - \sum_{j=1}^{p}\beta_j x_{ij}\right)^2 + \lambda \sum_{j=1}^{p}|\beta_j| \right\}$$
-   Enquanto a Regressão Ridge encolhe todos os coeficientes na direção de zero mas **não zera exatamente nenhum deles** (para $\lambda < \infty$), a penalidade $\ell_1$ do **Lasso força alguns coeficientes a serem exatamente iguais a zero** quando $\lambda$ é suficientemente grande, produzindo **modelos esparsos**!
+> **Definição 3.1 (O Modelo de Regressão Logística, Chance e Logit — Equações 4.2 a 4.7 do ISLP):**  
+> *A probabilidade condicional de pertencer à classe positiva ($Y = 1$) dados os preditores $X = (X_1, \dots, X_p)$ é modelada por:*
+> $$p(X) = \Pr(Y = 1 \mid X) = \frac{e^{\beta_0 + \beta_1 X_1 + \dots + \beta_p X_p}}{1 + e^{\beta_0 + \beta_1 X_1 + \dots + \beta_p X_p}} = \frac{1}{1 + e^{-(\beta_0 + \beta_1 X_1 + \dots + \beta_p X_p)}}$$
+> *Dividindo $p(X)$ pela probabilidade complementar $1 - p(X) = \frac{1}{1 + e^{\beta_0 + \dots + \beta_p X_p}}$ e tomando o logaritmo natural $\ln$, obtemos duas interpretações fundamentais:*
+> 1. **Chance (*Odds*):** $\quad \dfrac{p(X)}{1 - p(X)} = e^{\beta_0 + \beta_1 X_1 + \dots + \beta_p X_p} \in (0, +\infty)$  
+>    *(Ex.: se $p(X) = 0{,}80$, a chance é $\frac{0,80}{0,20} = 4$, ou seja, "$4$ para $1$" a favor do evento ocorrer).*
+> 2. **Log-Odds (*Logit*):** $\quad \ln\!\left(\dfrac{p(X)}{1 - p(X)}\right) = \beta_0 + \beta_1 X_1 + \dots + \beta_p X_p$  
+>    *O logaritmo da chance é perfeitamente linear em $X$! Aumentar $X_j$ em $1$ unidade soma $\beta_j$ ao log-odds (ou seja, **multiplica a chance por $e^{\beta_j}$**).*
 
-> **Teorema 4.1 (Formulação por Restrição Equivalente e Solução Analítica via Limiarização Suave — Equações 6.8 a 6.15, Seção 6.2.2):**  
-> 1. *Para todo $\lambda \ge 0$, existe um orçamento $s \ge 0$ tal que o Lasso e a Regressão Ridge equivalem aos problemas de otimização restrita:*
->    $$\min_{\beta} \operatorname{RSS}(\beta) \quad \text{sujeito a} \quad \sum_{j=1}^{p}|\beta_j| \le s \;\; (\text{Lasso: politopo/losango}) \qquad \text{ou} \qquad \sum_{j=1}^{p}\beta_j^2 \le s \;\; (\text{Ridge: esfera/círculo})$$
->    *Geometricamente (Figura 5b), como o losango $|\beta_1| + |\beta_2| \le s$ possui **quinas (vértices) sobre os eixos coordenados**, as elipses de nível do $\operatorname{RSS}$ frequentemente tocam a região viável num vértice onde $\beta_j = 0$, ao passo que o círculo $\beta_1^2 + \beta_2^2 \le s$ não possui quinas.*
-> 2. *No caso especial ortonormal simplificado ($n = p$, $X = I_p$ e $\beta_0 = 0$), minimizando $\sum_{j=1}^p (y_j - \beta_j)^2 + \lambda \sum_{j=1}^p \beta_j^2$ ou $+\lambda \sum_{j=1}^p |\beta_j|$, temos:*
->    $$\hat{\beta}^R_j = \frac{y_j}{1 + \lambda} \quad (\text{Encolhimento Proporcional — Ridge}), \qquad \hat{\beta}^L_j = \begin{cases} y_j - \lambda/2, & \text{se } y_j > \lambda/2 \\ y_j + \lambda/2, & \text{se } y_j < -\lambda/2 \\ 0, & \text{se } |y_j| \le \lambda/2 \end{cases} \quad (\text{Limiarização Suave / Soft-Thresholding — Lasso})$$
+#### Como o computador encontra $\hat{\beta}_0, \dots, \hat{\beta}_p$? (Máxima Verossimilhança / Entropia Cruzada)
+Na Regressão Logística, em vez de mínimos quadrados, usamos o método da **Máxima Verossimilhança (*Maximum Likelihood*, Seção 4.3.2)**: buscamos os pesos $\beta$ que atribuem a maior probabilidade conjunta $\ell(\beta)$ aos dados que realmente aconteceram (queremos $p(x_i)$ perto de $1$ quando $y_i = 1$, e $1 - p(x_i)$ perto de $1$ quando $y_i = 0$):
+$$\ell(\beta) = \prod_{i=1}^{n} \big[p(x_i)\big]^{y_i}\big[1 - p(x_i)\big]^{1 - y_i}$$
+Maximizar esse produto equivale a minimizar o negativo do seu logaritmo, que é a famosa função de perda **Entropia Cruzada Binária (*Log-Loss*)** (Raschka Cap. 3):
+$$L(\beta) = -\ln \ell(\beta) = -\sum_{i=1}^{n} \Big[y_i \ln p(x_i) + (1 - y_i)\ln\big(1 - p(x_i)\big)\Big]$$
 
-3. **Interpretação Bayesiana para Ridge e Lasso (Seção 6.2.2 e Ex. 6.6.7):** Assumindo o modelo linear normal $Y \mid X, \beta \sim \mathcal{N}(X\beta, \sigma^2 I)$ e uma distribuição *a priori* para os coeficientes $p(\beta) = \prod_{j=1}^p g(\beta_j)$:
-   - Se a *priori* $g(\beta_j)$ for **Gaussiana** com média $0$ e variância $c$ ($g(\beta_j) \propto e^{-\beta_j^2/(2c)}$), então a moda (e média) *a posteriori* (estimador MAP) é exatamente a **Regressão Ridge** com $\lambda = \sigma^2 / c$;
-   - Se a *priori* $g(\beta_j)$ for **Dupla-Exponencial (Laplace)** com média $0$ e parâmetro de escala $b$ ($g(\beta_j) = \frac{1}{2b}e^{-|\beta_j|/b}$, que possui um pico agudo em $\beta_j = 0$), então a moda *a posteriori* (MAP) é exatamente o **Lasso** com $\lambda = 2\sigma^2 / b$.
+#### Exemplo Numérico Feito à Mão (Regressão Logística)
+Um modelo logístico prevê a probabilidade de um aluno passar com nota máxima ($Y=1$) a partir das horas de estudo semanais ($X$), com coeficientes estimados $\hat{\beta}_0 = -6$ e $\hat{\beta}_1 = 0{,}15$.
+1. **Qual é a probabilidade de passar estudando $X = 30$ horas?**  
+   Primeiro calculamos o *logit*: $\hat{\eta} = -6 + 0{,}15(30) = -6 + 4{,}5 = -1{,}5$.  
+   Agora aplicamos a sigmoide: $\hat{p}(30) = \frac{1}{1 + e^{-(-1,5)}} = \frac{1}{1 + e^{1,5}} \approx \frac{1}{1 + 4{,}4817} \approx \mathbf{0{,}1824 \;\; (18{,}2\%)}$.
+2. **A partir de quantas horas de estudo a probabilidade de passar chega a $50\%$ ($\hat{p}(X) = 0{,}50$)?**  
+   Na sigmoide, $\hat{p}(X) = 0{,}50 \iff \text{chance} = 1 \iff \text{logit } \hat{\eta} = \ln(1) = 0$! Logo:
+   $$-6 + 0{,}15\,X = 0 \implies X = \frac{6}{0{,}15} = \mathbf{40\text{ horas semanais}}.$$
 
-![Figura 5: Caminhos de Regularização e Geometria do Lasso vs. Ridge](./figuras/fig05_regularizacao_ridge_lasso_geometria.svg)
-*Figura 5 — (a) Caminhos de encolhimento dos coeficientes padronizados $\hat{\beta}_j(\lambda)$ no Lasso ($\ell_1$, gerando esparsidade) e na Regressão Ridge ($\ell_2$) (Seção 6.2). (b) Geometria das regiões de restrição $|\beta_1| + |\beta_2| \le s$ (losango do Lasso atingindo $\beta_1 = 0$) versus $\beta_1^2 + \beta_2^2 \le s$ (círculo do Ridge) com curvas de nível do RSS (Seção 6.2.2, Fig. 6.7).*
+> **[Complemento — Perceptron e Adaline: A Origem Histórica dos Classificadores Lineares (Raschka Cap. 2)]:**  
+> Nos Capítulos 2 e 3, Raschka mostra como a Regressão Logística nasceu da evolução de dois algoritmos clássicos:
+> - **Perceptron (Rosenblatt, 1957):** Calcula a combinação linear $z_i = w^T x_i + b$ e aplica um degrau brusco ($\hat{y}_i = 1$ se $z_i \ge 0$ e $0$ se $z_i < 0$), atualizando os pesos por $\Delta w_j = \eta(y_i - \hat{y}_i)x_{ij}$ apenas quando erra. *Defeito:* se as duas classes tiverem qualquer sobreposição (não forem perfeitamente separáveis por uma reta), o Perceptron nunca converge!
+> - **Adaline (Widrow & Hoff, 1960):** Troca o degrau brusco pela saída contínua $z_i = w^T x_i + b$ durante o treinamento para minimizar $\frac{1}{2n}\sum (y_i - z_i)^2$ por Gradiente Descendente. Quando trocamos a saída linear do Adaline pela sigmoide $\sigma(z_i)$ e a perda quadrática pela perda logística $L(\beta)$, obtemos exatamente a **Regressão Logística**!
 
 ---
 
-### 4.3 Redução de Dimensão (PCR e PLS) e Considerações em Alta Dimensão (Seções 6.3 e 6.4)
-1. **Regressão por Componentes Principais (PCR) vs. Mínimos Quadrados Parciais (PLS) (Seção 6.3):** Constroem-se $M < p$ combinações lineares $Z_m = \sum_{j=1}^p \phi_{jm} X_j$ ($m = 1, \dots, M$) e ajusta-se o modelo linear $y_i \approx \theta_0 + \sum_{m=1}^M \theta_m z_{im}$ por mínimos quadrados:
-   - Na **PCR (*Principal Components Regression*, Seção 6.3.1)**, as direções $\phi_1, \dots, \phi_M$ são as $M$ primeiras componentes principais de $X$, escolhidas de forma **não supervisionada** (maximizando a variância de $X$ sem olhar para $Y$). Como $\sum_{m=1}^M \theta_m z_{im} = \sum_{j=1}^p \left(\sum_{m=1}^M \theta_m \phi_{jm}\right)x_{ij}$, a PCR **não é um método de seleção de variáveis**, pois cada $Z_m$ envolve todos os $p$ preditores originais (assemelhando-se mais à Regressão Ridge, que é uma versão contínua da PCR).
-   - No **PLS (*Partial Least Squares*, Seção 6.3.2)**, as direções $Z_1, \dots, Z_M$ são escolhidas de forma **supervisionada**: para construir $Z_1 = \sum_{j=1}^p \phi_{j1}X_j$, define-se cada peso $\phi_{j1}$ igual ao coeficiente da regressão linear simples de $Y$ sobre $X_j$ (proporcional a $\operatorname{Cor}(X_j, Y)$ se padronizado); para construir $Z_2$, regride-se primeiro cada variável sobre $Z_1$ tomando os resíduos ortogonais e repete-se o processo.
-2. **O Que Dá Errado em Alta Dimensão ($p \ge n$, Seção 6.4):** Quando o número de atributos $p$ é comparável ou superior a $n$: (i) o modelo de mínimos quadrados interpola perfeitamente os dados ($\operatorname{RSS} = 0$ e $R^2 = 1$ para $p \ge n - 1$), mesmo que os preditores sejam ruído puro sem nenhuma relação com $Y$; (ii) estatísticas clássicas como $C_p$, AIC, BIC e $R^2$ ajustado falham porque não é possível estimar $\hat{\sigma}^2 = \operatorname{RSS}/(n-p-1)$ quando $\operatorname{RSS} = 0$; (iii) a multicolinearidade é inevitável: qualquer variável em alta dimensão pode ser escrita como combinação linear das demais, de modo que o Lasso seleciona uma representante quase arbitrária dentre um grupo de variáveis correlacionadas.
+### 3.2 Modelos Generativos de Classificação: LDA, QDA e Naive Bayes (Seção 4.4 do ISLP)
 
-#### Exercícios de Fixação (Capítulo 6)
-1. *(ISLP, Seção 6.6, Ex. 2 e 3)* À medida que o orçamento $s$ em $\sum |\beta_j| \le s$ aumenta a partir de $0$ (ou $\lambda$ diminui até $0$), o que ocorre com: (a) $\operatorname{RSS}$ de treino; (b) $\operatorname{RSS}$ de teste; (c) Variância; (d) $\text{Viés}^2$; (e) Erro irredutível? *(Gabarito: Quando $s$ cresce de $0$ a $\infty$, o modelo fica mais flexível: (a) $\operatorname{RSS}_{\text{treino}}$ decresce monotonicamente; (b) $\operatorname{RSS}_{\text{teste}}$ segue formato em U — cai inicialmente e depois sobe; (c) Variância cresce monotonicamente; (d) $\text{Viés}^2$ decresce monotonicamente; (e) Erro irredutível permanece constante).*
-2. *(ISLP, Seção 6.6, Ex. 5 — Preditores Idênticos no Ridge vs. Lasso)* Suponha $n=2, p=2$ com preditores idênticos ($x_{11}=x_{12}$ e $x_{21}=x_{22}$) e dados centrados ($\hat{\beta}_0 = 0$). Mostre que a Regressão Ridge atribui pesos iguais ($\hat{\beta}_1^R = \hat{\beta}_2^R$), enquanto o Lasso admite todo um segmento contínuo de soluções $(\hat{\beta}_1^L, \hat{\beta}_2^L)$ com soma constante! *(Dica: Como $x_{i1}\beta_1 + x_{i2}\beta_2 = x_{i1}(\beta_1 + \beta_2)$, o $\operatorname{RSS}$ depende apenas da soma $S = \beta_1 + \beta_2$. Minimizar $\beta_1^2 + \beta_2^2$ com $\beta_1 + \beta_2 = S$ fixo exige $\beta_1 = \beta_2 = S/2$, enquanto $|\beta_1| + |\beta_2| = |S|$ é constante para quaisquer $\beta_1, \beta_2$ de mesmo sinal com $\beta_1 + \beta_2 = S$).*
+Enquanto a Regressão Logística modela diretamente $\Pr(Y = k \mid X = x)$ (**abordagem discriminativa**), os **Modelos Generativos** fazem o caminho inverso usando o **Teorema de Bayes** (Equação 4.15 do ISLP):
+1. Primeiro, olhamos para cada classe $k \in \{1, \dots, K\}$ separadamente: estimamos a **probabilidade a priori $\pi_k = \Pr(Y = k)$** (a fração de exemplos da classe $k$ no banco de dados) e a **distribuição dos atributos dentro daquela classe**, $f_k(x) = \Pr(X = x \mid Y = k)$ (ex.: qual é a distribuição de alturas entre homens e entre mulheres).
+2. Depois, invertemos a condição pelo **Teorema de Bayes** para obter a probabilidade a posteriori da classe $k$:
+   $$\Pr(Y = k \mid X = x) = \frac{\pi_k\, f_k(x)}{\sum_{\ell=1}^{K} \pi_\ell\, f_\ell(x)}$$
 
----
+Dependendo da suposição que fazemos sobre a densidade $f_k(x)$, nascem os **três grandes classificadores generativos**:
 
-## 5. Movendo-se Além da Linearidade: Polinômios, Splines, LOESS e GAMs (Capítulo 7)
-
-### 5.1 Regressão Polinomial, Funções Degrau e Funções de Base (Seções 7.1 a 7.3)
-Todas as técnicas das Seções 7.1 a 7.4 são instâncias da abordagem de **Funções de Base (*Basis Functions* — Seção 7.3)**: aplica-se uma família de transformações conhecidas $b_1(X), b_2(X), \dots, b_K(X)$ ao preditor $X$ e ajusta-se o modelo linear nos atributos transformados:
-$$y_i = \beta_0 + \beta_1 b_1(x_i) + \beta_2 b_2(x_i) + \dots + \beta_K b_K(x_i) + \varepsilon_i$$
-Como o modelo continua **linear nos parâmetros $\beta_0, \dots, \beta_K$**, toda a teoria de mínimos quadrados (erros padrão, intervalos de confiança e estatísticas $F$/ANOVA) permanece aplicável!
-- **Regressão Polinomial ($b_j(x_i) = x_i^j$, Seção 7.1):** $y_i = \beta_0 + \beta_1 x_i + \beta_2 x_i^2 + \dots + \beta_d x_i^d + \varepsilon_i$. Usam-se graus moderados ($d = 3$ ou $4$), pois polinômios globais de grau alto sofrem de **oscilações severas de Runge nas extremidades** do domínio de $X$.
-- **Funções Degrau (*Step Functions*, Seção 7.2):** Particionando o domínio de $X$ pelos pontos de corte $c_1 < c_2 < \dots < c_K$, definem-se as funções indicadoras $C_0(X) = I(X < c_1)$, $C_k(X) = I(c_k \le X < c_{k+1})$ e $C_K(X) = I(X \ge c_K)$ (com $\sum_{k=0}^K C_k(X) = 1$), ajustando a função constante por partes $y_i = \beta_0 + \beta_1 C_1(x_i) + \dots + \beta_K C_K(x_i) + \varepsilon_i$.
+| Classificador Generativo | Hipótese sobre $f_k(x) = \Pr(X = x \mid Y = k)$ | Formato da Função Discriminante $\delta_k(x)$ e da Fronteira | Quando Usar? |
+| :--- | :--- | :--- | :--- |
+| **1. LDA (*Linear Discriminant Analysis*, Seção 4.4.1–4.4.2)** | $X$ dentro de cada classe $k$ segue uma **Normal** $\mathcal{N}(\mu_k, \Sigma)$ com **a mesma matriz de covariância $\Sigma$ em todas as classes** (homocedasticidade) | **Linear em $x$:** $\delta_k(x) = x^T\Sigma^{-1}\mu_k - \frac{1}{2}\mu_k^T\Sigma^{-1}\mu_k + \ln\pi_k$ (para $p=1$: $\delta_k(x) = x\frac{\mu_k}{\sigma^2} - \frac{\mu_k^2}{2\sigma^2} + \ln\pi_k$). Fronteira é uma **reta/hiperplano** (Figura 4b) | Quando as classes são bem separadas (onde a Logística fica instável), $K \ge 2$ classes, ou $n$ é pequeno e a variância entre classes é parecida |
+| **2. QDA (*Quadratic Discriminant Analysis*, Seção 4.4.3)** | $X$ em cada classe $k$ segue uma Normal $\mathcal{N}(\mu_k, \Sigma_k)$, mas **cada classe tem sua própria matriz de covariância $\Sigma_k$** | **Quadrática em $x$:** $\delta_k(x) = -\frac{1}{2}(x-\mu_k)^T\Sigma_k^{-1}(x-\mu_k) - \frac{1}{2}\ln|\Sigma_k| + \ln\pi_k$. Fronteira é **curva/parabólica** (Figura 4b) | Quando o formato/espalhamento das nuvens de pontos muda muito de uma classe para outra ($\Sigma_1 \neq \Sigma_2$) e $n$ é grande o suficiente para estimar cada $\Sigma_k$ |
+| **3. Naive Bayes (*Bayes Ingênuo*, Seção 4.4.4)** | Assume que, **dentro de cada classe $k$, os $p$ atributos são independentes entre si**: $f_k(x) = f_{k1}(x_1)\times f_{k2}(x_2)\times\dots\times f_{kp}(x_p)$ | Soma de funções univariadas: $\ln\pi_k + \sum_{j=1}^p \ln f_{kj}(x_j)$ (não precisa estimar covariâncias cruzadas!) | Excelente quando **$p$ é muito grande** (ex.: classificação de textos/filtro de spam com milhares de palavras) ou $n$ é pequeno, pois evita estimar matrizes $p \times p$ |
 
 ---
 
-### 5.2 Regression Splines, Natural Splines e Smoothing Splines (Seções 7.4 e 7.5)
-1. **Splines de Regressão e a Base de Potências Truncadas (Seção 7.4):** Em vez de ajustar um único polinômio de grau alto em todo o domínio de $X$, escolhem-se **$K$ nós (*knots*) $\xi_1 < \xi_2 < \dots < \xi_K$** que dividem o domínio em $K + 1$ subintervalos. Uma **Spline de Grau $d$** (em particular, uma **Cubic Spline** quando $d = 3$) é um polinômio de grau $d$ por partes que é **contínuo e possui derivadas contínuas até a ordem $d - 1$** ($f, f', f''$ contínuas para $d=3$) em cada nó $\xi_k$.
-   > **Teorema 5.1 (Representação na Base de Potências Truncadas e Graus de Liberdade — Equação 7.3 e Ex. 7.9.1):**  
-   > *Toda spline cúbica com $K$ nós $\xi_1 < \dots < \xi_K$ pode ser representada de maneira única como o modelo linear:*
-   > $$y_i = \beta_0 + \beta_1 x_i + \beta_2 x_i^2 + \beta_3 x_i^3 + \sum_{k=1}^{K} \beta_{3+k}\, h(x_i, \xi_k) + \varepsilon_i$$
-   > *onde a **função de base de potência truncada** é definida por:*
-   > $$h(x, \xi) = (x - \xi)_+^3 = \begin{cases} (x - \xi)^3, & \text{se } x > \xi \\ 0, & \text{se } x \le \xi \end{cases}$$
-   > *Como $h(x, \xi)$, $h'(x, \xi) = 3(x-\xi)_+^2$ e $h''(x, \xi) = 6(x-\xi)_+$ se anulam em $x = \xi$, somar $\beta_{3+k}(x - \xi_k)_+^3$ altera a derivada terceira em $6\beta_{3+k}$ ao cruzar $\xi_k$, preservando automaticamente a continuidade de $f, f'$ e $f''$ em $\xi_k$! O número total de **graus de liberdade** (incluindo o intercepto) de uma spline cúbica com $K$ nós é:*
-   > $$\operatorname{df}_{\text{cubic spline}} = (K + 1)\times 4 - 3K = K + 4 \quad (\text{em geral, } K + d + 1 \text{ para grau } d)$$
-2. **Natural Cubic Splines (Seção 7.4.2):** Como polinômios cúbicos ainda apresentam alta variância além dos nós extremos, uma **Spline Cúbica Natural (*Natural Spline*)** impõe a restrição adicional de que a função seja **linear nas duas regiões de fronteira** ($X < \xi_1$ e $X > \xi_K$, isto é, $f'' = f''' = 0$ fora de $[\xi_1, \xi_K]$). Isso economiza $4$ graus de liberdade ($2$ em cada extremidade), resultando em **$\operatorname{df}_{\text{natural spline}} = K$** graus de liberdade e estimativas muito mais estáveis nas bordas (Figura 6a).
-3. **Smoothing Splines (Splines de Suavização e Graus de Liberdade Efetivos — Seção 7.5):** Buscam a função suave $g$ que minimiza o critério penalizado por rugosidade (Equação 7.11):
-   $$\hat{g}_\lambda = \arg\min_{g} \left\{ \sum_{i=1}^{n}\big(y_i - g(x_i)\big)^2 + \lambda \int g''(t)^2\,dt \right\}$$
-   onde $\lambda \ge 0$ controla o equilíbrio entre fidelidade aos dados e suavidade ($\int g''(t)^2\,dt$ mede a variação total da inclinação $g'(t)$).
-   - **Propriedade Notável (Seção 7.5.1):** A função $\hat{g}_\lambda$ que minimiza a Equação (7.11) sobre todas as funções duas vezes diferenciáveis é, de fato, uma **Spline Cúbica Natural encolhida (*shrunken natural cubic spline*) com nós em todos os valores únicos observados $x_1, \dots, x_n$**!
-   - Quando $\lambda = 0$, $\hat{g}_0$ interpola todos os pontos de treinamento ($n$ graus de liberdade); quando $\lambda \to \infty$, $g''(t) \equiv 0$ força $\hat{g}_\infty$ a ser a **reta de mínimos quadrados ordinários** ($2$ graus de liberdade).
-   - Como o vetor de valores ajustados satisfaz $\hat{g}_\lambda = S_\lambda y$ para uma matriz de suavização linear $S_\lambda$, definem-se os **graus de liberdade efetivos (*effective degrees of freedom*)** pelo traço da matriz (Equação 7.13):
-     $$\operatorname{df}_\lambda = \sum_{i=1}^{n} \{S_\lambda\}_{ii} = \operatorname{tr}(S_\lambda) \in [2, n]$$
-     e o erro de validação cruzada *Leave-One-Out* é calculado instantaneamente pela generalização do atalho da Equação (5.2): $\operatorname{RSS}_{\text{cv}}(\lambda) = \sum_{i=1}^n \left[\frac{y_i - \hat{g}_\lambda(x_i)}{1 - \{S_\lambda\}_{ii}}\right]^2$.
+### 3.3 Matriz de Confusão, Sensibilidade, Especificidade e Curva ROC / AUC (Seção 4.4.2 do ISLP)
+
+Em problemas reais com **classes desbalanceadas** (por exemplo, apenas $1\%$ dos clientes são fraudadores e $99\%$ são honestos), medir apenas a **Acurácia Global** é perigoso: um modelo preguiçoso que chuta *"Todo mundo é honesto"* acerta $99\%$ das vezes, mas **deixa passar $100\%$ das fraudes**!
+
+Por isso, desmembramos os acertos e erros na **Matriz de Confusão** (convencionando $Y=1$ como Positivo e $Y=0$ como Negativo):
+- **Verdadeiros Positivos ($\text{TP}$):** É positivo ($1$) e o modelo previu positivo ($1$).
+- **Falsos Positivos ($\text{FP}$ — Erro Tipo I / Alarme Falso):** É negativo ($0$), mas o modelo previu positivo ($1$).
+- **Verdadeiros Negativos ($\text{TN}$):** É negativo ($0$) e o modelo previu negativo ($0$).
+- **Falsos Negativos ($\text{FN}$ — Erro Tipo II / Omissão):** É positivo ($1$), mas o modelo deixou passar como negativo ($0$).
+
+A partir desses 4 números definimos as métricas essenciais (Tabela 4.7 do ISLP e Raschka Cap. 6):
+$$\text{Sensibilidade (Recall / TPR)} = \frac{\text{TP}}{\text{TP} + \text{FN}} \quad (\text{fração dos positivos reais que capturamos})$$
+$$\text{Especificidade (TNR)} = \frac{\text{TN}}{\text{TN} + \text{FP}} \quad (\text{fração dos negativos reais que acertamos}), \qquad \text{FPR} = 1 - \text{Especificidade} = \frac{\text{FP}}{\text{TN} + \text{FP}}$$
+$$\text{Precisão (Precision)} = \frac{\text{TP}}{\text{TP} + \text{FP}}, \qquad F_1\text{-Score} = 2\cdot\frac{\text{Precisão}\times\text{Recall}}{\text{Precisão} + \text{Recall}}$$
+
+- **Ajustando o Limiar de Decisão (*Threshold*) e a Curva ROC (Figura 4c):**  
+  Por padrão, classificamos como $Y=1$ quando $\hat{p}(X) > 0{,}50$. Mas se perder um positivo for muito grave (como detectar doença grave ou inadimplência), podemos baixar o limiar para **$\hat{p}(X) > 0{,}20$**: isso **aumenta a Sensibilidade (TPR)**, ao custo de **aumentar também a Taxa de Falsos Positivos (FPR)**.  
+  A **Curva ROC (*Receiver Operating Characteristic*)** plota $\text{TPR}$ (eixo vertical) contra $\text{FPR}$ (eixo horizontal) para todos os limiares possíveis entre $0$ e $1$. Quanto mais a curva se aproxima do canto superior esquerdo, melhor é o classificador, o que é resumido pela **AUC (*Area Under the Curve*)**: $\text{AUC} = 0{,}50$ é um chute aleatório (diagonal tracejada) e $\text{AUC} = 1{,}00$ é um separador perfeito.
+
+![Figura 4: Classificação: Logística vs Linear, LDA vs QDA e Curva ROC](./figuras/fig04_classificacao_logistica_lda_qda_roc.svg)
+*Figura 4 — (a) Regressão Linear extrapolando $[0,1]$ versus a função Sigmoide da Regressão Logística (Seção 4.3). (b) Fronteira de decisão linear do LDA ($\Sigma_1 = \Sigma_2$) versus fronteira curva do QDA ($\Sigma_1 \neq \Sigma_2$) (Seção 4.4). (c) Curva ROC e área sob a curva (AUC) (Seção 4.4.2).*
+
+#### Exercícios de Fixação (Seção 3)
+1. *(ISLP, Seção 4.8, Ex. 9)* (a) Se a chance (*odds*) de uma pessoa atrasar o cartão é de $0{,}37$, qual é a probabilidade $p(X)$ de ela atrasar? (b) Se uma segunda pessoa tem probabilidade $p(X) = 0{,}16$ de atrasar, qual é a sua chance (*odds*)? *(Gabarito: (a) Como $\frac{p}{1-p} = 0{,}37 \implies p = \frac{0,37}{1 + 0,37} = \frac{0,37}{1,37} \approx \mathbf{0{,}270}$ ($27{,}0\%$); (b) $\text{odds} = \frac{0,16}{1 - 0,16} = \frac{0,16}{0,84} \approx \mathbf{0{,}190}$).*
 
 ---
 
-### 5.3 Regressão Local (LOESS) e Modelos Aditivos Generalizados (GAMs, Seções 7.6 e 7.7)
-1. **Regressão Local (*Local Regression* / LOESS — Algoritmo 7.1, Seção 7.6):** Para estimar $\hat{f}(x_0)$ num ponto alvo $x_0$: (i) seleciona-se a fração $s = k/n$ (**span**) dos pontos de treinamento mais próximos de $x_0$; (ii) atribui-se um peso $K_{i0} = K(x_i, x_0)$ a cada ponto (máximo em $x_0$ e zero fora da vizinhança de tamanho $s$); (iii) ajusta-se uma **regressão linear ponderada** minimizando $\sum_{i=1}^n K_{i0}(y_i - \beta_0 - \beta_1 x_i)^2$ e define-se $\hat{f}(x_0) = \hat{\beta}_0 + \hat{\beta}_1 x_0$. O parâmetro *span* $s$ desempenha o mesmo papel de $K/n$ no KNN: $s$ pequeno gera curvas onduladas (alta variância), e $s$ grande gera curvas suaves (alto viés).
-2. **Modelos Aditivos Generalizados (GAMs — Seção 7.7):** Estendem a regressão linear múltipla substituindo cada termo linear $\beta_j x_{ij}$ por uma função suave não linear $f_j(x_{ij})$, mantendo a estrutura **aditiva** (Equações 7.15 e 7.18):
-   $$y_i = \beta_0 + \sum_{j=1}^{p} f_j(x_{ij}) + \varepsilon_i \quad (\text{Regressão}) \qquad \text{e} \qquad \ln\left(\frac{p(X)}{1 - p(X)}\right) = \beta_0 + \sum_{j=1}^{p} f_j(X_j) \quad (\text{Classificação Logística})$$
-   - **Como Ajustar um GAM:** Se cada $f_j$ for representada por funções de base (como *natural splines* ou *B-splines*), todo o GAM reduz-se a uma única grande regressão linear múltipla ajustável por mínimos quadrados! Se as $f_j$ forem *smoothing splines* ou regressões locais (LOESS), utiliza-se o algoritmo iterativo de **Backfitting** (Seção 7.7.1 e Ex. 7.9.11): mantendo todas as funções exceto $f_j$ fixas, ajusta-se $f_j$ aplicando o suavizador univariado aos **resíduos parciais** $r_i^{(j)} = y_i - \beta_0 - \sum_{k \neq j} \hat{f}_k(x_{ik})$, ciclando por $j = 1, \dots, p$ até a convergência (centrando cada $\hat{f}_j$ para ter média amostral zero).
-   - **Vantagens e Limitações dos GAMs:** (i) Capturam automaticamente relações não lineares em cada preditor sem exigir busca manual de transformações; (ii) Pela aditividade, mantêm a interpretabilidade: podemos plotar cada efeito parcial $\hat{f}_j(X_j)$ mantendo as demais variáveis fixas; (iii) A suavidade de cada $f_j$ é resumida pelos graus de liberdade $\operatorname{df}_j$; (iv) **Principal limitação:** o modelo é restrito a ser aditivo, podendo perder interações importantes, a menos que adicionemos explicitamente produtos $X_j \times X_k$ ou superfícies bivariadas $f_{jk}(X_j, X_k)$.
+## 4. Métodos de Reamostragem: Validação Cruzada e Bootstrap (ISLP Cap. 5; Raschka Cap. 6)
 
-![Figura 6: Regressão Polinomial, Splines e Modelos Aditivos Generalizados (GAMs)](./figuras/fig06_splines_suavizacao_gams.svg)
-*Figura 6 — (a) Polinômio de grau $15$ comparado a uma Cubic Spline e a uma Natural Cubic Spline com $K=3$ nós (Seções 7.1 e 7.4). (b) Componentes aditivas suaves centradas $\hat{f}_j(X_j)$ em um Modelo Aditivo Generalizado (GAM) (Seção 7.7).*
+### 4.1 A Intuição da Reamostragem: Como Estimar o Erro de Teste Sem Desperdiçar Dados? (Seção 5.1)
 
-#### Exercícios de Fixação (Capítulo 7)
-1. *(ISLP, Seção 7.9, Ex. 2)* Considere o estimador $\hat{g} = \arg\min_g \left\{\sum_{i=1}^n (y_i - g(x_i))^2 + \lambda \int [g^{(m)}(x)]^2\,dx\right\}$, onde $g^{(m)}$ é a $m$-ésima derivada de $g$. Que curva $\hat{g}$ é obtida quando: (a) $\lambda = \infty, m = 0$; (b) $\lambda = \infty, m = 1$; (c) $\lambda = \infty, m = 2$; (d) $\lambda = \infty, m = 3$; (e) $\lambda = 0, m = 3$? *(Gabarito: Quando $\lambda = \infty$, a integral de $[g^{(m)}(x)]^2$ deve ser nula, isto é, $g^{(m)}(x) \equiv 0$, logo $g$ é o polinômio de grau $m-1$ que minimiza o $\operatorname{RSS}$: (a) $g(x) \equiv 0$; (b) reta horizontal constante $\hat{g}(x) = \bar{y}$; (c) reta de mínimos quadrados $\hat{\beta}_0 + \hat{\beta}_1 x$; (d) parábola quadrática de mínimos quadrados $\hat{\beta}_0 + \hat{\beta}_1 x + \hat{\beta}_2 x^2$; (e) quando $\lambda = 0$, a penalidade desaparece e $\hat{g}$ interpola exatamente todos os pontos $(x_i, y_i)$ com $\operatorname{RSS} = 0$).*
+Na vida real, raramente temos um segundo banco de dados gigante esperando para servir de teste. Temos apenas as nossas $n$ observações! Como usar essas mesmas $n$ observações tanto para **treinar** o modelo quanto para **estimar honestamente seu erro de teste** (e escolher o melhor grau de polinômio, o melhor $K$ do KNN ou o melhor $\lambda$ da regularização)?
 
----
+Existem três estratégias de **Validação Cruzada (*Cross-Validation*)**:
 
-## 6. Métodos Baseados em Árvores e Aprendizado por Ensembles (Capítulo 8)
-
-### 6.1 Árvores de Decisão: Regressão, Classificação, Impureza de Nó e Poda (Seção 8.1)
-1. **Árvores de Regressão e Divisão Binária Recursiva (*Recursive Binary Splitting* — Seção 8.1.1):** Divide-se o espaço de preditores em $J$ caixas retangulares disjuntas (regiões ou folhas) $R_1, R_2, \dots, R_J$, predizendo para qualquer observação que caia em $R_j$ a **média das respostas** de treino naquela região: $\hat{y}_{R_j} = \frac{1}{|R_j|}\sum_{i \in R_j} y_i$. Como encontrar a partição global que minimiza $\sum_{j=1}^J \sum_{i \in R_j} (y_i - \hat{y}_{R_j})^2$ é computacionalmente intratável, utiliza-se uma abordagem **top-down e gulosa (*greedy*)**: em cada passo, escolhem-se o preditor $X_j$ e o ponto de corte $s$ que dividem o nó atual nos semiespaços $R_1(j, s) = \{X \mid X_j < s\}$ e $R_2(j, s) = \{X \mid X_j \ge s\}$ produzindo a maior redução imediata no $\operatorname{RSS}$ (Equação 8.3):
-   $$\min_{j,\, s} \left[ \sum_{i:\, x_i \in R_1(j, s)} (y_i - \hat{y}_{R_1})^2 + \sum_{i:\, x_i \in R_2(j, s)} (y_i - \hat{y}_{R_2})^2 \right]$$
-2. **Poda por Custo-Complexidade (*Cost Complexity Pruning* / *Weakest Link Pruning* — Algoritmo 8.1):** Uma árvore grande $T_0$ tende a sobreajustar os dados, mas parar de dividir cedo demais pode perder um bom corte subsequente. Por isso, cresce-se uma árvore grande $T_0$ e poda-se de volta buscando, para cada $\alpha \ge 0$, a subárvore $T \subset T_0$ que minimiza (Equação 8.4):
-   $$C_\alpha(T) = \sum_{m=1}^{|T|} \sum_{i:\, x_i \in R_m} (y_i - \hat{y}_{R_m})^2 + \alpha |T| = \operatorname{RSS}(T) + \alpha |T|$$
-   onde $|T|$ é o número de nós terminais (folhas) da subárvore $T$ e $\alpha \ge 0$ (escolhido por validação cruzada) penaliza a complexidade da árvore de forma análoga ao $\lambda$ do Lasso.
-3. **Árvores de Classificação e Medidas de Impureza de Nó (Seção 8.1.2):** Numa árvore de classificação, prediz-se na região $R_m$ a **classe mais frequente (moda)** dentre as observações de treinamento em $R_m$. Sendo $\hat{p}_{mk}$ a proporção de observações de treino na região $R_m$ pertencentes à $k$-ésima classe ($k = 1, \dots, K$), avaliam-se três medidas de impureza (Equações 8.5 a 8.7):
-   - **Taxa de Erro de Classificação:** $\quad E = 1 - \max_{k}(\hat{p}_{mk})$;
-   - **Índice de Gini:** $\quad G = \sum_{k=1}^{K} \hat{p}_{mk}(1 - \hat{p}_{mk}) = 1 - \sum_{k=1}^{K} \hat{p}_{mk}^2$;
-   - **Entropia (Desvio / *Cross-Entropy*):** $\quad D = -\sum_{k=1}^{K} \hat{p}_{mk}\ln \hat{p}_{mk}$.
-
-   Tanto o **Índice de Gini** quanto a **Entropia** assumem valores próximos de zero se todas as $\hat{p}_{mk}$ estiverem próximas de $0$ ou $1$ (**pureza do nó**), e são **muito mais sensíveis à pureza dos nós do que a taxa de erro $E$** (que é linear por partes, Figura 7a). Por isso, usa-se o Índice de Gini ou a Entropia durante o crescimento da árvore para avaliar a qualidade dos cortes, enquanto a taxa de erro $E$ pode ser usada na poda se o objetivo final for a acurácia de classificação.
+1. **Abordagem do Conjunto de Validação Simples (*Holdout*, Seção 5.1.1):**  
+   Sorteamos aleatoriamente metade dos dados (ou $70\%/80\%$) para **Treino** e guardamos a outra parte para **Validação**.  
+   - *Dois problemas:* (i) a estimativa do erro muda bastante dependendo de quais pontos caíram no sorteio (alta variância); (ii) como treinamos o modelo com menos dados, ele fica pior do que se usasse os $n$ pontos, superestimando o erro de teste (viés para cima).
+2. **Validação Cruzada *Leave-One-Out* (LOOCV — "Deixe Um de Fora", Seção 5.1.2):**  
+   Em vez de dividir ao meio, fazemos $n$ rodadas: na rodada $i$, tiramos **apenas a $i$-ésima observação $(x_i, y_i)$** para servir de teste, treinamos o modelo nas outras $n - 1$ observações, fazemos a previsão $\hat{y}_{(-i)}$ para o ponto que ficou de fora, e calculamos seu erro $\operatorname{MSE}_i = (y_i - \hat{y}_{(-i)})^2$. A estimativa final é a média dos $n$ erros:
+   $$\operatorname{CV}_{(n)} = \frac{1}{n}\sum_{i=1}^{n} \big(y_i - \hat{y}_{(-i)}\big)^2$$
+   > **O Atalho Mágico do LOOCV na Regressão Linear/Polinomial (Equação 5.2 do ISLP):**  
+   > Normalmente, o LOOCV exige treinar o modelo $n$ vezes. Porém, para qualquer modelo ajustado por **Mínimos Quadrados (OLS)**, vale a identidade algébrica exata:
+   > $$\operatorname{CV}_{(n)} = \frac{1}{n}\sum_{i=1}^{n} \left(\frac{y_i - \hat{y}_i}{1 - h_i}\right)^2$$
+   > onde $\hat{y}_i$ é a previsão de **um único ajuste** feito nos $n$ pontos completos e $h_i \in [1/n, 1)$ é a alavancagem da observação $i$! Ou seja, calculamos o LOOCV instantaneamente com custo de 1 único treino!
+3. **Validação Cruzada $k$-Fold ($k = 5$ ou $k = 10$ — O Padrão-Ouro Prático, Seção 5.1.3 e Figura 5a):**  
+   Embaralhamos os dados e os dividimos em **$k$ partes (blocos ou *folds*) de tamanhos iguais** (tipicamente $k = 5$ ou $k = 10$). Fazemos $k$ rodadas: na rodada $j$, o bloco $j$ serve de **Validação** ($20\%$ dos dados para $k=5$) e os outros $k - 1$ blocos juntos servem de **Treino** ($80\%$ dos dados). Ao final, tiramos a média dos $k$ erros:
+   $$\operatorname{CV}_{(k)} = \frac{1}{k}\sum_{j=1}^{k} \operatorname{MSE}_j$$
+   - **Por que $5$-Fold ou $10$-Fold é melhor que o LOOCV ($k = n$)? (Seção 5.1.4):**  
+     Além de ser muito mais rápido (treina só $5$ ou $10$ vezes em vez de $n$ vezes), o $k$-Fold tem **menor variância** que o LOOCV! No LOOCV, os $n$ conjuntos de treino de tamanho $n-1$ são quase idênticos entre si, gerando $n$ modelos fortemente correlacionados; já no $5$-Fold ou $10$-Fold os blocos são menos sobrepostos, tornando a média $\operatorname{CV}_{(k)}$ estatisticamente mais estável.
 
 ---
 
-### 6.2 Bagging, Random Forests, Boosting e BART (Seção 8.2)
-Árvores de decisão únicas possuem alta variância (dividir os dados de treino ao meio pode gerar duas árvores completamente diferentes) e menor acurácia preditiva que modelos lineares/aditivos quando a fronteira não é alinhada aos eixos. Os métodos de **Ensemble** combinam centenas ou milhares de árvores:
+### 4.2 O Bootstrap: Amostragem com Reposição e a Origem dos $63{,}2\%$ (Seção 5.2 do ISLP)
 
-1. **Bagging (*Bootstrap Aggregation* — Seção 8.2.1):** Como a variância da média $\bar{Z} = \frac{1}{B}\sum_{i=1}^B Z_i$ de $B$ variáveis independentes de variância $\sigma^2$ cai para $\sigma^2 / B$, o **Bagging** gera $B$ conjuntos de treinamento bootstrap, ajusta uma árvore profunda **não podada** $\hat{f}^{*b}(x)$ (de baixo viés e alta variância) em cada amostra e tira a **média das predições** em regressão (Equação 8.8):
-   $$\hat{f}_{\text{bag}}(x) = \frac{1}{B}\sum_{b=1}^{B} \hat{f}^{*b}(x)$$
-   ou aplica o **voto majoritário (*majority vote*)** nas classes preditas em classificação. *(Atenção: aumentar o número de árvores $B$ no Bagging e no Random Forest **não causa overfitting**; o erro de teste estabiliza num patamar assintótico).*
-   - **Estimação de Erro Out-of-Bag (OOB):** Como cada árvore $b$ usa cerca de $2/3$ ($63{,}2\%$) das observações, podemos prever a $i$-ésima observação usando apenas a média (ou voto majoritário) das cerca de $B/3$ árvores nas quais a observação $i$ ficou **Out-of-Bag**. O **erro OOB** é uma estimativa válida do erro de teste obtida de graça, equivalendo assintoticamente ao erro LOOCV para $B$ grande!
-   - **Importância das Variáveis (*Variable Importance*):** Ao combinar $B$ árvores, perde-se a visualização de uma árvore única, mas quantifica-se a importância de cada preditor $X_j$ somando a redução total no $\operatorname{RSS}$ (em regressão) ou no Índice de Gini / Entropia (em classificação) proporcionada por todos os cortes sobre $X_j$, promediada nas $B$ árvores.
-2. **Random Forests (Descorrelação das Árvores — Seção 8.2.2):** Se existir um preditor muito forte nos dados, quase todas as árvores do Bagging usarão esse mesmo preditor no corte de topo, tornando as $B$ árvores **altamente correlacionadas** (e a média de quantidades correlacionadas com correlação $\rho$ tem variância $\rho\sigma^2 + \frac{1-\rho}{B}\sigma^2$, limitando a redução de variância!).  
-   O **Random Forest** resolve isso modificando cada divisão de nó: **antes de cada corte (*split*), sorteia-se aleatoriamente uma amostra de apenas $m$ preditores candidatos dentre os $p$ totais**, permitindo que o corte use apenas um desses $m$ preditores (tipicamente **$m \approx \sqrt{p}$** em classificação ou $m \approx p/3$ em regressão; note que $m = p$ recupera exatamente o Bagging!). Isso dá chance aos demais preditores e **descorrelaciona as árvores**, reduzindo substancialmente a variância da média (Figura 7b).
-3. **Boosting (Aprendizado Sequencial Lento sobre os Resíduos — Algoritmo 8.2, Seção 8.2.3):** Diferentemente do Bagging (onde as árvores são independentes em amostras bootstrap), no **Boosting** as árvores são construídas **sequencialmente**, cada uma ajustada aos **resíduos atuais** do modelo:
-   - **Passo 1:** Defina $\hat{f}(x) = 0$ e $r_i = y_i$ para todo $i$ no conjunto de treinamento.
-   - **Passo 2:** Para $b = 1, 2, \dots, B$, repita:
-     (a) Ajuste uma árvore pequena $\hat{f}^b$ com $d$ cortes ($d + 1$ nós terminais) aos dados de treino $(X, r)$;  
-     (b) Atualize $\hat{f}$ somando uma versão encolhida da nova árvore: $\hat{f}(x) \leftarrow \hat{f}(x) + \lambda \hat{f}^b(x)$;  
-     (c) Atualize os resíduos: $r_i \leftarrow r_i - \lambda \hat{f}^b(x_i)$.
-   - **Passo 3:** A árvore impulsionada final é $\hat{f}(x) = \sum_{b=1}^{B} \lambda \hat{f}^b(x)$.  
-   O Boosting possui **três hiperparâmetros de sintonização**: (i) o número de árvores $B$ (ao contrário do Bagging/Random Forest, no Boosting **um $B$ excessivamente grande pode causar overfitting**, embora lentamente, devendo ser escolhido por validação cruzada); (ii) o parâmetro de encolhimento $\lambda > 0$ (tipicamente $0{,}01$ ou $0{,}001$, que controla a taxa de aprendizado); e (iii) o número $d$ de cortes em cada árvore (**profundidade de interação**: quando **$d = 1$**, cada árvore é um **toco / *stump*** envolvendo uma única variável, e o modelo final reduz-se a um **Modelo Aditivo** $f(X) = \sum_{j=1}^p f_j(X_j)$, conforme mostra o Ex. 8.4.2!).
-4. **Bayesian Additive Regression Trees (BART — Algoritmo 8.3, Seção 8.2.4):** Combina as ideias de Random Forests e Boosting numa formulação probabilística bayesiana: na $k$-ésima árvore da iteração $b$ de Markov Chain Monte Carlo (MCMC), atualiza-se $\hat{f}^b_k$ perturbando aleatoriamente a estrutura da árvore da iteração anterior $\hat{f}^{b-1}_k$ (adicionando/podando ramos ou alterando predições foliares) sobre o resíduo parcial $r_i = y_i - \sum_{k' < k}\hat{f}^b_{k'}(x_i) - \sum_{k' > k}\hat{f}^{b-1}_{k'}(x_i)$. Após descartar as primeiras $L$ iterações de aquecimento (*burn-in*), as amostras posteriores fornecem tanto a predição pontual quanto intervalos de credibilidade para $\hat{f}(x)$.
+Suponha que você calculou uma estatística qualquer na sua amostra (por exemplo, a mediana dos salários, os coeficientes de um modelo não linear ou a fração ótima $\hat{\alpha}$ de investimento entre duas ações) e quer descobrir **qual é o erro-padrão (a incerteza) dessa estimativa**, sem ter fórmulas prontas e sem poder coletar novas amostras no mundo real.
 
-![Figura 7: Medidas de Impureza de Nó e Erro de Teste em Ensembles de Árvores](./figuras/fig07_arvores_decisao_impureza_ensembles.svg)
-*Figura 7 — (a) Comparação entre Entropia, Índice de Gini e Taxa de Erro de Classificação em função de $\hat{p}_{m1}$ para $K=2$ classes (Seção 8.1.2 e Ex. 8.4.3). (b) Evolução da taxa de erro de teste em função do número de árvores $B$ para Bagging, Random Forest ($m = \sqrt{p}$) e Gradient Boosting (Seção 8.2).*
+O **Bootstrap** (proposto por Bradley Efron em 1979) resolve isso tratando a própria amostra original $Z = \{z_1, \dots, z_n\}$ como uma "mini-população":
+1. Sorteamos $n$ observações **COM REPOSIÇÃO** a partir de $Z$, formando uma **amostra de Bootstrap $Z^{*1}$** de mesmo tamanho $n$ (como há reposição, alguns pontos originais aparecem repetidos $2$ ou $3$ vezes em $Z^{*1}$, e outros ficam de fora!).
+2. Repetimos esse sorteio $B$ vezes (ex.: $B = 1.000$), obtendo $Z^{*1}, Z^{*2}, \dots, Z^{*B}$ e calculando a estimativa $\hat{\alpha}^{*r}$ em cada uma delas.
+3. O desvio-padrão das $B$ estimativas $\hat{\alpha}^{*1}, \dots, \hat{\alpha}^{*B}$ é a **Estimativa Bootstrap do Erro-Padrão** (Equação 5.8 do ISLP):
+   $$\operatorname{SE}_B(\hat{\alpha}) = \sqrt{\frac{1}{B - 1}\sum_{r=1}^{B} \left(\hat{\alpha}^{*r} - \frac{1}{B}\sum_{r'=1}^{B} \hat{\alpha}^{*r'}\right)^2}$$
 
-> **[Complemento — Raschka et al., *ML with PyTorch and Scikit-Learn*, Cap. 7, Seções 7.1–7.5]:**  
-> Raschka aprofunda três técnicas de ensemble amplamente utilizadas na prática:
-> 1. **Classificador de Voto Majoritário / Ponderado (`VotingClassifier`, Seção 7.1):** Se combinarmos $n$ classificadores binários independentes, cada um com taxa de erro $\varepsilon < 0{,}5$, a probabilidade de a decisão por voto majoritário estar errada é dada pela cauda da distribuição binomial $\varepsilon_{\text{ensemble}} = \sum_{k=\lceil n/2 \rceil}^{n} \binom{n}{k}\varepsilon^k(1-\varepsilon)^{n-k}$ (por exemplo, para $n = 11$ classificadores com $\varepsilon = 0{,}25$, o erro do ensemble cai para apenas $\mathbf{0{,}034}$!). No *soft voting*, ponderam-se as probabilidades preditas $\hat{y} = \arg\max_i \sum_{j=1}^m w_j p_{ij}$.
-> 2. **AdaBoost (*Adaptive Boosting*, Freund & Schapire, 1997 — Seção 7.3):** Em vez de ajustar árvores aos resíduos, o AdaBoost mantém um vetor de **pesos amostrais $w^{(i)}$** sobre os exemplos de treinamento (inicializados em $1/n$). Em cada rodada $j$: (a) treina um classificador fraco $C_j$ (tipicamente um *decision stump* $d=1$) minimizando a taxa de erro ponderada $\varepsilon_j = \sum_{i} w^{(i)} I(\hat{y}_j^{(i)} \neq y^{(i)})$; (b) calcula o peso do classificador $\alpha_j = \frac{1}{2}\ln\left(\frac{1 - \varepsilon_j}{\varepsilon_j}\right)$; (c) **aumenta exponencialmente os pesos das amostras classificadas incorretamente** e reduz os das corretas: $w^{(i)} \leftarrow w^{(i)}\exp(-\alpha_j y^{(i)}\hat{y}_j^{(i)})$ (com $y^{(i)}, \hat{y}_j^{(i)} \in \{-1, +1\}$), normalizando $\sum_i w^{(i)} = 1$.
-> 3. **Gradient Boosting Geral e XGBoost (Seção 7.4):** Generaliza o Boosting para qualquer função de perda diferenciável $L(y_i, F(x_i))$ ajustando a $m$-ésima árvore aos **pseudo-resíduos (gradientes negativos da perda)** $r_{im} = -\left[\frac{\partial L(y_i, F(x_i))}{\partial F(x_i)}\right]_{F = F_{m-1}}$. O **XGBoost** (Chen & Guestrin, 2016) expande a função de perda em **série de Taylor de 2ª ordem** usando tanto o gradiente $g_i$ quanto a hessiana $h_i$, inclui regularização explícita $\Omega(T) = \gamma |T| + \frac{1}{2}\lambda \sum_{j=1}^{|T|} w_j^2$ sobre as folhas e utiliza histogramas aproximados (quantis) e paralelismo para escalar a grandes volumes de dados.
+> **Teorema 4.1 (Quantas observações entram em cada amostra de Bootstrap? — Ex. 5.4.2 do ISLP e Figura 5c):**  
+> *Em cada um dos $n$ sorteios com reposição, a probabilidade de NÃO sortear uma observação específica $z_j$ é $1 - \frac{1}{n}$. Como os $n$ sorteios são independentes, a probabilidade de $z_j$ ficar totalmente de fora da amostra de Bootstrap é $\left(1 - \frac{1}{n}\right)^n \xrightarrow{n \to \infty} e^{-1} \approx 0{,}3679$ ($36{,}8\%$). Logo, a probabilidade de $z_j$ estar presente na amostra de Bootstrap é:*
+> $$\Pr(z_j \in Z^*) = 1 - \left(1 - \frac{1}{n}\right)^n \xrightarrow{n \to \infty} 1 - e^{-1} \approx \mathbf{0{,}6321 \;\; (63{,}2\%)}$$
+> *Ou seja, cada amostra de Bootstrap contém cerca de **$63{,}2\%$** das observações originais distintas, deixando **$36{,}8\%$** de fora — chamadas de observações **Out-of-Bag (OOB)**, que usaremos como conjunto de teste gratuito no Bagging e nas Random Forests (Seção 7)!*
 
-#### Exercícios de Fixação (Capítulo 8)
-1. *(ISLP, Seção 8.4, Ex. 2)* Prove que o algoritmo de Boosting (Algoritmo 8.2) utilizando árvores de profundidade $d = 1$ (*stumps*) produz sempre um **modelo aditivo** da forma $f(X) = \sum_{j=1}^p f_j(X_j)$. *(Dica: Uma árvore com um único corte na variável $X_{j_b}$ depende exclusivamente de $X_{j_b}$, isto é, $\hat{f}^b(X) = g_b(X_{j_b})$. Agrupando na soma $\sum_{b=1}^B \lambda \hat{f}^b(X)$ todas as árvores que cortaram a variável $X_j$, obtém-se $f_j(X_j) = \sum_{b:\, j_b = j} \lambda g_b(X_j)$).*
-2. *(ISLP, Seção 8.4, Ex. 5 — Voto Majoritário vs. Probabilidade Média)* Dez árvores de classificação ajustadas em amostras bootstrap produziram, para um ponto $X$, as estimativas de $\Pr(\text{Classe} = \text{Red} \mid X)$: $0{,}1;\; 0{,}15;\; 0{,}2;\; 0{,}2;\; 0{,}55;\; 0{,}6;\; 0{,}6;\; 0{,}65;\; 0{,}7\text{ e } 0{,}75$. Qual é a classificação final por (a) voto majoritário e (b) probabilidade média? *(Gabarito: (a) Há $6$ estimativas $> 0{,}5$ e $4$ estimativas $< 0{,}5$, logo pelo voto majoritário a classe predita é **Red**; (b) A média das $10$ probabilidades é $\bar{p} = \frac{4{,}50}{10} = 0{,}45 < 0{,}5$, logo pela probabilidade média a classe predita é **Green**!).*
+![Figura 5: Validação Cruzada k-Fold e Bootstrap](./figuras/fig05_validacao_cruzada_kfold_bootstrap.svg)
+*Figura 5 — (a) Esquema visual da Validação Cruzada $5$-Fold (em cada iteração, 1 bloco é validação e 4 são treino). (b) Uso da curva de erro de Validação Cruzada para escolher o grau polinomial ótimo $d^* = 4$. (c) Probabilidade de inclusão $1 - (1 - 1/n)^n \to 0{,}6321$ no Bootstrap e fração Out-of-Bag ($36{,}8\%$) (ISLP Cap. 5).*
+
+#### Exercícios de Fixação (Seção 4)
+1. *(ISLP, Seção 5.4, Ex. 2)* Para um banco de dados com apenas $n = 5$ observações, qual é a probabilidade exata de a 1ª observação estar presente em uma amostra de *bootstrap*? *(Gabarito: $1 - (1 - 1/5)^5 = 1 - (0{,}8)^5 = 1 - 0{,}32768 = \mathbf{0{,}67232}$ ou $67{,}2\%$).*
 
 ---
 
-## 7. Máquinas de Vetores de Suporte — Support Vector Machines (Capítulo 9)
+## 5. Seleção de Variáveis e Regularização: Ridge, Lasso e Redução de Dimensão (ISLP Cap. 6; Raschka Cap. 4)
 
-### 7.1 Hiperplano Separador, Classificador de Margem Máxima e Classificador de Vetores de Suporte (Seções 9.1 e 9.2)
-Em $\mathbb{R}^p$, um **hiperplano** é um subespaço afim de dimensão $p - 1$ definido pela equação $\beta_0 + \beta_1 X_1 + \beta_2 X_2 + \dots + \beta_p X_p = 0$. Dadas $n$ observações de treinamento $x_1, \dots, x_n \in \mathbb{R}^p$ com rótulos de classe **$y_1, \dots, y_n \in \{-1, +1\}$**, um hiperplano separa perfeitamente as classes se $y_i(\beta_0 + \beta_1 x_{i1} + \dots + \beta_p x_{ip}) > 0$ para todo $i = 1, \dots, n$.
+### 5.1 Por Que Ir Além dos Mínimos Quadrados Comuns? (Seção 6.1)
 
-1. **Classificador de Margem Máxima (*Maximal Margin Classifier* — Seção 9.1.3):** Quando as classes são linearmente separáveis, existem infinitos hiperplanos separadores. Escolhe-se o hiperplano cuja distância perpendicular mínima às observações de treinamento — chamada **margem $M$** — seja a maior possível (Equações 9.9–9.11):
-   $$\max_{\beta_0, \beta_1, \dots, \beta_p,\, M} M \quad \text{sujeito a} \quad \sum_{j=1}^{p} \beta_j^2 = 1 \quad \text{e} \quad y_i(\beta_0 + \beta_1 x_{i1} + \dots + \beta_p x_{ip}) \ge M \;\; (\forall i = 1, \dots, n)$$
-   Como $\|\beta\|_2 = 1$, a quantidade $y_i(\beta_0 + \beta^T x_i)$ é exatamente a distância perpendicular da $i$-ésima observação ao hiperplano. As observações equidistantes que ficam exatamente sobre as linhas tracejadas da margem ($y_i(\beta_0 + \beta^T x_i) = M$) são os **Vetores de Suporte (*Support Vectors*)**: o hiperplano ótimo depende **exclusivamente** desses poucos pontos; mover qualquer outra observação (desde que não cruze a margem) não altera em nada o hiperplano!
-2. **Classificador de Vetores de Suporte (*Support Vector Classifier* / Margem Suave — Seção 9.2):** Como na maioria dos dados reais não existe hiperplano separador (ou o hiperplano de margem rígida é hipersensível a um único *outlier*), permite-se que algumas observações violem a margem ou até o hiperplano introduzindo **variáveis de folga (*slack variables*) $\epsilon_1, \dots, \epsilon_n \ge 0$** (Equações 9.12–9.15):
-   $$\max_{\beta_0, \dots, \beta_p,\, \epsilon_1, \dots, \epsilon_n,\, M} M \quad \text{sujeito a} \quad \sum_{j=1}^{p}\beta_j^2 = 1, \quad y_i(\beta_0 + \beta_1 x_{i1} + \dots + \beta_p x_{ip}) \ge M(1 - \epsilon_i)$$
-   $$\epsilon_i \ge 0, \qquad \sum_{i=1}^{n} \epsilon_i \le C$$
-   - Se **$\epsilon_i = 0$**, a $i$-ésima observação está do lado correto da margem;
-   - Se **$\epsilon_i > 0$**, a $i$-ésima observação violou a margem (**lado errado da margem**);
-   - Se **$\epsilon_i > 1$**, a $i$-ésima observação está do **lado errado do hiperplano** (classificada incorretamente!).
-   - O parâmetro de orçamento **$C \ge 0$** controla o **trade-off viés-variância**: como no máximo $\lfloor C \rfloor$ observações podem ter $\epsilon_i > 1$, um **$C$ grande** (no ISLP) tolera muitas violações, resultando numa **margem larga** com muitos vetores de suporte (**alto viés, baixa variância**); um **$C$ pequeno** no ISLP ($C = 0$ recupera o classificador de margem máxima) exige margens estreitas raramente violadas (**baixo viés, alta variância**). *(Nota de implementação importante — Seção 9.6.1 do ISLP e Cap. 3 de Raschka: na biblioteca `scikit-learn`, o parâmetro `C` de `SVC(C=...)` multiplica a soma das folgas na função objetivo $\frac{1}{2}\|w\|^2 + C_{\text{sklearn}}\sum \xi_i$, agindo de forma **inversa** ao orçamento $C$ da Equação 9.15 do ISLP: em `scikit-learn`, `C` pequeno = margem larga/mais regularização, e `C` grande = margem estreita/menos regularização!).*
-   - Aqui, os **Vetores de Suporte** são todas as observações que ficam **sobre a margem ($\epsilon_i = 0$ com igualdade) ou que violam a margem ($\epsilon_i > 0$)**. Observações estritamente do lado correto da margem não afetam o classificador!
+Imagine que você tem um banco de dados com $p = 50$ variáveis preditoras (ou até $p > n$, quando há mais colunas de atributos do que linhas de pacientes!). Se você jogar todas as $50$ variáveis na Regressão Linear comum (OLS), acontecem dois problemas graves:
+1. **Explosão da Variância (*Overfitting*):** Muitas dessas $50$ variáveis são irrelevantes ($\beta_j = 0$ na realidade). O método de Mínimos Quadrados vai atribuir pesos diferentes de zero para **todas as 50 variáveis** só para perseguir o ruído da amostra de treino, piorando o erro de teste (e se $p > n$, o OLS nem sequer tem solução única!).
+2. **Perda de Interpretabilidade:** Um médico ou gestor não quer uma equação poluída com $50$ variáveis se apenas $4$ ou $5$ delas realmente importam.
+
+O Capítulo 6 do ISLP apresenta **três caminhos** para resolver isso:
+1. **Seleção de Subconjuntos (*Subset Selection*):** Escolher apenas as $k$ variáveis mais úteis entre as $p$ disponíveis e descartar o resto.
+2. **Regularização / Encolhimento (*Shrinkage* — Ridge e Lasso):** Ajustar o modelo com todas as $p$ variáveis, mas adicionando um **"freio" (penalidade $\lambda$)** que encolhe os coeficientes $\hat{\beta}_j$ em direção a zero (reduzindo drasticamente a variância!).
+3. **Redução de Dimensionalidade Supervisionada (PCR e PLS):** Resumir as $p$ variáveis originais em $M < p$ combinações lineares antes de fazer a regressão.
 
 ---
 
-### 7.2 Support Vector Machines (Kernels Não Lineares), Multiclasse e Hinge Loss (Seções 9.3 a 9.5)
-1. **A Máquina de Vetores de Suporte e o Truque do Kernel (*Kernel Trick* — Seção 9.3):** A solução do problema de otimização do *Support Vector Classifier* depende das observações apenas através de seus **produtos internos** $\langle x_i, x_{i'}\rangle = \sum_{j=1}^p x_{ij}x_{i'j}$, de modo que a função de decisão linear escreve-se $f(x) = \beta_0 + \sum_{i \in \mathcal{S}} \alpha_i \langle x, x_i\rangle$, onde $\mathcal{S}$ é o conjunto de índices dos vetores de suporte (onde $\alpha_i \neq 0$).  
-   Substituindo cada produto interno por uma **função de Kernel simétrica positiva definida $K(x_i, x_{i'})$** que quantifica a similaridade entre duas observações, obtém-se a **Support Vector Machine (SVM)** (Equação 9.23):
-   $$f(x) = \beta_0 + \sum_{i \in \mathcal{S}} \alpha_i K(x, x_i)$$
-   Principais escolhas de Kernel (Equações 9.21, 9.22 e 9.24):
-   - **Kernel Linear:** $\quad K(x_i, x_{i'}) = \sum_{j=1}^{p} x_{ij} x_{i'j}$ (recupera o *Support Vector Classifier*);
-   - **Kernel Polinomial de Grau $d$:** $\quad K(x_i, x_{i'}) = \left(1 + \sum_{j=1}^{p} x_{ij} x_{i'j}\right)^d$;
-   - **Kernel Radial (RBF — *Radial Basis Function*):** $\quad K(x_i, x_{i'}) = \exp\left(-\gamma \sum_{j=1}^{p} (x_{ij} - x_{i'j})^2\right) = \exp\left(-\gamma \|x_i - x_{i'}\|_2^2\right)$ ($\gamma > 0$).  
-     O Kernel Radial tem comportamento altamente **local**: se $x^*$ estiver longe de $x_i$ na distância euclidiana, $\|x^* - x_i\|_2^2$ é grande e $K(x^*, x_i) \approx 0$, de modo que apenas vetores de suporte próximos de $x^*$ influenciam sua classificação! Além disso, o espaço de características implícito do Kernel Radial tem **dimensão infinita**, mas graças ao *Kernel Trick* nunca precisamos projetar os dados explicitamente nesse espaço, bastando avaliar $K(x_i, x_{i'})$ para os $\binom{n}{2}$ pares de observações.
-2. **SVMs com Mais de Duas Classes ($K > 2$ — Seção 9.4):**
-   - **Um-Contra-Um (*One-Versus-One* — OVO / *All-Pairs*):** Ajusta $\binom{K}{2}$ SVMs binárias (uma para cada par de classes $\{k, k'\}$) e classifica $x^*$ na classe que vencer o maior número de duelos pareados.
-   - **Um-Contra-Todos (*One-Versus-All* — OVA / *One-Versus-Rest*):** Ajusta $K$ SVMs binárias (cada uma comparando a classe $k$ codificada como $+1$ contra todas as outras $K-1$ classes reunidas como $-1$), atribuindo $x^*$ à classe $k$ para a qual $\hat{f}_k(x^*) = \hat{\beta}_{0k} + \dots$ seja máximo.
-3. **Relação com a Regressão Logística e a Função *Hinge Loss* (Seção 9.5):** O problema do *Support Vector Classifier* (Equações 9.12–9.15) pode ser reescrito exatamente na forma de **Perda + Penalidade** (Equação 9.25):
-   $$\min_{\beta_0, \beta_1, \dots, \beta_p} \left\{ \sum_{i=1}^{n} \max\Big(0,\; 1 - y_i(\beta_0 + \beta_1 x_{i1} + \dots + \beta_p x_{ip})\Big) + \lambda \sum_{j=1}^{p} \beta_j^2 \right\}$$
-   A função $L(y_i, f(x_i)) = \max\big(0, 1 - y_i f(x_i)\big)$ denomina-se **Hinge Loss (Perda Dobradiça)**. Comparada à perda da Regressão Logística $\ln(1 + e^{-y_i f(x_i)})$ (Figura 8b):
-   - Ambas decrescem de forma muito semelhante quando a margem funcional $y_i f(x_i)$ cresce, explicando por que **SVM Linear e Regressão Logística com penalização Ridge ($\ell_2$) produzem resultados muito próximos**;
-   - Contudo, a **Hinge Loss vale exatamente zero** para toda observação com $y_i f(x_i) \ge 1$ (do lado correto da margem), conferindo esparsidade nos vetores de suporte, enquanto a perda logística é sempre estritamente positiva (embora tenda a zero), de modo que todas as observações têm algum peso no ajuste logístico;
-   - Quando as classes são muito bem separadas, o **LDA e a SVM** superam a Regressão Logística; em regimes com forte sobreposição entre as classes, a **Regressão Logística** é frequentemente preferida por estimar diretamente probabilidades calibradas.
+### 5.2 Seleção de Subconjuntos (*Best Subset* vs. *Stepwise*) e Critérios Penalizados ($C_p$, AIC, BIC e $R^2_{\text{adj}}$)
 
-![Figura 8: Classificador de Margem Máxima e Comparação entre Hinge Loss e Perda Logística](./figuras/fig08_svm_margem_maxima_kernels_hinge.svg)
-*Figura 8 — (a) Hiperplano ótimo separador de margem máxima, margens $\pm M$ e vetores de suporte para o conjunto de dados do Exercício 9.7.3 (Seção 9.1). (b) Comparação entre a função Hinge Loss da SVM, a perda da Regressão Logística e a perda $0$-$1$ em função de $y_i f(x_i)$ (Seção 9.5, Fig. 9.12).*
+1. **Best Subset Selection (Seleção do Melhor Subconjunto, Seção 6.1.1):**  
+   Para cada tamanho $k = 1, 2, \dots, p$, testa **absolutamente todas as $\binom{p}{k}$ combinações possíveis** de $k$ variáveis e guarda o modelo $\mathcal{M}_k$ com menor $\operatorname{RSS}$ de treino.  
+   - *Limitação:* Testar todos os $2^p$ subconjuntos fica impossível para $p > 30$ (para $p = 40$, $2^{40} \approx 1\text{ trilhão}$ de regressões!).
+2. **Forward Stepwise Selection (Seleção Passo a Passo para Frente, Seção 6.1.2):**  
+   Começa com o modelo vazio $\mathcal{M}_0$ (só intercepto) e, a cada passo, **adiciona a única variável que mais reduz o RSS** entre as que ainda estão fora. Testa apenas $1 + \frac{p(p+1)}{2}$ modelos (para $p = 20$, testa apenas $211$ modelos em vez de $1.048.576$!).
+3. **Backward Stepwise Selection (Seleção para Trás, Seção 6.1.2):**  
+   Começa com o modelo cheio $\mathcal{M}_p$ (todas as $p$ variáveis, exigindo $n > p$) e, a cada passo, **remove a variável menos útil** (a que tem o menor $|t|$ / maior $p$-valor).
 
-#### Exercícios de Fixação (Capítulo 9)
-1. *(ISLP, Seção 9.7, Ex. 2 — Fronteira Não Linear Quadrática)* A curva $(1 + X_1)^2 + (2 - X_2)^2 = 4$ divide o plano em duas regiões (classifica em Blue se $> 4$ e em Red se $\le 4$). (a) Que curva é essa e como são classificadas $(0,0)$, $(-1,1)$, $(2,2)$ e $(3,8)$? (b) Por que essa fronteira é linear num espaço expandido? *(Gabarito: (a) É a circunferência de centro $(-1, 2)$ e raio $r = 2$; avaliando $(1+X_1)^2 + (2-X_2)^2$: para $(0,0) \mapsto 5 > 4$ [Blue], para $(-1,1) \mapsto 1 \le 4$ [Red], para $(2,2) \mapsto 9 > 4$ [Blue], para $(3,8) \mapsto 52 > 4$ [Blue]; (b) Expandindo, $-1 + 2X_1 + X_1^2 - 4X_2 + X_2^2 = 0$, que é um hiperplano linear nas $4$ variáveis $(X_1, X_1^2, X_2, X_2^2)$).*
-2. *(ISLP, Seção 9.7, Ex. 3)* Para as $7$ observações em $\mathbb{R}^2$: Red $= \{(3,4), (2,2), (4,4), (1,4)\}$ e Blue $= \{(2,1), (4,3), (4,1)\}$ (Figura 8a), determine a equação do hiperplano de margem máxima, a largura da margem $M$ e os vetores de suporte. *(Gabarito: Os vetores de suporte são $(2,2), (4,4)$ [Red] e $(2,1), (4,3)$ [Blue]; o hiperplano equidistante passa pelos pontos médios $(2,\, 1{,}5)$ e $(4,\, 3{,}5)$, tendo equação $-0{,}5 + X_1 - X_2 = 0$; normalizando por $\sqrt{1^2+(-1)^2}=\sqrt{2}$, a margem perpendicular vale $M = \frac{0,5}{\sqrt{2}} = \frac{\sqrt{2}}{4} \approx 0{,}3536$).*
+#### Como escolher o melhor tamanho $d$ entre $\mathcal{M}_0, \mathcal{M}_1, \dots, \mathcal{M}_p$? (Seção 6.1.3)
+Não podemos escolher o modelo pelo menor $\operatorname{RSS}$ de treino nem pelo maior $R^2$, pois eles **sempre melhoram** quando adicionamos mais variáveis! Precisamos ou usar **Validação Cruzada** ou somar ao $\operatorname{RSS}$ de treino uma **multa (penalidade) proporcional ao número de variáveis $d$** usadas no modelo (Equações 6.2 a 6.5 do ISLP):
 
----
-
-## 8. Deep Learning: Redes Neurais, CNNs, RNNs, Backpropagation e Double Descent (Capítulo 10)
-
-### 8.1 Redes Neurais de Camada Única e Múltiplas Camadas (MLPs, Seções 10.1 e 10.2)
-1. **Rede Neural *Feed-Forward* de Camada Oculta Única (Seção 10.1):** Dado um vetor de entrada $X = (X_1, \dots, X_p)$, constroem-se primeiro $K$ **ativações ocultas (*activations*)** $A_k = h_k(X)$ na camada oculta aplicando uma **função de ativação não linear $g(z)$** a combinações lineares das entradas (Equações 10.1 a 10.3):
-   $$A_k = h_k(X) = g\left(w_{k0} + \sum_{j=1}^{p} w_{kj} X_j\right), \quad k = 1, \dots, K \qquad \implies \qquad f(X) = \beta_0 + \sum_{k=1}^{K} \beta_k A_k$$
-   - **Funções de Ativação Clássicas e Modernas (Equações 10.4 e 10.5, Figura 9a):**
-     $$g_{\text{sigmoid}}(z) = \sigma(z) = \frac{1}{1 + e^{-z}}, \qquad g_{\text{ReLU}}(z) = (z)_+ = \max(0, z) = \begin{cases} 0, & \text{se } z < 0 \\ z, & \text{se } z \ge 0 \end{cases}$$
-   - **Por que a não linearidade de $g(z)$ é indispensável?** Se $g(z)$ fosse linear, a composição $f(X) = \beta_0 + \sum_{k=1}^K \beta_k(w_{k0} + \sum_j w_{kj}X_j)$ colapsaria num simples modelo de regressão linear em $X_1, \dots, X_p$! Além disso, combinações de ativações não lineares capturam **interações automaticamente** (como mostra a Equação 10.8 do ISLP: $\frac{1}{4}(X_1 + X_2)^2 - \frac{1}{4}(X_1 - X_2)^2 = X_1 X_2$).
-2. **Redes Neurais Multicamadas (MLPs) e Classificação Multiclasse (Seção 10.2):** Empilhando $L$ camadas ocultas de dimensões $K_1, K_2, \dots, K_L$:
-   $$A_\ell^{(1)} = g\left(w_{\ell 0}^{(1)} + \sum_{j=1}^{p} w_{\ell j}^{(1)} X_j\right) \;\; (\ell = 1, \dots, K_1), \qquad A_m^{(2)} = g\left(w_{m 0}^{(2)} + \sum_{\ell=1}^{K_1} w_{m\ell}^{(2)} A_\ell^{(1)}\right) \;\; (m = 1, \dots, K_2)$$
-   Para classificar em $M$ classes (ex.: $M = 10$ dígitos em MNIST, onde cada imagem $28 \times 28$ possui $p = 784$ pixels), a camada de saída computa $Z_m = \beta_{m0} + \sum_{\ell=1}^{K_2}\beta_{m\ell} A_\ell^{(2)}$ ($m = 0, \dots, 9$), converte-os em probabilidades via **ativação Softmax** $f_m(X) = \Pr(Y = m \mid X) = \frac{e^{Z_m}}{\sum_{\ell=0}^9 e^{Z_\ell}}$ (Equação 10.13) e treina a rede minimizando a **Entropia Cruzada (*Cross-Entropy* / Log-Verossimilhança Multinomial Negativa, Equação 10.14)**:
-   $$-\sum_{i=1}^{n}\sum_{m=0}^{9} y_{im} \ln f_m(x_i)$$
-   onde $y_{im}$ é a codificação *one-hot* da classe verdadeira. *(Contagem de parâmetros: uma camada densa que conecta $D_{\text{in}}$ entradas a $D_{\text{out}}$ unidades ocultas possui exatamente **$(D_{\text{in}} + 1)\times D_{\text{out}}$ parâmetros**, contando os $D_{\text{out}}$ vieses/interceptos!)*
-
----
-
-### 8.2 Redes Neurais Convolucionais (CNNs) e Redes Neurais Recorrentes (RNNs, Seções 10.3 a 10.5)
-1. **Redes Neurais Convolucionais (CNNs) para Imagens (Seção 10.3):** Representa-se uma imagem colorida como um tensor tridimensional $H \times W \times C$ (onde $C = 3$ canais RGB). Uma CNN alterna duas operações especializadas que exploram a estrutura espacial local com compartilhamento de pesos (*weight sharing*):
-   - **Camadas de Convolução (*Convolution Layers*, Seção 10.3.1):** Desliza-se um pequeno filtro (kernel) aprendível $K$ (ex.: $3 \times 3 \times C$) sobre a imagem, calculando o produto interno em cada subpatch para formar um **mapa de características (*feature map*)** ativado por ReLU. Cada filtro na 1ª camada atua como detector de bordas/orientações locais, combinando-se nas camadas seguintes em texturas, partes de objetos e formas completas.
-   - **Camadas de Agrupamento (*Pooling Layers*, Seção 10.3.2):** Um **Max-Pooling $2 \times 2$** substitui cada bloco não sobreposto de $2 \times 2$ pixels pelo seu valor máximo, reduzindo cada dimensão espacial pela metade (fator $4$ na área) e conferindo **invariância de locação (translação)**. À medida que a resolução espacial diminui ao longo da rede, o número de filtros/canais aumenta, até o *flattening* final para uma camada densa com saída Softmax.
-   - **Aumento de Dados (*Data Augmentation*, Seção 10.3.4):** Aplica transformações estocásticas (rotações leves, espelhamento horizontal, zoom, deslocamento) a cada imagem durante o treinamento, funcionando como poderosa regularização contra *overfitting*.
-2. **Classificação de Documentos (*Bag-of-Words* vs. *Embeddings*) e Redes Neurais Recorrentes (RNNs, Seções 10.4 e 10.5):**
-   - Na abordagem **Bag-of-Words** (Seção 10.4), representa-se um documento por um vetor esparso em $\mathbb{R}^{D}$ (ex.: $D = 10\,000$ palavras do dicionário), binário ou de frequências (*one-hot* / *n-grams*), mas isso ignora completamente a ordem sequencial das palavras.
-   - Numa **Rede Neural Recorrente (RNN — Seção 10.5)**, a entrada é uma sequência ordenada $X = \{X_1, X_2, \dots, X_L\}$ (palavras de uma frase convertidas em vetores densos de dimensão $m$ por uma camada de **Word Embedding** aprendida, ou defasagens $v_{t-\ell}$ de uma série temporal). A rede mantém um vetor de **ativação oculta recorrente $A_\ell$** atualizado passo a passo com **os mesmos pesos compartilhados $(\mathbf{W}, \mathbf{U}, \mathbf{B})$** ao longo de todo o tempo $\ell = 1, \dots, L$ (Equações 10.17 e 10.18):
-     $$A_{\ell k} = g\left(w_{k0} + \sum_{j=1}^{p} w_{kj} X_{\ell j} + \sum_{s=1}^{K} u_{ks} A_{\ell-1,\, s}\right), \qquad O_\ell = \beta_0 + \sum_{k=1}^{K} \beta_k A_{\ell k}$$
-   - Arquiteturas modernas de RNN utilizam células **LSTM (*Long Short-Term Memory*)** (que mantêm duas trilhas de estados ocultos — memória longa e memória curta — controladas por portões sigmoides para evitar o desaparecimento/explosão do gradiente em sequências longas), além de **Autorregressão Linear/Não Linear (AR)** achatando as $L$ defasagens $(v_{t-1}, \dots, v_{t-L})$ como preditores diretos.
-
----
-
-### 8.3 Ajuste de Redes Neurais: Backpropagation, SGD, Dropout e Double Descent (Seções 10.7 e 10.8)
-1. **Não Convexidade, Gradiente Descendente e *Backpropagation* (Seção 10.7.1):** Diferentemente do OLS, do Ridge ou do Lasso, o problema de minimizar $R(\theta) = \frac{1}{2}\sum_{i=1}^n \big(y_i - f_\theta(x_i)\big)^2$ numa rede neural é **não convexo** em $\theta$, possuindo múltiplos mínimos locais e pontos de sela. O algoritmo de Gradiente Descendente atualiza iterativamente $\theta^{m+1} \leftarrow \theta^m - \rho \nabla R(\theta^m)$, onde $\rho > 0$ é a **taxa de aprendizado (*learning rate*)**.  
-   Para uma rede de camada oculta única com $z_{ik} = w_{k0} + \sum_{j=1}^p w_{kj}x_{ij}$ e $f_\theta(x_i) = \beta_0 + \sum_{k=1}^K \beta_k g(z_{ik})$, a aplicação da **Regra da Cadeia** distribui o resíduo de volta pela rede (**Backpropagation**, Equações 10.25 e 10.26):
-   $$\frac{\partial R_i(\theta)}{\partial \beta_k} = -\big(y_i - f_\theta(x_i)\big)\,g(z_{ik}), \qquad \frac{\partial R_i(\theta)}{\partial w_{kj}} = -\big(y_i - f_\theta(x_i)\big)\,\beta_k\,g'(z_{ik})\,x_{ij}$$
-   No **Gradiente Descendente Estocástico (SGD — Seção 10.7.2)**, em vez de somar o gradiente sobre todas as $n$ observações, sorteia-se um pequeno lote (**minibatch**) a cada passo; uma varredura completa por todo o conjunto de treinamento constitui uma **época (*epoch*)**.
-2. **Regularização em Redes Neurais: *Weight Decay*, *Early Stopping* e *Dropout* (Seções 10.7.2–10.7.3):**
-   - **Penalização Ridge ($\ell_2$ / *Weight Decay*) ou Lasso ($\ell_1$):** soma $\lambda \sum_j \theta_j^2$ à função objetivo;
-   - **Parada Precoce (*Early Stopping*):** interrompe as épocas de SGD assim que o erro no conjunto de validação começa a subir;
-   - **Aprendizado por *Dropout* (Srivastava et al., 2014 — Seção 10.7.3):** Inspirado no Random Forest, a cada atualização de *minibatch* durante o treinamento, remove-se aleatoriamente uma fração $\phi \in (0, 1)$ das unidades de uma camada (zerando suas ativações) e **escalonam-se os pesos das $(1 - \phi)$ unidades sobreviventes por um fator $\frac{1}{1 - \phi}$** para compensar as unidades ausentes (*inverted dropout*), impedindo que os neurônios se co-adaptem excessivamente.
-3. **Interpolação e o Fenômeno de Dupla Descida (*Double Descent* — Seção 10.8):** Na visão clássica do *trade-off* viés-variância, atingir erro de treinamento igual a zero ($d = n$, o **limiar de interpolação**) deveria levar a sobreajuste catastrófico para qualquer $d > n$. Na Seção 10.8 (Figura 9b), o ISLP demonstra por que redes neurais altamente sobreparametrizadas ($d \gg n$) generalizam bem:
-   - Até $d = n$, a curva segue o formato em U clássico, atingindo um pico agudo de variância exatamente no **limiar de interpolação $d = n$**, onde existe uma única função interpoladora que oscila violentamente para passar por todos os $n$ pontos ruidosos;
-   - Quando **$d > n$** (regime sobreparametrizado), existem infinitas soluções que interpolam os dados ($\operatorname{RSS} = 0$ no treino), e algoritmos como o **SGD convergem naturalmente para a solução interpoladora de norma mínima** ($\min \|\beta\|_2$ ou menor rugosidade $\int f''(x)^2\,dx$), que é muito mais suave do que a solução única em $d = n$, fazendo o erro de teste **descer uma segunda vez** (*Double Descent*)!
-
-![Figura 9: Funções de Ativação em Deep Learning e o Fenômeno de Double Descent](./figuras/fig09_deep_learning_ativacoes_double_descent.svg)
-*Figura 9 — (a) Funções de ativação não lineares (Sigmoid, Tanh, ReLU e Leaky ReLU) utilizadas em redes neurais (Seção 10.1 e Raschka Cap. 12). (b) O fenômeno de Interpolação e Dupla Descida (*Double Descent*) do erro de teste além do limiar $d = n$ (Seção 10.8, Fig. 10.20).*
-
-#### Exercícios de Fixação (Capítulo 10)
-1. *(ISLP, Seção 10.10, Ex. 1 e 4 — Contagem de Parâmetros)* (a) Quantos parâmetros possui uma MLP com $p = 4$ entradas, $2$ unidades na 1ª camada oculta, $3$ unidades na 2ª camada oculta e $1$ saída escalar? (b) Uma CNN recebe imagens $32 \times 32$ em tons de cinza ($1$ canal) e aplica uma camada convolucional com $3$ filtros $5 \times 5$ (sem *padding*). Quantos parâmetros treináveis possui essa camada convolucional, e quantos pesos haveria se fosse uma camada densa ordinária com o mesmo número de ativações? *(Gabarito: (a) $(4+1)\times 2 + (2+1)\times 3 + (3+1)\times 1 = 10 + 9 + 4 = \mathbf{23\text{ parâmetros}}$; (b) Cada filtro $5\times 5$ tem $25$ pesos $+ 1$ viés $= 26$ parâmetros, logo $3 \times 26 = \mathbf{78\text{ parâmetros}}$; como cada mapa de saída tem $(32-5+1)\times(32-5+1) = 28\times 28 = 784$ unidades e há $3$ mapas ($3 \times 784 = 2\,352$ unidades ocultas recebendo $32\times 32 = 1\,024$ pixels), uma camada densa sem compartilhamento de pesos teria $(1\,024 + 1)\times 2\,352 = \mathbf{2\,410\,800\text{ parâmetros}}$!).*
-2. *(ISLP, Seção 10.10, Ex. 2 — Invariância da Softmax)* Prove que na função Softmax $f_m(z) = \frac{e^{z_m}}{\sum_{\ell=1}^M e^{z_\ell}}$, somar uma constante arbitrária $c \in \mathbb{R}$ a cada logit $z_\ell$ não altera as probabilidades $f_m(z)$. *(Gabarito: $\frac{e^{z_m + c}}{\sum_\ell e^{z_\ell + c}} = \frac{e^c e^{z_m}}{e^c \sum_\ell e^{z_\ell}} = \frac{e^{z_m}}{\sum_\ell e^{z_\ell}}$).*
-
----
-
-## 9. Arquiteturas Avançadas: Transformers, GANs, GNNs e Reinforcement Learning
-### *[Complemento — Raschka et al., Machine Learning with PyTorch and Scikit-Learn, Capítulos 13 a 19]*
-
-Os Capítulos 13 a 19 de **Raschka, Liu & Mirjalili (2022)** expandem o Capítulo 10 do ISLP apresentando a mecânica interna de grafos computacionais em PyTorch e as quatro arquiteturas que definem o estado da arte contemporâneo em Inteligência Artificial:
-
-### 9.1 Grafos Computacionais Dinâmicos em PyTorch e CNNs Profundas (Raschka, Cap. 13 e 14)
-1. **Diferenciação Automática (*Autograd*) e Grafos Dinâmicos (Cap. 13):** O PyTorch constrói um **grafo acíclico direcionado (DAG) dinâmico (*define-by-run*)** a cada passagem direta (*forward pass*) para tensores com `requires_grad=True`, armazenando as operações intermediárias e computando todos os gradientes reversos automaticamente via `loss.backward()`.
-2. **Aritmética de Convoluções Discretas 2D e *BatchNorm* (Cap. 14):** Para uma entrada de tamanho $n_{\text{in}}$ com preenchimento de borda (*padding*) $p$, filtro de tamanho $f$ e passo (*stride*) $s$, a dimensão espacial de saída é exatamente:
-   $$n_{\text{out}} = \left\lfloor \frac{n_{\text{in}} + 2p - f}{s} \right\rfloor + 1$$
-
----
-
-### 9.2 Transformers e o Mecanismo de Self-Attention (Raschka, Cap. 16)
-As RNNs/LSTMs processam sequências token por token ($t = 1, \dots, T$), o que impede a paralelização do treinamento em GPUs e dificulta a propagação de dependências de longo alcance. A arquitetura **Transformer** (*"Attention Is All You Need"*, Vaswani et al., 2017 — Raschka Cap. 16.2–16.3) substitui completamente a recorrência pelo mecanismo de **Auto-Atenção (*Self-Attention*)**:
-1. **Scaled Dot-Product Self-Attention (Seção 16.2):** Dada uma sequência de vetores de entrada $x^{(1)}, \dots, x^{(T)} \in \mathbb{R}^d$ (empilhados na matriz $X \in \mathbb{R}^{T \times d}$), projetam-se três matrizes aprendíveis — **Consultas (*Queries*) $Q = X W_q$**, **Chaves (*Keys*) $K = X W_k$** (ambas em $\mathbb{R}^{T \times d_k}$) e **Valores (*Values*) $V = X W_v \in \mathbb{R}^{T \times d_v}$** — e calcula-se a matriz de vetores de contexto em paralelo:
-   $$\operatorname{Attention}(Q, K, V) = \operatorname{softmax}\left(\frac{Q K^T}{\sqrt{d_k}}\right) V, \qquad \text{onde } \alpha_{ij} = \frac{\exp\left(\frac{q^{(i)T} k^{(j)}}{\sqrt{d_k}}\right)}{\sum_{\ell=1}^{T} \exp\left(\frac{q^{(i)T} k^{(\ell)}}{\sqrt{d_k}}\right)}$$
-   - **Por que dividir por $\sqrt{d_k}$?** Se os componentes de $q$ e $k$ tiverem média $0$ e variância $1$, o produto interno $q^T k = \sum_{m=1}^{d_k} q_m k_m$ tem média $0$ e **variância $d_k$** (desvio-padrão $\sqrt{d_k}$). Para $d_k$ grande, os produtos internos assumiriam magnitudes elevadas, empurrando a função *softmax* para regiões de saturação onde os gradientes são quase nulos ($\nabla \approx 0$). Dividir por $\sqrt{d_k}$ restaura a variância unitária!
-2. **Multi-Head Attention, Codificação Posicional e Modelos de Linguagem (GPT, BERT e BART — Seções 16.3–16.4):**
-   - **Multi-Head Attention:** Executa $h$ cabeças de atenção em paralelo ($\operatorname{head}_m = \operatorname{Attention}(X W_q^{(m)}, X W_k^{(m)}, X W_v^{(m)})$) e concatena-as: $\operatorname{MHA}(Q,K,V) = \operatorname{Concat}(\operatorname{head}_1, \dots, \operatorname{head}_h)W_O$, seguidas de conexões residuais ($x + \operatorname{Sublayer}(x)$) e **Layer Normalization** (**Codificações Posicionais** senoidais ou aprendidas são somadas às entradas $X$, já que a atenção por si só é invariante a permutações).
-   - **GPT (*Generative Pre-trained Transformer*):** Pilha de *Decoders* com **atenção mascarada (*causal masked self-attention*)** que zera os pesos $\alpha_{ij}$ para $j > i$, treinada de forma autorregressiva unidirecional para prever o próximo token $\max \sum_t \ln P(x_t \mid x_{<t})$.
-   - **BERT (*Bidirectional Encoder Representations from Transformers*):** Pilha de *Encoders* bidirecionais pré-treinada via **Masked Language Modeling (MLM)** (mascarando $15\%$ dos tokens e prevendo-os usando o contexto à esquerda e à direita) e **Next Sentence Prediction (NSP)**. O **BART** combina um *Encoder* bidirecional (estilo BERT) com um *Decoder* autorregressivo (estilo GPT).
-
----
-
-### 9.3 Redes Adversariais Generativas (GANs e WGAN-GP — Raschka, Cap. 17)
-Para sintetizar novas amostras realistas $x \sim p_{\text{data}}(x)$ a partir de um vetor de ruído latente $z \sim p_z(z)$, uma **GAN** (Goodfellow et al., 2014) coloca duas redes neurais num **jogo minimax de soma zero de dois jogadores** (Seção 17.1):
-- O **Gerador $G(z)$** mapeia o ruído $z$ numa amostra sintética $\tilde{x} = G(z)$ buscando enganar o discriminador;
-- O **Discriminador $D(x) \in (0, 1)$** estima a probabilidade de $x$ provir da distribuição real $p_{\text{data}}$ em vez da distribuição gerada $p_g$:
-  $$\min_{G} \max_{D} V(D, G) = \mathbb{E}_{x \sim p_{\text{data}}(x)}\big[\ln D(x)\big] + \mathbb{E}_{z \sim p_z(z)}\big[\ln\big(1 - D(G(z))\big)\big]$$
-- **Teorema do Discriminador Ótimo e Equilíbrio de Nash:** Para um gerador $G$ fixo, derivando o integrando $p_{\text{data}}(x)\ln D(x) + p_g(x)\ln(1 - D(x))$ em relação a $D(x)$, o discriminador ótimo é **$D^*_G(x) = \dfrac{p_{\text{data}}(x)}{p_{\text{data}}(x) + p_g(x)}$**. Substituindo $D^*_G$ em $V(D^*_G, G)$, minimizar em $G$ equivale a minimizar a **Divergência de Jensen-Shannon** $\operatorname{JSD}(p_{\text{data}} \parallel p_g)$, cujo mínimo global é atingido se, e somente se, **$p_g = p_{\text{data}}$** (onde $D^*(x) = \frac{1}{2}$ em toda parte!).
-- **Não Saturação, DCGAN e Wasserstein GAN com Penalidade de Gradiente (WGAN-GP — Seção 17.3):** No início do treino, quando $D$ rejeita facilmente $G(z)$ ($D(G(z)) \approx 0$), o gradiente de $\ln(1 - D(G(z)))$ desaparece; por isso, na prática treina-se $G$ maximizando $\mathbb{E}[\ln D(G(z))]$. Para eliminar a instabilidade e o **colapso de modos (*mode collapse*)**, a **WGAN-GP** substitui a divergência de Jensen-Shannon pela **Distância de Wasserstein (Earth Mover's Distance)** usando um crítico $D$ $1$-Lipschitz com penalidade de gradiente $\lambda \mathbb{E}_{\hat{x}}\big[(\|\nabla_{\hat{x}} D(\hat{x})\|_2 - 1)^2\big]$.
-
----
-
-### 9.4 Graph Neural Networks (GNNs, Cap. 18) e Reinforcement Learning (MDP e Q-Learning, Cap. 19)
-1. **Graph Neural Networks (GNNs) e Convoluções em Grafos (Raschka, Cap. 18):** Dado um grafo $\mathcal{G} = (\mathcal{V}, \mathcal{E})$ com $N$ nós, matriz de adjacência $\mathbf{A} \in \{0, 1\}^{N \times N}$, matriz de atributos de nós $\mathbf{X} \in \mathbb{R}^{N \times F}$ e matriz de adjacência com auto-laços $\tilde{\mathbf{A}} = \mathbf{A} + \mathbf{I}_N$ (com matriz diagonal de graus $\tilde{\mathbf{D}}_{ii} = \sum_j \tilde{\mathbf{A}}_{ij}$), uma camada de **Graph Convolutional Network (GCN, Kipf & Welling, 2017)** agrega e normaliza simetricamente as representações da vizinhança de cada nó (**Message Passing**):
-   $$\mathbf{H}^{(\ell)} = \sigma\left(\tilde{\mathbf{D}}^{-1/2} \tilde{\mathbf{A}} \tilde{\mathbf{D}}^{-1/2} \mathbf{H}^{(\ell-1)} \mathbf{W}^{(\ell)}\right) \qquad \Longleftrightarrow \qquad h_v^{(\ell)} = \sigma\left(\sum_{u \in \mathcal{N}(v) \cup \{v\}} \frac{1}{\sqrt{\tilde{d}_u \tilde{d}_v}} \mathbf{W}^{(\ell)} h_u^{(\ell-1)}\right)$$
-   Para classificação de grafos inteiros (ex.: moléculas com tamanhos variáveis), aplica-se uma camada de **Global Pooling** (soma ou média sobre todos os nós $v \in \mathcal{V}$) invariante à permutação dos vértices.
-2. **Reinforcement Learning: Processos de Decisão de Markov (MDPs), Equação de Bellman e TD / Q-Learning (Raschka, Cap. 19):** Num **MDP** $(\mathcal{S}, \mathcal{A}, P(s', r \mid s, a), \gamma)$, a cada passo $t$ o agente no estado $S_t \in \mathcal{S}$ escolhe uma ação $A_t \in \mathcal{A}$ segundo uma política $\pi(a \mid s)$, recebe uma recompensa $R_{t+1}$ e transita para $S_{t+1}$, buscando maximizar o **retorno descontado** $G_t = \sum_{k=0}^\infty \gamma^k R_{t+k+1}$ ($\gamma \in [0, 1]$).
-   - **Equações de Bellman para $v_\pi(s) = \mathbb{E}_\pi[G_t \mid S_t = s]$ e Equações de Otimalidade de Bellman para $v_*(s)$ e $q_*(s, a)$:**
-     $$v_*(s) = \max_{a \in \mathcal{A}} \sum_{s', r} p(s', r \mid s, a)\big[r + \gamma v_*(s')\big], \qquad q_*(s, a) = \sum_{s', r} p(s', r \mid s, a)\left[r + \gamma \max_{a' \in \mathcal{A}} q_*(s', a')\right]$$
-   -Quando a dinâmica $p(s', r \mid s, a)$ é desconhecida (*model-free*), os métodos de **Diferença Temporal (*Temporal Difference* — TD)** aprendem passo a passo via *bootstrapping* (com política exploratória $\varepsilon$-gulosa):
-     - **SARSA (*On-Policy TD Control*):** $\quad Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha\Big[R_{t+1} + \gamma Q(S_{t+1}, A_{t+1}) - Q(S_t, A_t)\Big]$;
-     - **Q-Learning (*Off-Policy TD Control*, Watkins, 1989):** $\quad Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha\Big[R_{t+1} + \gamma \max_{a} Q(S_{t+1}, a) - Q(S_t, A_t)\Big]$, que aproxima diretamente $q_*(s, a)$ independentemente da política comportamental seguida!
-
-![Figura 10: Self-Attention em Transformers, Convergência Adversarial em GANs e Síntese GNN/RL](./figuras/fig10_arquiteturas_modernas_cnn_transformers_gnn.svg)
-*Figura 10 — (a) Mapa de pesos de Scaled Dot-Product Self-Attention $\operatorname{softmax}(QK^T/\sqrt{d_k})$ num modelo Transformer [Complemento — Raschka et al., Cap. 16]. (b) Convergência ao equilíbrio de Nash $D^*(x) = 1/2$ no treinamento adversarial de uma GAN e equações síntese de GNN e Q-Learning [Complemento — Raschka et al., Cap. 17–19].*
-
-#### Exercícios de Fixação (Complemento — Raschka, Capítulos 14 a 19)
-1. *(Raschka, Cap. 14 e 16)* (a) Uma imagem $64 \times 64$ passa por uma convolução com filtro $4 \times 4$, *padding* $p = 1$ e *stride* $s = 2$. Qual a dimensão do mapa de saída? (b) Em *Scaled Dot-Product Attention* com $d_k = 64$, se os elementos de $q$ e $k$ são i.i.d. com média $0$ e variância $1$, qual é o desvio-padrão de $q^T k$ antes e depois do escalonamento por $\sqrt{d_k}$? *(Gabarito: (a) $\lfloor \frac{64 + 2(1) - 4}{2}\rfloor + 1 = 31 + 1 = 32 \times 32$; (b) Antes: $\sqrt{64} = 8$; depois de dividir por $\sqrt{64}=8$: desvio-padrão igual a $1$).*
-2. *(Raschka, Cap. 17 e 19)* (a) Numa GAN, se em um ponto $x$ temos $p_{\text{data}}(x) = 0{,}3$ e $p_g(x) = 0{,}1$, qual o valor do discriminador ótimo $D^*_G(x)$? (b) Num episódio de Q-Learning com $\alpha = 0{,}5$, $\gamma = 0{,}9$, $Q(s, a) = 2{,}0$, recompensa observada $r = 4{,}0$ e $\max_{a'} Q(s', a') = 6{,}0$, calcule o novo valor de $Q(s, a)$. *(Gabarito: (a) $D^*_G(x) = \frac{0,3}{0,3 + 0,1} = 0{,}75$; (b) Erro TD $= 4{,}0 + 0{,}9(6{,}0) - 2{,}0 = 7{,}4 \implies Q_{\text{novo}}(s, a) = 2{,}0 + 0{,}5(7{,}4) = \mathbf{5{,}7}$).*
-
----
-
-## 10. Análise de Sobrevivência e Dados Censurados (Capítulo 11)
-
-### 10.1 Tempo de Sobrevivência, Censura Independente, Curva de Kaplan-Meier e Teste Log-Rank (Seções 11.1 a 11.4)
-Para cada indivíduo $i = 1, \dots, n$, existe um verdadeiro **tempo de sobrevivência (ou tempo até o evento/falha) $T_i$** e um verdadeiro **tempo de censura $C_i$** (por término do estudo ou perda de acompanhamento). Observamos apenas o par $(Y_i, \delta_i)$ (Equação 11.1):
-$$Y_i = \min(T_i, C_i), \qquad \delta_i = I(T_i \le C_i) = \begin{cases} 1, & \text{se } T_i \le C_i \;\; (\text{evento observado: } Y_i = T_i) \\ 0, & \text{se } T_i > C_i \;\; (\text{censurado à direita: } Y_i = C_i, \text{ sabendo-se que } T_i > Y_i) \end{cases}$$
-- **Hipótese de Censura Independente (Seção 11.2):** Toda a análise assume que, condicional aos preditores $X$, o tempo de evento $T$ é estatisticamente independente do tempo de censura $C$ ($T \perp C \mid X$). Se pacientes mais graves abandonam o estudo mais cedo, a censura é informativa (não independente) e enviesa as estimativas!
-- **Estimador de Kaplan-Meier da Curva de Sobrevivência $S(t) = \Pr(T > t)$ (Seção 11.3):** Sejam $d_1 < d_2 < \dots < d_K$ os $K$ instantes únicos de falha (morte/evento) observados dentre os pacientes não censurados ($\delta_i = 1$). Seja **$q_k$** o número de pacientes que falharam no instante $d_k$, e seja **$r_k$** o número de pacientes no **conjunto de risco (*risk set*)** imediatamente antes de $d_k$ (aqueles com $Y_i \ge d_k$, ainda vivos e em acompanhamento no estudo). Pela lei da probabilidade total, $\Pr(T > d_k) = \Pr(T > d_k \mid T > d_{k-1})\Pr(T > d_{k-1})$, e estimando $\widehat{\Pr}(T > d_j \mid T > d_{j-1}) = \frac{r_j - q_j}{r_j}$, obtém-se o **Estimador de Kaplan-Meier** em degraus (Equação 11.3):
-  $$\hat{S}(d_k) = \prod_{j=1}^{k} \left(\frac{r_j - q_j}{r_j}\right), \qquad \text{sendo } \hat{S}(t) = 1 \text{ para } t < d_1 \text{ e } \hat{S}(t) = \hat{S}(d_k) \text{ para } d_k \le t < d_{k+1}$$
-- **O Teste Log-Rank para Comparar Duas Curvas de Sobrevivência (Seção 11.4):** Para testar $H_0: S_1(t) = S_2(t)$ entre dois grupos, no instante de falha $d_k$ sejam $r_{1k}, r_{2k}$ os tamanhos dos conjuntos de risco ($r_k = r_{1k} + r_{2k}$) e $q_{1k}, q_{2k}$ os óbitos em cada grupo ($q_k = q_{1k} + q_{2k}$). Sob $H_0$, $q_{1k}$ segue uma distribuição **Hipergeométrica** com média e variância dadas pelas Equações (11.5) e (11.6):
-  $$\mu_k = \mathbb{E}(q_{1k}) = \frac{r_{1k}}{r_k} q_k, \qquad \operatorname{Var}(q_{1k}) = \frac{q_k (r_{1k} / r_k)(1 - r_{1k} / r_k)(r_k - q_k)}{r_k - 1}$$
-  Somando ao longo de todos os $K$ instantes de falha, a **estatística do teste Log-Rank** (Equação 11.8):
-  $$W = \frac{\sum_{k=1}^{K} (q_{1k} - \mu_k)}{\sqrt{\sum_{k=1}^{K} \operatorname{Var}(q_{1k})}} \stackrel{a}{\sim} \mathcal{N}(0, 1) \quad (\text{sob } H_0, \text{ com } W^2 \stackrel{a}{\sim} \chi^2_1)$$
-
----
-
-### 10.2 Função de Risco (*Hazard Function*) e o Modelo de Riscos Proporcionais de Cox (Seções 11.5 a 11.7)
-1. **Função de Risco (*Hazard Function* / Taxa de Falha Instantânea — Seção 11.5.1):** É a taxa instantânea de ocorrência do evento logo após o instante $t$, dado que o indivíduo sobreviveu até $t$ (Equação 11.9):
-   $$h(t) = \lim_{\Delta t \to 0} \frac{\Pr(t < T \le t + \Delta t \mid T > t)}{\Delta t} = \frac{f(t)}{S(t)} = -\frac{d}{dt}\ln S(t) \iff S(t) = \exp\left(-\int_{0}^{t} h(u)\,du\right)$$
-   onde $f(t) = \lim_{\Delta t \to 0}\frac{\Pr(t < T \le t+\Delta t)}{\Delta t} = -\frac{dS(t)}{dt}$ é a densidade de probabilidade de $T$. A função de verossimilhança para dados censurados é $\ell = \prod_{i=1}^n f(y_i)^{\delta_i} S(y_i)^{1 - \delta_i} = \prod_{i=1}^n h(y_i)^{\delta_i} S(y_i)$ (Equação 11.13).
-2. **Modelo de Riscos Proporcionais de Cox (*Cox's Proportional Hazards Model* — Seção 11.5.2):** Modela o risco condicional aos preditores $x_i = (x_{i1}, \dots, x_{ip})^T$ de forma **semiparamétrica** (Equação 11.14):
-   $$h(t \mid x_i) = h_0(t)\exp\left(\sum_{j=1}^{p} x_{ij}\beta_j\right)$$
-   onde **$h_0(t) \ge 0$ é a função de risco basal (*baseline hazard*)**, deixada completamente **não especificada** (para $x_i = 0$).
-   - **Interpretação da Razão de Riscos (*Hazard Ratio* — HR):** A razão $\frac{h(t \mid x_i)}{h(t \mid x_{i'})} = \exp\left(\sum_{j=1}^p (x_{ij} - x_{i'j})\beta_j\right)$ não depende do tempo $t$ (**riscos proporcionais**, Figura 11b). Aumentar $x_{ij}$ em uma unidade multiplica o risco instantâneo em qualquer instante $t$ pelo **Hazard Ratio $\operatorname{HR}_j = e^{\beta_j}$**.
-   - **Verossimilhança Parcial de Cox (*Partial Likelihood* — Equação 11.16):** Como $h_0(t)$ é arbitrária, Cox mostrou que, sabendo que a $i$-ésima observação ($\delta_i = 1$) falhou no instante $y_i$ (e supondo tempos de falha sem empates), a probabilidade de que tenha sido justamente o indivíduo $i$ a falhar dentre todos os indivíduos $i'$ no conjunto de risco $\mathcal{R}_i = \{i' : y_{i'} \ge y_i\}$ cancela $h_0(y_i)$ no numerador e no denominador! Multiplicando sobre todos os eventos não censurados, obtém-se a **Verossimilhança Parcial**:
-     $$PL(\beta) = \prod_{i:\, \delta_i = 1} \frac{h_0(y_i)\exp\left(\sum_{j=1}^p x_{ij}\beta_j\right)}{\sum_{i' \in \mathcal{R}_i} h_0(y_i)\exp\left(\sum_{j=1}^p x_{i'j}\beta_j\right)} = \prod_{i:\, \delta_i = 1} \frac{\exp\left(\sum_{j=1}^p x_{ij}\beta_j\right)}{\sum_{i' :\, y_{i'} \ge y_i} \exp\left(\sum_{j=1}^p x_{i'j}\beta_j\right)}$$
-     que permite estimar $\hat{\beta}$ sem nunca precisar estimar $h_0(t)$! *(Para um único preditor binário $x_i \in \{0, 1\}$, o teste escore do modelo de Cox é idêntico ao teste Log-Rank).*
-3. **Regularização no Modelo de Cox e Índice C de Harrell (Seções 11.6 e 11.7.1):** Minimiza-se $-\ln PL(\beta) + \lambda P(\beta)$ (Lasso ou Ridge). Para avaliar a capacidade preditiva no conjunto de teste, calcula-se o **Índice de Concordância de Harrell (*C-index*, Equação 11.18)**, que mede a proporção de pares de observações $(i, i')$ com $y_{i'} > y_i$ e $\delta_i = 1$ nos quais o modelo atribuiu maior escore de risco $\eta_i = x_i^T\hat{\beta}$ ao indivíduo que falhou mais cedo:
-   $$C = \frac{\sum_{i, i' :\, y_{i'} > y_i} I(\hat{\eta}_i > \hat{\eta}_{i'})\,\delta_i}{\sum_{i, i' :\, y_{i'} > y_i} \delta_i} \in [0, 1]$$
-
-![Figura 11: Curvas de Sobrevivência de Kaplan-Meier e Modelo de Riscos Proporcionais de Cox](./figuras/fig11_sobrevivencia_kaplan_meier_cox.svg)
-*Figura 11 — (a) Curvas de sobrevivência estimadas por Kaplan-Meier $\hat{S}(t)$ para dois grupos com marcações de censura à direita ($\delta_i = 0$) (Seções 11.3–11.4). (b) Proporcionalidade constante entre as curvas de risco instantâneo $h(t \mid x_i) = h_0(t)e^{\beta x_i}$ no Modelo de Cox (Seção 11.5).*
-
-#### Exercícios de Fixação (Capítulo 11)
-1. *(ISLP, Seção 11.9, Ex. 8 e 9 — Sobrevivência Exponencial Censurada)* Se os tempos de sobrevivência $T_i$ seguem uma distribuição $\operatorname{Exp}(\lambda)$ com $f(t) = \lambda e^{-\lambda t}$ ($t \ge 0$), mostre que $S(t) = e^{-\lambda t}$, a função *hazard* é constante $h(t) = \lambda$, e o estimador de máxima verossimilhança sobre dados censurados $(y_i, \delta_i)$ é $\hat{\lambda} = \frac{\sum_{i=1}^n \delta_i}{\sum_{i=1}^n y_i}$. *(Dica: Escreva $\ell(\lambda) = \prod_{i=1}^n h(y_i)^{\delta_i}S(y_i) = \prod_{i=1}^n \lambda^{\delta_i} e^{-\lambda y_i} = \lambda^{\sum \delta_i} e^{-\lambda \sum y_i}$, tome o logaritmo e derive em relação a $\lambda$).*
-
----
-
-## 11. Aprendizado Não Supervisionado: PCA, Matrix Completion e Clustering (Capítulo 12)
-
-### 11.1 Análise de Componentes Principais (PCA) e Completamento de Matrizes (Seções 12.2 e 12.3)
-Dada uma matriz de dados $X \in \mathbb{R}^{n \times p}$ cujas colunas foram previamente **centradas para ter média zero** ($\frac{1}{n}\sum_{i=1}^n x_{ij} = 0$), a **Análise de Componentes Principais (PCA)** busca uma representação de baixa dimensão que preserve o máximo possível da variância dos dados:
-1. **A Primeira e as Demais Componentes Principais (Seção 12.2.1):** A 1ª componente principal $Z_1 = \phi_{11}X_1 + \dots + \phi_{p1}X_p$ é a combinação linear normalizada ($\sum_{j=1}^p \phi_{j1}^2 = 1$) de maior variância amostral (Equação 12.3):
-   $$\max_{\phi_{11}, \dots, \phi_{p1}} \left\{ \frac{1}{n}\sum_{i=1}^{n} \left(\sum_{j=1}^{p} \phi_{j1} x_{ij}\right)^2 \right\} \quad \text{sujeito a} \quad \sum_{j=1}^{p} \phi_{j1}^2 = 1$$
-   O vetor unitário $\phi_1 = (\phi_{11}, \dots, \phi_{p1})^T$ é o **vetor de cargas (*loading vector*)** da 1ª componente principal, e as projeções $z_{i1} = \sum_{j=1}^p \phi_{j1}x_{ij}$ ($i = 1, \dots, n$) são os **escores (*scores*)**. A $m$-ésima componente principal $Z_m$ maximiza a variância amostral dentre todas as combinações lineares normalizadas que são **descorrelacionadas** com $Z_1, \dots, Z_{m-1}$ — o que equivale a exigir que a direção $\phi_m$ seja **ortogonal** a $\phi_1, \dots, \phi_{m-1}$ ($\phi_m^T \phi_\ell = 0$ para $\ell < m$). Algebricamente, $\phi_1, \phi_2, \dots, \phi_{\min(n-1, p)}$ são os **autovetores ortonormais ordenados da matriz $X^T X$** (ou vetores singulares direitos da decomposição SVD de $X$).
-2. **Segunda Interpretação Geométrica: Subespaço Mais Próximo e Aproximação Matricial (Seção 12.2.2):** Os primeiros $M$ vetores de cargas e escores resolvem o problema de aproximação matricial de posto $M$ por mínimos quadrados (Equação 12.6):
-   $$\min_{\mathbf{A} \in \mathbb{R}^{n \times M},\, \mathbf{B} \in \mathbb{R}^{p \times M}} \left\{ \sum_{j=1}^{p}\sum_{i=1}^{n} \left(x_{ij} - \sum_{m=1}^{M} a_{im} b_{jm}\right)^2 \right\}, \qquad \text{com solução } \hat{a}_{im} = z_{im} \text{ e } \hat{b}_{jm} = \phi_{jm}$$
-3. **Proporção de Variância Explicada (PVE) e Importância do Escalonamento (Seções 12.2.3–12.2.4):** Pela decomposição de Pitágoras $\sum_{j=1}^p \sum_{i=1}^n x_{ij}^2 = \sum_{m=1}^M \sum_{i=1}^n z_{im}^2 + \sum_{j=1}^p \sum_{i=1}^n \left(x_{ij} - \sum_{m=1}^M z_{im}\phi_{jm}\right)^2$, a **Proporção de Variância Explicada (PVE)** pela $m$-ésima componente principal é dada pela Equação (12.10):
-   $$\operatorname{PVE}_m = \frac{\sum_{i=1}^{n} z_{im}^2}{\sum_{j=1}^{p}\sum_{i=1}^{n} x_{ij}^2} = \frac{\sum_{i=1}^{n}\left(\sum_{j=1}^{p}\phi_{jm}x_{ij}\right)^2}{\sum_{j=1}^{p}\sum_{i=1}^{n} x_{ij}^2} \in [0, 1], \qquad \text{com } \sum_{m=1}^{\min(n-1, p)} \operatorname{PVE}_m = 1$$
-   *(Atenção: como a PCA maximiza variância, se as variáveis forem medidas em unidades diferentes ou tiverem variâncias muito díspares, a 1ª componente principal concentrará quase todo o peso na variável de maior variância bruta! Por isso, **deve-se escalonar cada variável para ter desvio-padrão unitário** antes de rodar a PCA).*
-4. **Valores Ausentes e Completamento de Matrizes via PCA Iterativa (Algoritmo 12.1, Seção 12.3):** Sendo $\mathcal{O}$ o conjunto dos índices $(i, j)$ observados em $X$, imputam-se inicialmente os valores ausentes $(i, j) \notin \mathcal{O}$ pela média da respectiva coluna $\bar{x}_j$ e repete-se até a convergência: (a) calcula-se a aproximação de posto $M$ via PCA/SVD $\hat{x}_{ij} = \sum_{m=1}^M \hat{a}_{im}\hat{b}_{jm}$; (b) atualizam-se os elementos ausentes por $\tilde{x}_{ij} \leftarrow \hat{x}_{ij}$ para $(i, j) \notin \mathcal{O}$, mantendo fixos os elementos observados $\tilde{x}_{ij} = x_{ij}$ para $(i, j) \in \mathcal{O}$.
-
----
-
-### 11.2 Métodos de Agrupamento (*Clustering*): K-Means e Agrupamento Hierárquico (Seção 12.4)
-1. **Agrupamento *K-Means* (Algoritmo 12.2, Seção 12.4.1):** Particiona as $n$ observações em $K$ clusters disjuntos $C_1, \dots, C_K$ ($\bigcup_{k=1}^K C_k = \{1, \dots, n\}$, $C_k \cap C_{k'} = \emptyset$) de modo a minimizar a variação total intra-cluster (Equações 12.15 e 12.17):
-   $$\min_{C_1, \dots, C_K} \left\{ \sum_{k=1}^{K} \frac{1}{|C_k|} \sum_{i, i' \in C_k} \sum_{j=1}^{p} (x_{ij} - x_{i'j})^2 \right\} \Longleftrightarrow \min_{C_1, \dots, C_K} \left\{ \sum_{k=1}^{K} \sum_{i \in C_k} \sum_{j=1}^{p} (x_{ij} - \bar{x}_{kj})^2 \right\}$$
-   A equivalência acima decorre da **Identidade Algébrica (Equação 12.18 e Ex. 12.6.1)**:
-   $$\frac{1}{|C_k|}\sum_{i, i' \in C_k}\sum_{j=1}^{p}(x_{ij} - x_{i'j})^2 = 2\sum_{i \in C_k}\sum_{j=1}^{p}(x_{ij} - \bar{x}_{kj})^2, \qquad \text{onde } \bar{x}_{kj} = \frac{1}{|C_k|}\sum_{i \in C_k} x_{ij} \text{ é o centroide do cluster } k$$
-   O **Algoritmo 12.2 (*K-Means*)** alterna dois passos após uma atribuição aleatória inicial de clusters: **(a)** calcula o centroide $\bar{x}_k = (\bar{x}_{k1}, \dots, \bar{x}_{kp})^T$ de cada cluster (o que minimiza a soma dos quadrados dentro de $C_k$); **(b)** reatribui cada observação $x_i$ ao cluster cujo centroide está mais próximo na distância euclidiana. Como ambos os passos reduzem (ou mantêm) a função objetivo da Equação (12.17), o algoritmo converge garantidamente para um **ótimo local** (devendo ser executado com múltiplas inicializações aleatórias, ex.: `n_init=20`).
-2. **Agrupamento Hierárquico Aglomerativo (*Bottom-Up*) e Tipos de Ligação (*Linkage* — Seção 12.4.2):** Constrói uma representação em árvore (**dendrograma**) sem exigir a fixação prévia de $K$: parte das $n$ folhas individuais e, a cada passo, funde os dois grupos mais similares na altura igual à sua dissimilaridade inter-grupos, definida por um dos quatro tipos de **Ligação (*Linkage*, Tabela 12.1)**:
-   - **Completa (*Complete Linkage*):** maior dissimilaridade entre pares $i \in A, i' \in B$ ($\max d(x_i, x_{i'})$ — gera clusters compactos e balanceados);
-   - **Simples (*Single Linkage*):** menor dissimilaridade entre pares ($\min d(x_i, x_{i'})$ — propenso a formar cadeias alongadas / *trailing clusters*);
-   - **Média (*Average Linkage*):** média de todas as $|A|\cdot|B|$ dissimilaridades pareadas (preferida junto com a Completa);
-   - **Centroide (*Centroid Linkage*):** distância entre os centroides dos dois grupos (pode sofrer o fenômeno indesejável de **inversão**, onde a fusão ocorre numa altura inferior à de uma fusão anterior!).
-   - **Escolha da Medida de Dissimilaridade:** Além da **Distância Euclidiana** (que agrupa observações com valores absolutos próximos), utiliza-se em expressão gênica e perfis de compras a **Distância Baseada em Correlação** $1 - \operatorname{Cor}(x_i, x_{i'})$ (que agrupa observações cujos perfis têm o mesmo formato relativo, independentemente da magnitude média; se cada observação $x_i$ for padronizada para ter média $0$ e variância $1$, vale $\|x_i - x_{i'}\|_2^2 = 2p\big(1 - \operatorname{Cor}(x_i, x_{i'})\big)$, conforme o Ex. 12.6.7!).
-
-> **[Complemento — Raschka et al., *ML with PyTorch and Scikit-Learn*, Cap. 5 e Cap. 10]:**  
-> 1. **K-Means++, Método do Cotovelo e Coeficiente de Silhueta (Cap. 10.1):** O algoritmo **K-Means++** inicializa os centroides escolhendo novos centros com probabilidade proporcional à distância quadrática $D(x)^2$ ao centroide mais próximo já escolhido. Para avaliar a qualidade do agrupamento e escolher $K$, calcula-se para cada ponto $x^{(i)}$ a coesão intra-cluster $a^{(i)}$ e a separação para o cluster vizinho mais próximo $b^{(i)}$, definindo o **Coeficiente de Silhueta**:
->    $$s^{(i)} = \frac{b^{(i)} - a^{(i)}}{\max\big\{b^{(i)},\, a^{(i)}\big\}} \in [-1, 1]$$
-> 2. **DBSCAN (*Density-Based Spatial Clustering of Applications with Noise* — Cap. 10.3):** Agrupa regiões densas de formato arbitrário (não esférico) sem fixar $K$, classificando pontos como **pontos centrais (*core points*)** (que têm pelo menos $\operatorname{MinPts}$ vizinhos dentro de um raio $\varepsilon$), **pontos de fronteira (*border points*)** ou **pontos de ruído (*noise/outliers*)**.
-> 3. **LDA como Redução de Dimensão Supervisionada e t-SNE (Cap. 5.2 e 5.3):** Enquanto a PCA maximiza a variância não supervisionada, o **LDA de Fisher** projeta os dados nas até $K - 1$ direções dos autovetores de $\mathbf{S}_W^{-1}\mathbf{S}_B$ (onde $\mathbf{S}_W$ é a matriz de dispersão *within-class* e $\mathbf{S}_B$ é a matriz de dispersão *between-class*). Para visualização 2D não linear de variedades complexas, o **t-SNE** (van der Maaten & Hinton, 2008) minimiza a divergência de Kullback-Leibler entre probabilidades de similaridade Gaussianas no espaço original e uma distribuição $t$ de Student de caudas pesadas (1 grau de liberdade / Cauchy) no espaço 2D.
-
-#### Exercícios de Fixação (Capítulo 12)
-1. *(ISLP, Seção 12.6, Ex. 1)* Prove a identidade algébrica da Equação (12.18): $\frac{1}{|C_k|}\sum_{i, i' \in C_k}\sum_{j=1}^p (x_{ij} - x_{i'j})^2 = 2\sum_{i \in C_k}\sum_{j=1}^p (x_{ij} - \bar{x}_{kj})^2$. *(Dica: Escreva $x_{ij} - x_{i'j} = (x_{ij} - \bar{x}_{kj}) - (x_{i'j} - \bar{x}_{kj})$, eleve ao quadrado e use que $\sum_{i \in C_k}(x_{ij} - \bar{x}_{kj}) = 0$).*
-2. *(ISLP, Seção 12.6, Ex. 4)* Em um conjunto de dados, os clusters $\{1, 2, 3\}$ e $\{4, 5\}$ fundem-se tanto no dendrograma de ligação simples quanto no de ligação completa. Qual fusão ocorre mais alto na árvore? E para a fusão de dois clusters unitários $\{5\}$ e $\{6\}$? *(Gabarito: Para $\{1,2,3\}$ e $\{4,5\}$, a fusão na **ligação completa ocorre em altura maior ou igual** à da ligação simples, pois $\max d(x_i, x_{i'}) \ge \min d(x_i, x_{i'})$; para $\{5\}$ e $\{6\}$, há apenas um par de pontos, logo $\max = \min = d(x_5, x_6)$ e ambos **fundem exatamente na mesma altura**).*
-
----
-
-## 12. Testes Múltiplos de Hipóteses: FWER, FDR e Benjamini-Hochberg (Capítulo 13)
-
-### 12.1 O Desafio dos Testes Múltiplos e o Controle da Taxa de Erro Familiar (FWER, Seções 13.1 a 13.3)
-Ao testar uma única hipótese nula $H_0$ no nível $\alpha$ (rejeitando $H_0$ se $p < \alpha$), a probabilidade de cometer um **Erro Tipo I (Falso Positivo)** — rejeitar $H_0$ quando $H_0$ é verdadeira — é limitada por $\alpha$. Contudo, se testarmos simultaneamente **$m$ hipóteses nulas $H_{01}, \dots, H_{0m}$**, todas verdadeiras e independentes no nível individual $\alpha$, esperamos cometer **$m\alpha$ falsos positivos**!
-
-| Decisão $\setminus$ Estado da Natureza | $H_0$ é Verdadeira | $H_0$ é Falsa | Total |
-| :--- | :---: | :---: | :---: |
-| **Rejeitar $H_0$ (Descoberta)** | **$V$** (Falsos Positivos / Erro Tipo I) | $S$ (Verdadeiros Positivos) | **$R = V + S$** |
-| **Não Rejeitar $H_0$** | $U$ (Verdadeiros Negativos) | **$W$** (Falsos Negativos / Erro Tipo II) | $m - R$ |
-| **Total** | $m_0$ | $m - m_0$ | $m$ |
-
-1. **A Taxa de Erro Familiar (*Family-Wise Error Rate* — FWER, Seção 13.3.1):** É a probabilidade de cometer **pelo menos um Erro Tipo I (falso positivo)** dentre os $m$ testes (Equação 13.4):
-   $$\operatorname{FWER} = \Pr(V \ge 1)$$
-   Se os $m$ testes forem independentes e todas as $H_{0j}$ forem verdadeiras, controlada cada uma no nível individual $\alpha$ (Equação 13.5):
-   $$\operatorname{FWER}(\alpha) = 1 - \Pr(V = 0) = 1 - (1 - \alpha)^m$$
-   Para $\alpha = 0{,}05$ e $m = 100$, tem-se $\operatorname{FWER}(0{,}05) = 1 - (0{,}95)^{100} \approx \mathbf{0{,}9941}$ ($99{,}4\%$ de chance de ao menos um falso positivo!).
-2. **O Método de Bonferroni (Seção 13.3.2):** Pela desigualdade de Boole $\Pr(\bigcup_{j=1}^m A_j) \le \sum_{j=1}^m \Pr(A_j)$, para controlar a $\operatorname{FWER}$ no nível $\alpha$ **sem nenhuma hipótese de independência** entre os testes, a **Correção de Bonferroni** rejeita $H_{0j}$ somente se:
-   $$p_j \le \frac{\alpha}{m}$$
-   pois então $\operatorname{FWER} \le \sum_{j \in \mathcal{H}_0} \Pr(p_j \le \alpha/m) \le m_0 \frac{\alpha}{m} \le m \frac{\alpha}{m} = \alpha$.
-3. **O Método *Step-Down* de Holm (Algoritmo 13.1, Seção 13.3.2):** O método de Holm também controla rigorosamente $\operatorname{FWER} \le \alpha$ sem qualquer suposição de independência, mas é **uniformemente mais poderoso que Bonferroni** (sempre rejeita todas as hipóteses que Bonferroni rejeita, e frequentemente mais!).
-   - **Algoritmo 13.1 (Procedimento de Holm):**
-     1. Ordene os $m$ $p$-valores em ordem crescente: $p_{(1)} \le p_{(2)} \le \dots \le p_{(m)}$;
-     2. Defina $L = \min\left\{ j \in \{1, \dots, m\} : p_{(j)} > \frac{\alpha}{m + 1 - j} \right\}$;
-     3. Rejeite todas as hipóteses nulas $H_{0j}$ para as quais $p_j < p_{(L)}$ (isto é, rejeite as $L - 1$ hipóteses associadas a $p_{(1)}, \dots, p_{(L-1)}$; se o conjunto em 2 for vazio, rejeite todas as $m$).
-
----
-
-### 12.2 A Taxa de Falsas Descobertas (FDR), Procedimento de Benjamini-Hochberg e Reamostragem (Seções 13.4 e 13.5)
-Quando $m$ é muito grande (ex.: $m = 20\,000$ genes), exigir $\Pr(V \ge 1) \le 0{,}05$ via Bonferroni ou Holm é excessivamente conservador e destrói o **poder estatístico** ($1 - \text{Erro Tipo II}$). Em vez de proibir que ocorra sequer um único falso positivo, é muito mais produtivo controlar a **fração esperada de falsos positivos dentre as hipóteses rejeitadas**:
-
-1. **Proporção de Falsas Descobertas (FDP) e Taxa de Falsas Descobertas (*False Discovery Rate* — FDR, Seção 13.4.1):** Define-se $\operatorname{FDP} = V / R$ se $R > 0$ (e $0$ se $R = 0$), e a **FDR** como sua esperança matemática (Equação 13.8):
-   $$\operatorname{FDR} = \mathbb{E}(\operatorname{FDP}) = \mathbb{E}\left(\frac{V}{R}\right)$$
-   Controlar a FDR num nível $q = 0{,}20$ garante que, em média, no máximo $20\%$ das hipóteses rejeitadas (descobertas) sejam falsos positivos.
-2. **O Procedimento de Benjamini-Hochberg (Algoritmo 13.2, Seção 13.4.2):** Para controlar $\operatorname{FDR} \le q$ sobre $m$ $p$-valores independentes (ou positivamente dependentes):
-   - **Algoritmo 13.2 (Benjamini-Hochberg):**
-     1. Especifique o nível desejado $q \in (0, 1)$ para a FDR;
-     2. Ordene os $m$ $p$-valores: $p_{(1)} \le p_{(2)} \le \dots \le p_{(m)}$;
-     3. Determine o **maior índice** $L$ tal que $p_{(L)} \le \dfrac{q \cdot L}{m}$:
-        $$L = \max\left\{ j \in \{1, \dots, m\} : p_{(j)} \le \frac{q \cdot j}{m} \right\}$$
-     4. Rejeite todas as hipóteses nulas $H_{0j}$ para as quais $p_j \le p_{(L)}$ (isto é, todas as $L$ primeiras hipóteses ordenadas $p_{(1)}, \dots, p_{(L)}$, mesmo que alguma intermediária tivesse $p_{(k)} > qk/m$ para $k < L$!).  
-   Geometricamente (Figura 12b), enquanto o limiar de Bonferroni é a reta horizontal constante $\alpha / m$, o limiar de Benjamini-Hochberg é a **reta crescente de inclinação $q / m$** que passa pela origem!
-3. **Abordagem de Reamostragem (Permutação) para $p$-Valores e FDR (Algoritmos 13.3 e 13.4, Seção 13.5):** Quando $n_X$ e $n_Y$ são pequenos ou os dados não são normais, não podemos confiar na distribuição teórica $t$ para a estatística de dois grupos $T$. Sob $H_0: \mathbb{E}(X) = \mathbb{E}(Y)$ (com distribuições iguais), podemos **permutar aleatoriamente** as $n_X + n_Y$ observações combinadas $B$ vezes (ex.: $B = 10\,000$), calculando $T^{*b}$ em cada permutação e estimando o $p$-valor empírico por:
-   $$\text{$p$-valor} = \frac{\sum_{b=1}^{B} I\big(|T^{*b}| \ge |T|\big)}{B}$$
-   Para $m$ variáveis simultâneas, para um limiar de rejeição $c > 0$, o número de hipóteses rejeitadas nos dados reais é $R = \sum_{j=1}^m I(|T_j| \ge c)$, e o número esperado de falsos positivos sob $H_0$ é estimado pela média nas $B$ permutações $\widehat{\mathbb{E}(V)} = \frac{1}{B}\sum_{b=1}^B \sum_{j=1}^m I(|T_j^{*b}| \ge c)$, fornecendo o estimador direto $\widehat{\operatorname{FDR}}(c) = \widehat{\mathbb{E}(V)} / R$.
-
-![Figura 12: Proporção de Variância Explicada na PCA e Procedimento de Benjamini-Hochberg](./figuras/fig12_nao_supervisionado_pca_clustering_fdr.svg)
-*Figura 12 — (a) Scree plot da Proporção de Variância Explicada (PVE) individual e acumulada na PCA (Seção 12.2.3). (b) Comparação entre o limiar horizontal de Bonferroni ($\alpha/m = 0{,}005$) e as retas crescentes $q \cdot j / m$ de Benjamini-Hochberg ($q = 0{,}05$ e $q = 0{,}20$) para os $p$-valores da Tabela 13.4 (Seção 13.4 e Ex. 13.7.4).*
-
-#### Exercícios de Fixação (Capítulo 13)
-1. *(ISLP, Seção 13.7, Ex. 4 — Tabela 13.4)* Considere os $m = 10$ $p$-valores da Tabela 13.4: $H_{01}=0{,}0011,\; H_{02}=0{,}031,\; H_{03}=0{,}017,\; H_{04}=0{,}32,\; H_{05}=0{,}11,\; H_{06}=0{,}90,\; H_{07}=0{,}07,\; H_{08}=0{,}006,\; H_{09}=0{,}004,\; H_{10}=0{,}0009$. Quais hipóteses são rejeitadas controlando: (a) FWER em $\alpha = 0{,}05$ (Bonferroni e Holm); (b) FDR em $q = 0{,}05$; (c) FDR em $q = 0{,}20$? *(Gabarito: Ordenando: $p_{(1)}=0{,}0009\;(H_{10}),\; p_{(2)}=0{,}0011\;(H_{01}),\; p_{(3)}=0{,}004\;(H_{09}),\; p_{(4)}=0{,}006\;(H_{08}),\; p_{(5)}=0{,}017\;(H_{03}),\; p_{(6)}=0{,}031\;(H_{02}),\; p_{(7)}=0{,}07\;(H_{07})$. (a) Bonferroni ($\le 0{,}005$) e Holm ($p_{(4)} = 0{,}006 \le 0{,}05/7 \approx 0{,}00714$, mas $p_{(5)} = 0{,}017 > 0{,}05/6$): Bonferroni rejeita **$H_{10}, H_{01}, H_{09}$** ($3$ hipóteses) e Holm rejeita **$H_{10}, H_{01}, H_{09}, H_{08}$** ($4$ hipóteses); (b) Benjamini-Hochberg ($q=0{,}05$, $p_{(j)} \le 0{,}005 j$): como $p_{(4)} = 0{,}006 \le 0{,}020$, rejeita **$H_{10}, H_{01}, H_{09}, H_{08}$** ($4$ hipóteses); (c) Benjamini-Hochberg ($q=0{,}20$, $p_{(j)} \le 0{,}02 j$): como $p_{(6)} = 0{,}031 \le 0{,}12$, rejeita **$H_{10}, H_{01}, H_{09}, H_{08}, H_{03}, H_{02}$** ($6$ hipóteses, esperando-se cerca de $6 \times 0{,}20 = 1{,}2$ falso positivo)).*
-
----
-
-## 13. Síntese do Ecossistema Python em Machine Learning (ISLP & Raschka)
-
-A tabela abaixo resume as ferramentas e classes canônicas utilizadas nos laboratórios do **ISLP** e de **Raschka et al.**:
-
-| Tarefa / Modelo | Biblioteca / Classe Python (`ISLP`, `statsmodels`, `scikit-learn`, `PyTorch`) | Detalhes de Implementação Críticos |
+| Critério | Fórmula Matemática ($d = \text{nº de variáveis}$, $\hat{\sigma}^2 = \text{variância do erro}$) | Regra de Escolha e Característica |
 | :--- | :--- | :--- |
-| **Matrizes de Desenho, Polinômios e Splines** | `ISLP.models`: `ModelSpec`, `poly(col, degree)`, `bs(col, df)`, `ns(col, df)` | `ModelSpec` aplica *one-hot encoding* automático com descarte do 1º nível (*baseline*); `poly` gera polinômios ortogonais por padrão (`raw=False`) |
-| **Inferência Linear e GLMs** | `statsmodels.api`: `sm.OLS(y, X)`, `sm.GLM(y, X, family=sm.families.Binomial())` ou `Poisson()`, `anova_lm` | Fornece tabelas de coeficientes, erros padrão $\operatorname{SE}(\hat{\beta}_j)$, estatísticas $t/z$, $p$-valores e intervalos de confiança |
-| **Pré-processamento e Validação sem Vazamento** | `sklearn.pipeline.make_pipeline`, `StandardScaler`, `KFold`, `StratifiedKFold`, `GridSearchCV` | Encapsular `StandardScaler()` dentro de `Pipeline` garante que média e variância sejam calculadas apenas nos *folds* de treino |
-| **Regularização Ridge, Lasso, PCR e PLS** | `sklearn.linear_model.ElasticNet` / `LassoCV` / `RidgeCV`, `PCA`, `PLSRegression` | Em `ElasticNet`, `l1_ratio=0` equivale a Ridge e `l1_ratio=1` equivale ao Lasso |
-| **Árvores, Ensembles e SVM** | `DecisionTreeRegressor(ccp_alpha=...)`, `RandomForestRegressor(max_features=...)`, `GradientBoostingClassifier`, `SVC(kernel='rbf', C=..., gamma=...)` | Em `RandomForest`, `max_features=p` é Bagging; em `SVC`, `C` pequeno = margem larga (inverso da notação do ISLP!) |
-| **Análise de Sobrevivência** | `lifelines`: `KaplanMeierFitter()`, `CoxPHFitter()`, `logrank_test` (`ISLP.survival.sim_time`) | Estima $\hat{S}(t)$, intervalos de confiança de Greenwood e verossimilhança parcial de Cox |
-| **Deep Learning e Grafos** | `torch.nn.Module`, `nn.Linear`, `nn.Conv2d`, `nn.LSTM`, `nn.MultiheadAttention`, `pytorch_lightning.Trainer` | Fluxo padrão de treino a cada lote: `optimizer.zero_grad()`, `loss.backward()`, `optimizer.step()` |
+| **$C_p$ de Mallows** | $C_p = \dfrac{1}{n}\big(\operatorname{RSS} + 2\,d\,\hat{\sigma}^2\big)$ | **Menor é melhor.** Soma uma multa de $2d\hat{\sigma}^2$ ao RSS para descontar o otimismo do treino. |
+| **AIC (*Akaike*)** | $\operatorname{AIC} = \dfrac{1}{n}\big(\operatorname{RSS} + 2\,d\,\hat{\sigma}^2\big)$ *(proporcional a $C_p$ no modelo linear normal)* | **Menor é melhor.** Baseado em máxima verossimilhança; aplica-se também a modelos logísticos. |
+| **BIC (*Bayesiano*)** | $\operatorname{BIC} = \dfrac{1}{n}\big(\operatorname{RSS} + \ln(n)\,d\,\hat{\sigma}^2\big)$ | **Menor é melhor.** Troca o fator $2$ por $\ln(n)$ (como $\ln(n) > 2$ para $n > 7$, **penaliza modelos grandes mais fortemente** que o $C_p$/AIC, escolhendo modelos mais enxutos). |
+| **$R^2$ Ajustado ($R^2_{\text{adj}}$)** | $R^2_{\text{adj}} = 1 - \dfrac{\operatorname{RSS} / (n - d - 1)}{\operatorname{TSS} / (n - 1)}$ | **Maior é melhor.** Só aumenta se a nova variável reduzir $\frac{\operatorname{RSS}}{n - d - 1}$ mais do que seria esperado por puro ruído! |
 
 ---
 
-## Referências Bibliográficas
-1. **JAMES, Gareth; WITTEN, Daniela; HASTIE, Trevor; TIBSHIRANI, Robert; TAYLOR, Jonathan.** *An Introduction to Statistical Learning — with Applications in Python (ISLP)*. Springer Texts in Statistics. Cham: Springer, 2023. (Referência Principal).
-2. **RASCHKA, Sebastian; LIU, Yuxi (Hayden); MIRJALILI, Vahid.** *Machine Learning with PyTorch and Scikit-Learn: Develop machine learning and deep learning models with Python*. Birmingham: Packt Publishing, 2022. (Referência Complementar).
+### 5.3 Regressão Ridge ($\ell_2$) versus Lasso ($\ell_1$): A Geometria que Faz Seleção de Variáveis (Seção 6.2)
+
+Em vez de escolher variáveis no "tudo ou nada" (entra ou sai), os métodos de regularização minimizam o $\operatorname{RSS}$ somado a uma **multa pelo tamanho dos coeficientes $\beta_1, \dots, \beta_p$**, controlada por um hiperparâmetro de sintonia $\lambda \ge 0$ (*tuning parameter*, escolhido por Validação Cruzada):
+- **Atenção:** O intercepto $\beta_0$ **nunca** entra na penalidade (pois ele apenas mede o nível médio de $Y$), e **todas as variáveis $X_1, \dots, X_p$ devem ser padronizadas antes de aplicar Ridge ou Lasso** (Seção 1.2)!
+
+#### 1. Regressão Ridge (Penalidade Quadrática $\ell_2$ — Equação 6.5 do ISLP)
+$$\hat{\beta}^{\text{Ridge}}_\lambda = \arg\min_{\beta} \left\{\underbrace{\sum_{i=1}^{n}\left(y_i - \beta_0 - \sum_{j=1}^{p}\beta_j x_{ij}\right)^2}_{\operatorname{RSS}} + \underbrace{\lambda \sum_{j=1}^{p} \beta_j^2}_{\text{Penalidade } \ell_2}\right\}$$
+- Quando $\lambda = 0$, não há multa e temos o Mínimos Quadrados comum ($\hat{\beta}^{\text{OLS}}$).
+- Quando $\lambda \to \infty$, a multa fica tão pesada que força todos os coeficientes $\hat{\beta}_1, \dots, \hat{\beta}_p \to 0$ (sobrando apenas a média $\hat{\beta}_0 = \bar{y}$).
+- **Característica crucial do Ridge:** O Ridge encolhe todos os coeficientes proporcionalmente perto de zero, mas **NUNCA zera exatamente nenhum coeficiente** (a menos que $\lambda = \infty$). Portanto, o modelo final continua com todas as $p$ variáveis.
+
+#### 2. O Lasso (Penalidade de Valor Absoluto $\ell_1$ — Equação 6.7 do ISLP)
+O **Lasso (*Least Absolute Shrinkage and Selection Operator*)** faz uma única mudança na fórmula: troca o quadrado $\beta_j^2$ pelo **módulo (valor absoluto) $|\beta_j|$**:
+$$\hat{\beta}^{\text{Lasso}}_\lambda = \arg\min_{\beta} \left\{\underbrace{\sum_{i=1}^{n}\left(y_i - \beta_0 - \sum_{j=1}^{p}\beta_j x_{ij}\right)^2}_{\operatorname{RSS}} + \underbrace{\lambda \sum_{j=1}^{p} |\beta_j|}_{\text{Penalidade } \ell_1}\right\}$$
+- **A Mágica do Lasso (Esparsidade):** Ao contrário do Ridge, quando $\lambda$ é suficientemente grande, a penalidade de módulo $|\beta_j|$ **força os coeficientes das variáveis menos importantes a serem EXATAMENTE IGUAIS A ZERO ($\hat{\beta}_j = 0$)**! Assim, o Lasso realiza **Seleção Automática de Variáveis**, entregando modelos enxutos e fáceis de interpretar (**modelos esparsos**).
+
+#### 3. Por que o Lasso zera coeficientes e o Ridge não? (A Geometria do Losango vs. Círculo e o *Soft-Thresholding* — Figura 6)
+Na Seção 6.2.2 (Equações 6.8 e 6.9), mostra-se que minimizar $\operatorname{RSS} + \lambda\sum |\beta_j|$ equivale a minimizar o $\operatorname{RSS}$ sujeito a um "orçamento máximo" $s$:
+$$\text{Lasso: } \sum_{j=1}^{p} |\beta_j| \le s \quad (\text{Losango com quinas nos eixos}), \qquad \text{Ridge: } \sum_{j=1}^{p} \beta_j^2 \le s \quad (\text{Círculo redondo sem quinas})$$
+Olhe para a **Figura 6a**: as curvas vermelhas são as curvas de nível de mesmo $\operatorname{RSS}$ ao redor da solução sem restrição $\hat{\beta}^{\text{OLS}}$.
+- No **Ridge**, a região permitida é um **círculo redondo**: quando as elipses vermelhas se expandem a partir de $\hat{\beta}^{\text{OLS}}$, elas tocam a borda redonda do círculo quase sempre fora dos eixos ($\hat{\beta}_1 \neq 0$ e $\hat{\beta}_2 \neq 0$).
+- No **Lasso**, a região permitida $|\beta_1| + |\beta_2| \le s$ é um **losango pontudo cujas quinas ficam exatamente em cima dos eixos coordenados**! Quando as elipses vermelhas se expandem, é altíssimo que o primeiro toque aconteça **bem na quina do losango**, onde uma das coordenadas é **exatamente zero ($\hat{\beta}_1 = 0$)**!
+
+#### Exemplo Analítico e Numérico (Caso Ortonormal — Equações 6.14 e 6.15 do ISLP e Figura 6b)
+Se as colunas forem ortonormais e $y_j$ for a estimativa OLS sem penalidade da variável $j$, as fórmulas exatas do Ridge e do Lasso ficam:
+$$\hat{\beta}_j^{\text{Ridge}} = \frac{y_j}{1 + \lambda}, \qquad \hat{\beta}_j^{\text{Lasso}} = \begin{cases} y_j - \lambda/2, & \text{se } y_j > \lambda/2 \\ y_j + \lambda/2, & \text{se } y_j < -\lambda/2 \\ \mathbf{0}, & \text{se } |y_j| \le \lambda/2 \end{cases} \quad (\text{Operador Soft-Thresholding})$$
+**Conta numérica rápida:** Suponha que temos $3$ variáveis com estimativas originais $y_1 = 4{,}0$, $y_2 = -2{,}5$ e $y_3 = 0{,}6$, e escolhemos $\lambda = 2{,}0$ (logo $\lambda / 2 = 1{,}0$):
+- **No Ridge ($\div(1 + 2) = \div 3$):** $\hat{\beta}^{\text{Ridge}} = (4/3,\; -2{,}5/3,\; 0{,}6/3) \approx \mathbf{(1{,}33;\; -0{,}83;\; 0{,}20)}$ *(nenhuma variável zerou)*.
+- **No Lasso (desconta $1{,}0$ em direção a zero; se $|y_j| \le 1{,}0$, vira zero!):**
+  - Variável 1 ($y_1 = 4{,}0 > 1{,}0$): $\hat{\beta}_1^{\text{Lasso}} = 4{,}0 - 1{,}0 = \mathbf{3{,}0}$;
+  - Variável 2 ($y_2 = -2{,}5 < -1{,}0$): $\hat{\beta}_2^{\text{Lasso}} = -2{,}5 + 1{,}0 = \mathbf{-1{,}5}$;
+  - Variável 3 ($|y_3| = 0{,}6 \le 1{,}0$): $\hat{\beta}_3^{\text{Lasso}} = \mathbf{0{,}0}$ *(a variável 3 foi eliminada automaticamente pelo Lasso!)*.
+
+---
+
+### 5.4 Regressão por Componentes Principais (PCR) e Mínimos Quadrados Parciais (PLS) (Seção 6.3)
+
+Outra forma de controlar a variância em alta dimensão é construir $M < p$ novas variáveis $Z_1, \dots, Z_M$ (combinações lineares $Z_m = \sum_{j=1}^p \phi_{jm} X_j$) e ajustar uma regressão linear comum de $Y$ sobre $Z_1, \dots, Z_M$:
+1. **PCR (*Principal Components Regression*, Seção 6.3.1):** Constrói $Z_1, \dots, Z_M$ como as $M$ direções que mais concentram a variância de $X$ (de forma **não supervisionada**, sem olhar para $Y$).
+2. **PLS (*Partial Least Squares*, Seção 6.3.2):** Constrói as direções $Z_1, \dots, Z_M$ de forma **supervisionada**, dando maior peso às variáveis $X_j$ que são **mais fortemente correlacionadas com a resposta $Y$**.
+
+![Figura 6: Regularização Ridge e Lasso: Geometria e Soft-Thresholding](./figuras/fig06_regularizacao_ridge_lasso_geometria.svg)
+*Figura 6 — (a) Geometria da restrição $\ell_1$ do Lasso (losango com quinas nos eixos, gerando $\hat{\beta}_1 = 0$) comparada à restrição $\ell_2$ do Ridge (círculo suave) (Figura 6.7 do ISLP). (b) Comparação entre OLS, encolhimento proporcional do Ridge e limiarização suave (Soft-Thresholding) do Lasso (Equações 6.14 e 6.15 do ISLP).*
+
+#### Exercícios de Fixação (Seção 5)
+1. *(ISLP, Seção 6.6, Ex. 2)* Na Regressão Lasso, à medida que aumentamos $\lambda$ a partir de $\lambda = 0$: (a) O que acontece com o RSS de treino? (b) E com a variância? (c) E com o viés ao quadrado? (d) E com o MSE de teste? *(Gabarito: Quando $\lambda$ cresce, o modelo fica mais restrito/menos flexível; logo: (a) o RSS de treino **aumenta monotonicamente**; (b) a variância **diminui monotonicamente**; (c) o viés$^2$ **aumenta monotonicamente**; (d) o MSE de teste **cai inicialmente** até o ponto ótimo $\lambda^*$ e depois **sobe** em formato de U).*
+
+---
+
+## 6. Além da Linearidade: Polinômios, Splines, Suavização e GAMs (ISLP Cap. 7)
+
+### 6.1 Como Capturar Curvas Usando as Mesmas Ferramentas da Regressão Linear? (Seções 7.1 a 7.3)
+
+Até aqui, assumimos que a relação entre $X$ e $Y$ (ou o *logit*) era uma reta. E quando os dados fazem curvas claras? A ideia brilhante do Capítulo 7 do ISLP é **substituir $X$ por funções de base transformadas $b_1(X), b_2(X), \dots, b_K(X)$**:
+$$y_i = \beta_0 + \beta_1 b_1(x_i) + \beta_2 b_2(x_i) + \dots + \beta_K b_K(x_i) + \varepsilon_i$$
+Como as funções $b_k(x_i)$ são calculadas diretamente a partir de $x_i$, o modelo **continua sendo linear nos parâmetros $\beta_0, \dots, \beta_K$**! Ou seja, podemos ajustá-lo por Mínimos Quadrados Ordinários como uma regressão múltipla comum! Vejamos a evolução das escolhas de base:
+
+1. **Regressão Polinomial (Seção 7.1):** Usamos as potências $b_j(x_i) = x_i^j$:
+   $$y_i = \beta_0 + \beta_1 x_i + \beta_2 x_i^2 + \dots + \beta_d x_i^d + \varepsilon_i$$
+   - **Problema:** Um polinômio único precisa valer para o eixo inteiro de $X$. Se usarmos grau alto ($d > 4$), a curva oscila descontroladamente, especialmente **nas bordas (extremos) do gráfico** (curva vermelha tracejada na **Figura 7a**).
+2. **Funções Escada (*Step Functions*, Seção 7.2):** Cortamos o eixo de $X$ em faixas (ex.: Idade $< 35$, $35\text{ a }50$, $50\text{ a }65$, $\ge 65$) usando variáveis indicadoras $C_k(X) = \mathbb{I}(c_{k-1} \le X < c_k)$ e ajustamos uma constante diferente em cada faixa. *Defeito:* cria saltos artificiais nos pontos de corte e perde a tendência dentro de cada faixa.
+
+---
+
+### 6.2 Splines de Regressão: Polinômios Cúbicos por Partes e Splines Naturais (Seção 7.4)
+
+Como juntar o melhor dos dois mundos — a suavidade dos polinômios com o controle local das faixas?  
+A resposta são as **Splines de Regressão**! Em vez de forçar um único polinômio de grau $10$ no gráfico inteiro, dividimos o eixo de $X$ em regiões escolhidas por **$K$ pontos de emenda chamados nós (*knots*)** $\xi_1 < \xi_2 < \dots < \xi_K$, ajustamos um **polinômio de baixo grau (grau $3$ — cúbico) em cada região**, e exigimos que nas emendas $\xi_k$ os pedaços se conectem de forma **perfeitamente suave**:
+- Mesma altura ($f$ contínua);
+- Mesma inclinação (1ª derivada $f'$ contínua);
+- Mesma curvatura (2ª derivada $f''$ contínua)!
+
+> **Teorema 6.1 (A Base de Potência Truncada do Spline Cúbico — Equação 7.3 do ISLP):**  
+> *Qualquer spline cúbico com $K$ nós internos $\xi_1, \dots, \xi_K$ pode ser ajustado por uma regressão linear simples adicionando à base cúbica $\{1, x, x^2, x^3\}$ exatamente $K$ funções de potência cúbica truncada $(x - \xi_k)_+^3$:*
+> $$y_i = \beta_0 + \beta_1 x_i + \beta_2 x_i^2 + \beta_3 x_i^3 + \sum_{k=1}^{K} \beta_{3+k} (x_i - \xi_k)_+^3 + \varepsilon_i, \qquad \text{onde } (x - \xi)_+^3 = \begin{cases} (x - \xi)^3, & \text{se } x > \xi \\ 0, & \text{se } x \le \xi \end{cases}$$
+> *possuindo um total de **$K + 4$ graus de liberdade (parâmetros)**.*
+> - **Spline Cúbico Natural (*Natural Cubic Spline*, Seção 7.4.4):** Para eliminar a instabilidade que polinômios cúbicos ainda sofrem nas caudas externas ($x < \xi_1$ e $x > \xi_K$), o **Spline Natural** impõe a restrição extra de que a curva seja **uma reta linear ($f''(x) = 0$) antes do primeiro nó $\xi_1$ e depois do último nó $\xi_K$** (curva verde na Figura 7a), economizando $4$ graus de liberdade (total de $K$ graus de liberdade) e produzindo intervalos de confiança muito mais estáveis nas bordas!
+
+---
+
+### 6.3 Smoothing Splines, Regressão Local (LOESS) e GAMs (Seções 7.5 a 7.7)
+
+1. **Smoothing Splines (Splines de Suavização — Seção 7.5 e Figura 7b):**  
+   E se não quisermos escolher manualmente onde colocar os nós $\xi_k$? As *Smoothing Splines* buscam a função $g(x)$ que minimiza simultaneamente o erro nos pontos e uma **penalidade sobre a rugosidade (curvatura total)**:
+   $$\min_{g} \left\{\sum_{i=1}^{n} \big(y_i - g(x_i)\big)^2 + \lambda \int \big[g''(t)\big]^2 dt\right\}$$
+   - **Resultado matemático surpreendente:** A função $g(x)$ que resolve esse problema é automaticamente um **Spline Cúbico Natural com um nó em cada ponto observado $x_i$**, cujos coeficientes são encolhidos pelo parâmetro $\lambda \ge 0$!
+   - Quando $\lambda = 0$, a curva interpola todos os pontos ($n$ graus de liberdade); quando $\lambda \to \infty$, $g''(t) \to 0$ e a curva vira a **reta de Mínimos Quadrados Ordinários** ($2$ graus de liberdade). O número de **graus de liberdade efetivos** é dado pelo traço da matriz suavizadora $\operatorname{df}_\lambda = \sum_{i=1}^n \{S_\lambda\}_{ii} \in [2, n]$, e $\lambda$ é escolhido rapidamente via **LOOCV** usando a mesma fórmula da alavancagem $h_i = \{S_\lambda\}_{ii}$!
+2. **Regressão Local (LOESS — Seção 7.6):** Para prever em um ponto $x_0$, pega apenas a fração $s = k/n$ (*span*) dos pontos mais próximos de $x_0$ e ajusta uma **reta por mínimos quadrados ponderados**, dando peso máximo aos pontos colados em $x_0$ e peso zero aos pontos fora da vizinhança.
+3. **Modelos Aditivos Generalizados (GAMs — Seção 7.7):**  
+   Quando temos $p$ variáveis preditoras $X_1, \dots, X_p$, o **GAM** troca cada termo linear $\beta_j X_j$ da regressão múltipla por uma **função não linear suave separada $f_j(X_j)$** (como uma spline natural para `Idade`, outra para `Ano` e variáveis *dummy* para `Escolaridade`):
+   $$y_i = \beta_0 + f_1(x_{i1}) + f_2(x_{i2}) + \dots + f_p(x_{ip}) + \varepsilon_i$$
+   Como o modelo continua **aditivo**, podemos plotar e interpretar o gráfico da curva $f_j(X_j)$ de cada variável individualmente mantendo as demais fixas!
+
+![Figura 7: Polinômios, Splines Cúbicas, Splines Naturais e Smoothing Splines](./figuras/fig07_polinomios_splines_suavizacao_gams.svg)
+*Figura 7 — (a) Comparação entre um polinômio global de grau 11 (oscilação severa nas bordas), um Cubic Spline e um Natural Cubic Spline com 3 nós internos (Seção 7.4). (b) Smoothing Splines variando o parâmetro de penalidade de curvatura $\lambda$ e os graus de liberdade efetivos $\operatorname{df}_\lambda$ (Seção 7.5).*
+
+#### Exercícios de Fixação (Seção 6)
+1. *(ISLP, Seção 7.9, Ex. 3)* Considere a função ajustada $\hat{Y} = 1 + X - 2(X - 1)^2\mathbb{I}(X \ge 1)$. Calcule o valor previsto $\hat{Y}$ para $X = 0$, $X = 1$ e $X = 2$. *(Gabarito: Para $X = 0 < 1$, $\mathbb{I}(0 \ge 1) = 0 \implies \hat{Y}(0) = 1 + 0 = \mathbf{1}$; para $X = 1$, $\hat{Y}(1) = 1 + 1 - 2(0)^2 = \mathbf{2}$; para $X = 2 \ge 1$, $\hat{Y}(2) = 1 + 2 - 2(2 - 1)^2 = 3 - 2 = \mathbf{1}$).*
+
+---
+
+## 7. Árvores de Decisão, Bagging, Random Forests e Boosting (ISLP Cap. 8; Raschka Cap. 7)
+
+### 7.1 Árvores de Regressão e Classificação (CART): A Ideia de Dividir para Conquistar (Seção 8.1)
+
+Uma **Árvore de Decisão** é o modelo mais intuitivo de todo o Machine Learning: ela funciona exatamente como um fluxograma de perguntas `"Sim / Não"` do tipo $X_j < s$ (*"A área do imóvel é menor que $80\,\text{m}^2$? O número de quartos é menor que $3$?"*).
+
+Geometricamente, cada pergunta $X_j < s$ faz um **corte reto paralelo aos eixos**, dividindo o espaço das variáveis em **$J$ caixas (retângulos) disjuntas $R_1, R_2, \dots, R_J$** chamadas **folhas (ou nós terminais)** (veja a **Figura 8a**):
+- **Em uma Árvore de Regressão:** Para qualquer novo ponto que caia dentro do retângulo (folha) $R_m$, a previsão $\hat{y}_{R_m}$ é simplesmente a **média aritmética dos valores $y_i$ de treino que estão dentro de $R_m$**!
+- **Em uma Árvore de Classificação:** A previsão para qualquer ponto que caia na folha $R_m$ é a **classe mais frequente (moda / voto majoritário)** entre os exemplos de treino dentro de $R_m$.
+
+#### 1. Como o computador escolhe onde cortar? (Divisão Binária Recursiva e Critérios de Impureza)
+Como é impossível testar todas as divisões de retângulos possíveis de uma vez, usamos um algoritmo **guloso de cima para baixo (*top-down greedy / recursive binary splitting*)**: começando com todos os dados na raiz, testamos todas as variáveis $X_j$ e todos os pontos de corte possíveis $s$, e escolhemos o par $(j, s)$ que **mais reduz o erro (ou impureza)** nos dois nós filhos resultantes:
+- **Para Regressão (minimizar o RSS total das folhas, Equação 8.1):** Escolhemos $(j, s)$ que minimiza:
+  $$\sum_{i:\, x_i \in R_1(j,s)} \big(y_i - \hat{y}_{R_1}\big)^2 + \sum_{i:\, x_i \in R_2(j,s)} \big(y_i - \hat{y}_{R_2}\big)^2$$
+- **Para Classificação (minimizar a Impureza do Nó $m$, Seção 8.1.2 e Figura 8b):**  
+  Seja $\hat{p}_{mk}$ a proporção de observações na folha $m$ que pertencem à classe $k$ ($\sum_{k=1}^K \hat{p}_{mk} = 1$). Uma folha é **pura** se quase todas as observações dentro dela são da mesma classe ($\hat{p}_{mk}$ perto de $1$ ou de $0$). Medimos a impureza do nó $m$ por uma das três fórmulas:
+  1. **Taxa de Erro de Classificação:** $E_m = 1 - \max_k(\hat{p}_{mk})$ *(pouco sensível para crescer a árvore, usada na poda)*.
+  2. **Índice de Gini (Equação 8.6):**
+     $$G_m = \sum_{k=1}^{K} \hat{p}_{mk}\big(1 - \hat{p}_{mk}\big) \quad \Big(\text{para } K=2 \text{ classes com } p = \hat{p}_{m1}:\;\; G = 2p(1 - p)\Big)$$
+  3. **Entropia Cruzada (Equação 8.7):**
+     $$D_m = -\sum_{k=1}^{K} \hat{p}_{mk}\ln(\hat{p}_{mk}) \quad \Big(\text{para } K=2:\;\; D = -p\ln p - (1-p)\ln(1-p)\Big)$$
+  Tanto o **Índice de Gini** quanto a **Entropia** valem **$0$** quando o nó é $100\%$ puro ($p = 0$ ou $p = 1$) e atingem o **máximo** quando o nó está totalmente misturado meio a meio ($p = 0{,}5$, como mostra a Figura 8b).
+
+#### Exemplo Numérico Feito à Mão (Calculando o Índice de Gini)
+Um nó contém $10$ clientes: $8$ pagaram em dia (Classe 1) e $2$ atrasaram (Classe 2). Qual é o Índice de Gini desse nó?
+- As proporções são $\hat{p}_1 = \frac{8}{10} = 0{,}8$ e $\hat{p}_2 = \frac{2}{10} = 0{,}2$.
+- Logo, $G = 0{,}8(1 - 0{,}8) + 0{,}2(1 - 0{,}2) = 0{,}8(0{,}2) + 0{,}2(0{,}8) = 0{,}16 + 0{,}16 = \mathbf{0{,}32}$.  
+  *(Se um corte separar esses $10$ clientes em um filho esquerdo com $7$ bons e $0$ maus $[G_{\text{esq}} = 0]$ e um filho direito com $1$ bom e $2$ maus $[G_{\text{dir}} = 2(1/3)(2/3) = 4/9 \approx 0{,}444]$, a impureza ponderada cai de $0{,}32$ para $\frac{7}{10}(0) + \frac{3}{10}(4/9) = \mathbf{0{,}133}$ — excelente corte!).*
+
+#### 2. Poda por Custo-Complexidade (*Cost-Complexity Pruning*, Seção 8.1.1)
+Se deixarmos a árvore crescer até cada folha ter só 1 ponto, ela sofrerá *overfitting* severo. A estratégia correta é crescer uma árvore grande $T_0$ e depois **podá-la de volta (*pruning*)** procurando a subárvore $T \subset T_0$ que minimiza o erro penalizado pelo número de folhas $|T|$ (Equação 8.4):
+$$\sum_{m=1}^{|T|} \sum_{x_i \in R_m} \big(y_i - \hat{y}_{R_m}\big)^2 + \alpha\,|T|$$
+onde $\alpha \ge 0$ (escolhido por Validação Cruzada) é o preço pago por cada folha extra na árvore.
+
+---
+
+### 7.2 A Força dos Ensembles: Bagging, Random Forests e Boosting (Seção 8.2; Raschka Cap. 7)
+
+Uma única árvore de decisão é fácil de explicar na lousa, mas tem **alta variância** (se mudarmos um pouco os dados de treino, o primeiro corte no topo pode mudar e alterar a árvore inteira!) e acurácia inferior a outros métodos.  
+A revolução moderna do Machine Learning para dados tabulares consiste em **combinar centenas de árvores em um Comitê (*Ensemble*)**:
+
+#### 1. Bagging (*Bootstrap Aggregation*, Seção 8.2.1)
+Na Estatística básica, se $Z_1, \dots, Z_B$ têm variância $\sigma^2$, a média $\bar{Z} = \frac{1}{B}\sum Z_b$ reduz a variância para $\sigma^2 / B$! Como não temos $B$ bancos de dados independentes, o **Bagging** gera **$B$ amostras de Bootstrap** $Z^{*1}, \dots, Z^{*B}$ (Seção 4.2), treina uma árvore profunda (sem poda) $\hat{f}^{*b}(x)$ em cada amostra, e tira a **média das $B$ previsões** (na regressão) ou faz o **voto da maioria** (na classificação):
+$$\hat{f}_{\text{bag}}(x) = \frac{1}{B}\sum_{b=1}^{B} \hat{f}^{*b}(x)$$
+- **Estimativa de Erro *Out-of-Bag* (OOB — Teste Grátis sem Validação Cruzada!):**  
+  Lembra do Teorema 4.1 que provou que cada árvore de Bootstrap usa apenas $\approx 63{,}2\%$ dos dados e deixa **$\approx 36{,}8\%$ das observações de fora (OOB)**? Para prever a resposta da observação $i$, basta tirar a média apenas das cerca de $B/3$ árvores nas quais a observação $i$ **não entrou no treino**! Isso dá o erro de teste instantaneamente.
+
+#### 2. Random Forests (Florestas Aleatórias — Seção 8.2.2 e Figura 8c)
+Por que o Bagging ainda pode melhorar? Imagine que no seu banco de dados exista **1 variável super forte** e várias variáveis moderadas. No Bagging, todas as $B$ árvores vão colocar essa mesma variável super forte logo no topo (raiz)! Com isso, as $B$ árvores ficam **muito parecidas (altamente correlacionadas)** entre si, e tirar a média de árvores parecidas não reduz tanto a variância.
+
+A **Random Forest** faz um truque simples e genial para **descorrelacionar as árvores**:
+> **Regra da Random Forest:** *A cada vez que uma árvore vai fazer um corte em um nó, o algoritmo **sorteia aleatoriamente apenas $m$ variáveis candidatas** entre as $p$ variáveis totais — tipicamente **$m \approx \sqrt{p}$** (na classificação) ou $m \approx p/3$ (na regressão) — e o corte só pode usar uma dessas $m$ variáveis sorteadas!*
+
+Assim, na maioria dos cortes a variável "dominante" nem estará entre as $m$ sorteadas, dando chance para as outras variáveis brilharem, descorrelacionando as árvores e derrubando o erro de teste (curva azul na Figura 8c)!
+
+#### 3. Boosting (*Gradient Boosting*, AdaBoost e XGBoost — Seção 8.2.3 e Raschka Cap. 7)
+Enquanto o Bagging e a Random Forest criam $B$ árvores independentes em paralelo (cada uma tentando acertar $y_i$ sozinha), o **Boosting** constrói as árvores **em sequência, uma aprendendo com os erros (resíduos) das anteriores**:
+1. Comece com predição zero $\hat{f}(x) = 0$ e resíduos iguais às respostas $r_i = y_i$.
+2. Para $b = 1, 2, \dots, B$:
+   - Ajuste uma **árvore bem pequena** $\hat{f}^b$ (com apenas $d$ divisões, ex.: $d = 1$ ou $2$) usando os **resíduos atuais $r_i$** como alvo (em vez de $y_i$!).
+   - Some essa nova árvore encolhida por uma pequena taxa de aprendizado $\lambda$ (ex.: $\lambda = 0{,}01$) ao modelo acumulado: $\hat{f}(x) \leftarrow \hat{f}(x) + \lambda\hat{f}^b(x)$.
+   - Atualize os resíduos descontando o que a nova árvore aprendeu: $r_i \leftarrow r_i - \lambda\hat{f}^b(x_i)$.
+3. O modelo final é $\hat{f}(x) = \sum_{b=1}^B \lambda\hat{f}^b(x)$. *(Atenção: ao contrário da Random Forest, no Boosting um número $B$ exagerado de árvores pode causar overfitting se $\lambda$ for grande, logo escolhemos $B$ por validação cruzada).*
+
+> **[Complemento — AdaBoost e XGBoost (Raschka et al., Cap. 7, Seções 7.4 e 7.5)]:**  
+> - **AdaBoost (*Adaptive Boosting*):** Focado em classificação binária $y_i \in \{-1, +1\}$, mantém um peso $w_i$ para cada exemplo de treino. A cada rodada $j$, calcula a taxa de erro ponderada $\varepsilon_j$, atribui à árvore o peso de voto $\alpha_j = \frac{1}{2}\ln\!\left(\frac{1-\varepsilon_j}{\varepsilon_j}\right)$ e **aumenta os pesos $w_i$ dos exemplos que a árvore anterior errou**, forçando a próxima árvore a focar nos casos difíceis!
+> - **XGBoost (*Extreme Gradient Boosting*):** É a implementação industrial moderna do *Gradient Boosting*: usa aproximação de Taylor de 2ª ordem (gradiente + hessiana) da função de perda, penalidade de regularização $\gamma|T| + \frac{1}{2}\lambda\sum w_m^2$ nas folhas e subamostragem de colunas estilo Random Forest, sendo o algoritmo campeão em dados tabulares.
+
+![Figura 8: Árvores de Decisão, Impureza de Gini/Entropia e Ensembles](./figuras/fig08_arvores_decisao_impureza_ensembles.svg)
+*Figura 8 — (a) Partição retangular do plano $(X_1, X_2)$ produzida pelos cortes ortogonais de uma Árvore de Decisão (Seção 8.1). (b) Comparação entre Índice de Gini, Entropia escalada e Erro de Classificação em função da proporção $p$ da classe 1 (Equações 8.6 e 8.7). (c) Redução do erro de teste ao passar de uma Árvore Única para Bagging, Random Forest ($m = \sqrt{p}$) e Gradient Boosting (Seção 8.2).*
+
+#### Exercícios de Fixação (Seção 7)
+1. *(ISLP, Seção 8.4, Ex. 5)* Em um problema de classificação binária com $B = 5$ árvores via Bagging, as probabilidades previstas de a classe ser Vermelho para um ponto $x_0$ foram $\{0{,}1;\; 0{,}2;\; 0{,}55;\; 0{,}6;\; 0{,}65\}$. Qual é a classe prevista por **Voto da Maioria**? E pela **Média das Probabilidades**? *(Gabarito: Pelo **Voto da Maioria**, 3 das 5 árvores preveem $> 0{,}5$ ($\{0{,}55; 0{,}6; 0{,}65\}$), logo a classe é **Vermelho**; pela **Média das Probabilidades**, $\bar{p} = \frac{0,1+0,2+0,55+0,6+0,65}{5} = \frac{2,10}{5} = 0{,}42 < 0{,}50$, logo a classe é **Verde**!).*
+
+---
+
+## 8. Máquinas de Vetores de Suporte — Support Vector Machines (ISLP Cap. 9; Raschka Cap. 3)
+
+### 8.1 A Intuição da Margem Máxima e dos Vetores de Suporte (Seções 9.1 e 9.2)
+
+Imagine duas nuvens de pontos no plano pertencentes a duas classes que chamaremos de **$y_i = +1$ (Azul)** e **$y_i = -1$ (Vermelho)**, e suponha que seja possível traçar uma reta (ou um **hiperplano** $\beta_0 + \beta_1 X_1 + \dots + \beta_p X_p = 0$) que separe perfeitamente os pontos $+1$ dos pontos $-1$.
+
+Se existe uma reta que separa as duas classes, na verdade existem **infinitas retas ligeiramente inclinadas** que também separam esses mesmos pontos! Qual delas devemos escolher para classificar novos pontos no futuro com a maior segurança possível?  
+A resposta do **Classificador de Margem Máxima** é intuitiva: imagine que a linha divisória é a faixa central de uma avenida; devemos escolher a direção que permita construir a **avenida mais larga possível (de meia-largura $M$, a Margem)** sem atropelar nenhum ponto de nenhuma das duas classes (veja a **Figura 9a**)!
+
+> **Definição 8.1 (O Problema do Classificador de Margem Máxima e Vetores de Suporte — Equações 9.9 a 9.11 do ISLP):**  
+> *Normalizando os pesos por $\sum_{j=1}^p \beta_j^2 = 1$, a distância perpendicular de qualquer ponto $x_i$ até o hiperplano $\beta_0 + x_i^T\beta = 0$ com sinal correto da classe $y_i \in \{-1, +1\}$ é exatamente $y_i(\beta_0 + x_i^T\beta)$. O hiperplano de margem máxima resolve:*
+> $$\max_{\beta_0, \beta_1, \dots, \beta_p, M} M \quad \text{sujeito a} \quad \sum_{j=1}^{p} \beta_j^2 = 1 \quad \text{e} \quad y_i(\beta_0 + \beta_1 x_{i1} + \dots + \beta_p x_{ip}) \ge M \;\; \forall\, i = 1, \dots, n.$$
+> - **O que são os Vetores de Suporte (*Support Vectors*)?** São os poucos pontos de treinamento que ficam **exatamente encostados nas bordas tracejadas da avenida** ($y_i(\beta_0 + x_i^T\beta) = M$, circulados em preto na Figura 9a).
+> - **Propriedade Fundamental:** O hiperplano ótimo depende **EXCLUSIVAMENTE dos Vetores de Suporte**! Se você mover qualquer outro ponto que esteja longe da margem (desde que ele não atravesse a borda da margem), o hiperplano de decisão **não muda absolutamente nada**!
+
+---
+
+### 8.2 Margem Suave (*Support Vector Classifier*): Variáveis de Folga $\epsilon_i$ e o Parâmetro $C$ (Seção 9.2)
+
+Na vida real, duas classes quase nunca são $100\%$ separáveis por uma reta — e mesmo quando são, um único ponto discrepante (*outlier*) perto da fronteira espremeria a margem $M$ a quase zero!  
+Para tornar o classificador robusto, o **Classificador de Vetores de Suporte (*Soft-Margin SVM*, Equações 9.12–9.15)** permite que alguns pontos invadam a avenida ou até fiquem do lado errado da linha, cobrando uma **variável de folga (*slack variable*) $\epsilon_i \ge 0$** para cada ponto $i$:
+$$y_i(\beta_0 + x_i^T\beta) \ge M(1 - \epsilon_i), \qquad \epsilon_i \ge 0, \qquad \sum_{i=1}^{n} \epsilon_i \le C$$
+- **O que significa o valor de $\epsilon_i$ para o ponto $i$?**
+  1. Se **$\epsilon_i = 0$:** O ponto $i$ está do lado certo e fora da avenida (respeitou a margem).
+  2. Se **$0 < \epsilon_i \le 1$:** O ponto $i$ invadiu a faixa da margem, mas ainda está do lado certo da linha divisória.
+  3. Se **$\epsilon_i > 1$:** O ponto $i$ atravessou a linha central e foi **classificado errado**!
+- **O Papel do Orçamento de Violações $C$ (no ISLP):**  
+  $C \ge 0$ é a soma máxima de folgas $\sum \epsilon_i$ que toleramos:
+  - **$C$ grande (muita tolerância a violações):** Aceitamos vários pontos dentro da margem para obter uma **margem larga e estável** $\implies$ **Menor Variância, Maior Viés**.
+  - **$C$ pequeno ($C \to 0$, pouca tolerância):** Quase nenhum ponto pode invadir a margem, forçando uma **margem estreita** muito sensível aos pontos individuais $\implies$ **Maior Variância, Menor Viés**.  
+  *(Nota de implementação no Scikit-Learn, Raschka Cap. 3: na função `SVC(C=...)`, o parâmetro `C` multiplica $\sum \epsilon_i$ na função custo $\frac{1}{2}\|w\|_2^2 + C_{\text{sklearn}}\sum \epsilon_i$, portanto $C_{\text{sklearn}}$ funciona como $1/\lambda$, ou seja, o inverso do orçamento $C$ do ISLP).*
+
+---
+
+### 8.3 O Truque do Kernel (*Kernel Trick*) e a Perda *Hinge Loss* (Seções 9.3 a 9.5)
+
+E quando uma classe forma um círculo dentro da outra (como na **Figura 9b**), onde nenhuma reta jamás conseguirá separá-las?  
+A **Support Vector Machine (SVM)** usa uma propriedade matemática extraordinária: a solução do classificador de vetores de suporte depende dos dados $x_i$ **apenas por meio dos produtos escalares $\langle x_i, x_{i'} \rangle = \sum_{j=1}^p x_{ij}x_{i'j}$** entre pares de pontos:
+$$f(x) = \beta_0 + \sum_{i \in \mathcal{S}} \alpha_i\, y_i\, \langle x, x_i \rangle$$
+onde $\mathcal{S}$ é o conjunto dos **Vetores de Suporte** (os únicos pontos com peso $\alpha_i > 0$).  
+O **Truque do Kernel (*Kernel Trick*)** consiste em trocar o produto escalar simples $\langle x_i, x_{i'} \rangle$ por uma **função de similaridade não linear $K(x_i, x_{i'})$ chamada Kernel**, que calcula implicitamente o produto escalar em um espaço de dimensão muito maior (ou até infinita!) sem nunca precisar calcular as coordenadas novas:
+
+1. **Kernel Linear:** $\quad K(x_i, x_{i'}) = \sum_{j=1}^p x_{ij}x_{i'j}$ *(recupera o Support Vector Classifier linear)*.
+2. **Kernel Polinomial de Grau $d$ (Equação 9.22):** $\quad K(x_i, x_{i'}) = \left(1 + \sum_{j=1}^{p} x_{ij}x_{i'j}\right)^d$ *(cria fronteiras curvas polinomiais de grau $d$)*.
+3. **Kernel Radial / RBF (*Radial Basis Function* — Equação 9.24 e Figura 9b):**
+   $$K(x_i, x_{i'}) = \exp\!\left(-\gamma \sum_{j=1}^{p} (x_{ij} - x_{i'j})^2\right) = \exp\!\left(-\gamma \|x_i - x_{i'}\|_2^2\right), \qquad \gamma > 0$$
+   - **Como o Kernel Radial funciona intuitivamente?** Se o ponto de teste $x$ estiver **muito perto** de um vetor de suporte $x_i$, a distância $\|x - x_i\|_2^2 \approx 0$ e $K(x, x_i) \approx e^0 = 1$ (forte influência). Se $x$ estiver **longe** de $x_i$, $K(x, x_i) \approx 0$ (influência nula). Assim, o Kernel RBF cria fronteiras locais flexíveis de qualquer formato! (Cuidado: se $\gamma$ for exageradamente grande, cria "ilhas" minúsculas ao redor de cada ponto de treino — *overfitting*).
+
+#### Conexão entre SVM e Regressão Logística: A Função *Hinge Loss* (Seção 9.5 e Figura 9c)
+Na Seção 9.5 (Equação 9.25), mostra-se que ajustar uma SVM é equivalente a minimizar uma função de perda mais penalidade $\ell_2$ (igual ao Ridge!):
+$$\min_{\beta_0, \beta} \left\{\sum_{i=1}^{n} \underbrace{\max\!\big(0,\; 1 - y_i(\beta_0 + x_i^T\beta)\big)}_{\text{Hinge Loss (Perda Dobradiça)}} + \lambda \sum_{j=1}^{p} \beta_j^2\right\}$$
+Olhando para a **Figura 9c**, vemos por que a SVM e a Regressão Logística dão resultados tão parecidos, com uma diferença crucial:
+- Na **Hinge Loss (SVM)**: qualquer ponto bem classificado além da margem ($y_i f(x_i) \ge 1$) tem **perda exatamente ZERO** (e por isso não afeta o hiperplano, gerando a esparsidade dos vetores de suporte).
+- Na **Perda Logística**: a curva cai exponencialmente para zero mas **nunca zera totalmente**, logo todos os pontos participam um pouquinho do ajuste.
+
+![Figura 9: Support Vector Machines: Margem Máxima, Kernels e Hinge Loss](./figuras/fig09_svm_margem_maxima_kernels_hinge.svg)
+*Figura 9 — (a) Classificador de Margem Máxima, faixa de margem $2M$ e Vetores de Suporte circulados (Seção 9.1). (b) Fronteira circular não linear obtida pela SVM com Kernel Radial (RBF) (Seção 9.3). (c) Comparação entre a perda Hinge Loss da SVM, a perda da Regressão Logística e a perda Zero-Um (Seção 9.5).*
+
+#### Exercícios de Fixação (Seção 8)
+1. *(ISLP, Seção 9.7, Ex. 3)* Se um conjunto de pontos em $\mathbb{R}^2$ da Classe $-1$ tem como pontos de fronteira $(2,2)$ e $(4,4)$, e a Classe $+1$ tem como pontos de fronteira $(2,1)$ e $(4,3)$, qual é a equação da reta separadora de margem máxima equidistante a eles? *(Gabarito: Os pontos da Classe $-1$ estão na reta $X_2 = X_1$ e os da Classe $+1$ na reta paralela $X_2 = X_1 - 1$; logo, a reta equidistante de margem máxima é **$X_2 = X_1 - 0{,}5 \iff X_1 - X_2 - 0{,}5 = 0$**, e esses 4 pontos são os vetores de suporte).*
+
+---
+
+## 9. Aprendizado Não Supervisionado: PCA, K-Means, Hierárquico e DBSCAN (ISLP Cap. 12; Raschka Cap. 5 e 10)
+
+No **Aprendizado Não Supervisionado**, não existe variável resposta $Y$: temos apenas a matriz de dados $X \in \mathbb{R}^{n \times p}$ e queremos extrair conhecimento visual e estrutural através de duas famílias de técnicas: **Análise de Componentes Principais (PCA)** e **Agrupamento (*Clustering*)**.
+
+---
+
+### 9.1 Análise de Componentes Principais — PCA (Seções 12.1 e 12.2; Raschka Cap. 5)
+
+Imagine que você tem uma tabela com $p = 20$ indicadores econômicos e demográficos de $n = 100$ cidades e quer fazer um gráfico $2\text{D}$ na tela do computador para enxergar quais cidades são parecidas. Fazer todos os $\binom{20}{2} = 190$ gráficos de dispersão aos pares é inviável, e cada gráfico mostraria uma fração minúscula da informação total.
+
+A **PCA (*Principal Component Analysis*)** resolve isso encontrando um pequeno número de novas variáveis $Z_1, Z_2, \dots, Z_M$ ($M \ll p$) — chamadas **Componentes Principais** — que são combinações lineares das variáveis originais centradas na média zero ($\bar{x}_j = 0$) e padronizadas:
+$$Z_m = \phi_{1m} X_1 + \phi_{2m} X_2 + \dots + \phi_{pm} X_p, \qquad \text{sujeito a } \sum_{j=1}^{p} \phi_{jm}^2 = 1$$
+
+- **Dicionário de Símbolos da PCA:**
+  - **$\phi_m = (\phi_{1m}, \phi_{2m}, \dots, \phi_{pm})^T$ (Vetor de Cargas / *Loadings* da $m$-ésima Componente):** Define a direção do novo eixo no espaço $\mathbb{R}^p$ (a condição $\sum_{j=1}^p \phi_{jm}^2 = 1$ fixa o tamanho do vetor em $1$ para que a variância não seja inflada artificialmente só multiplicando os pesos por $1.000$).
+  - **$z_{im} = \phi_{1m} x_{i1} + \dots + \phi_{pm} x_{ip}$ (Escore / *Score* da observação $i$ na componente $m$):** É a coordenada projetada do ponto $i$ ao longo do novo eixo $\phi_m$.
+
+> **Teorema 9.1 (As Duas Interpretações Equivalentes da PCA — Seções 12.2.1 e 12.2.2 e Figura 10a):**  
+> 1. **Máxima Variância:** *A **1ª Componente Principal ($Z_1$)** é a direção $\phi_1$ ao longo da qual as observações projetadas $z_{11}, \dots, z_{n1}$ apresentam a **maior variância amostral possível** ($\max_{\|\phi_1\|=1} \frac{1}{n}\sum_{i=1}^n z_{i1}^2$). A **2ª Componente Principal ($Z_2$)** é a direção $\phi_2$ **perpendicular (ortogonal) a $\phi_1$** ($\phi_1^T \phi_2 = 0$) que tem a maior variância entre todas as direções perpendiculares a $\phi_1$, e assim sucessivamente.*
+> 2. **Mínimo Erro de Reconstrução:** *De forma equivalente, as $M$ primeiras direções principais geram o subespaço linear de dimensão $M$ que fica **geometricamente mais próximo dos pontos de dados** (minimizando a soma dos quadrados das distâncias perpendiculares $\sum_{i=1}^n \|x_i - \sum_{m=1}^M z_{im}\phi_m\|_2^2$).*
+> - **[Complemento — Álgebra Linear da PCA (Raschka Cap. 5.1)]:** *Os vetores de cargas $\phi_1, \phi_2, \dots, \phi_p$ são exatamente os **autovetores ortonormais da matriz de covariância amostral** $S = \frac{1}{n-1}X^T X$ (ou os vetores singulares direitos da decomposição SVD $X = U D V^T$), ordenados do maior autovalor $\lambda_1$ para o menor $\lambda_p$!*
+
+#### Proporção da Variância Explicada (PVE) e o *Scree Plot* (Seção 12.2.3 e Figura 10b)
+Quanta informação das $p$ variáveis originais conseguimos preservar usando apenas as primeiras $M$ componentes principais? Medimos isso pela **Proporção da Variância Explicada (PVE)** da $m$-ésima componente (Equação 12.10):
+$$\operatorname{PVE}_m = \frac{\sum_{i=1}^{n} z_{im}^2}{\sum_{j=1}^{p} \sum_{i=1}^{n} x_{ij}^2} = \frac{\lambda_m}{\sum_{j=1}^{p} \lambda_j}, \qquad \text{com } \sum_{m=1}^{\min(n-1, p)} \operatorname{PVE}_m = 1 \;\; (100\%)$$
+Plotando $\operatorname{PVE}_m$ contra $m$ no **Gráfico de Cotovelo (*Scree Plot*, Figura 10b)**, escolhemos o número de componentes onde a curva forma um "cotovelo" ou atinge uma variância acumulada satisfatória (como $75\%$ a $90\%$).
+- **Regra Obrigatória na PCA (Seção 12.2.4):** Sempre **padronize as variáveis para terem desvio-padrão $1$ antes da PCA** (a menos que todas já estejam na mesma unidade física)! Caso contrário, a variável medida com os maiores números dominará sozinha a 1ª Componente Principal.
+
+---
+
+### 9.2 Algoritmos de Agrupamento (*Clustering*): K-Means, Hierárquico e DBSCAN (Seção 12.4; Raschka Cap. 10)
+
+Enquanto a PCA resume as *colunas* (variáveis), o **Clustering (Agrupamento)** divide as *linhas* ($n$ observações) em grupos (**clusters**) homogêneos:
+
+#### 1. Agrupamento *K-Means* (*K-Médias*, Seção 12.4.1 e Figura 10c)
+Você escolhe previamente o número de grupos $K$ desejado. O objetivo do *K-Means* é particionar as $n$ observações em $K$ conjuntos disjuntos $C_1, \dots, C_K$ que minimizem a soma dos quadrados das distâncias de cada ponto até o **centroide (média) $\bar{x}_k$ do seu próprio grupo** (**Inércia Intra-Cluster / WCSS**, Equação 12.17–12.18):
+$$\min_{C_1, \dots, C_K} \sum_{k=1}^{K} \sum_{i \in C_k} \|x_i - \bar{x}_k\|_2^2, \qquad \text{onde } \bar{x}_k = \frac{1}{|C_k|}\sum_{i \in C_k} x_i \text{ é o centroide do grupo } k.$$
+
+**Como o Algoritmo de *K-Means* funciona passo a passo (Algoritmo 12.2 do ISLP):**
+1. **Inicialização:** Sorteie um número de grupo inicial de $1$ a $K$ para cada ponto (ou escolha $K$ centroides iniciais bem espalhados pelo método **$K$-Means++**, Raschka Cap. 10.1, que acelera a convergência e evita mínimos locais ruins).
+2. **Repita os dois passos abaixo até nenhum ponto mudar de grupo:**
+   - **Passo 2a (Atualizar os Centroides):** Para cada grupo $k = 1, \dots, K$, calcule o novo centroide $\bar{x}_k$ como a média aritmética das coordenadas de todos os pontos atualmente no grupo $k$.
+   - **Passo 2b (Reatribuir cada Ponto):** Coloque cada observação $x_i$ no grupo cujo centroide $\bar{x}_k$ estiver **mais próximo** dela (menor distância euclidiana $\|x_i - \bar{x}_k\|_2^2$).
+
+*Propriedade garantida:* Cada um dos Passos 2a e 2b **sempre diminui (ou mantém igual) a soma total de quadrados**, garantindo que o *K-Means* sempre converge! Como ele converge para um mínimo local que depende do sorteio inicial, recomenda-se rodá-lo de $10$ a $20$ vezes (`n_init=10`) e ficar com o resultado de menor inércia total.
+
+#### 2. Agrupamento Hierárquico Aglomerativo e Dendrogramas (Seção 12.4.2)
+E se não soubermos o número $K$ de grupos de antemão? O **Agrupamento Hierárquico (*Bottom-Up*)** não exige fixar $K$:
+1. Começa tratando cada uma das $n$ observações como um grupo individual de 1 elemento ($n$ grupos).
+2. A cada passo, procura os **dois grupos mais próximos entre si** e os funde em um único grupo ($n-1$ grupos, depois $n-2, \dots$, até restar $1$ único grupo no topo), desenhando uma árvore invertida chamada **Dendrograma**, na qual a **altura vertical da fusão** mede a distância entre os dois grupos unidos. Cortando o dendrograma com uma linha horizontal na altura desejada, obtemos qualquer número $K$ de clusters!
+
+Como medir a distância entre dois grupos $A$ e $B$ que já têm vários pontos? Isso define o **Tipo de Ligação (*Linkage*, Tabela 12.1 do ISLP)**:
+- **Ligação Completa (*Complete Linkage*):** É a **MAIOR distância** entre um ponto de $A$ e um ponto de $B$: $\max_{x \in A, y \in B} d(x, y)$ *(produz clusters compactos e equilibrados)*.
+- **Ligação Simples (*Single Linkage*):** É a **MENOR distância** entre um ponto de $A$ e um ponto de $B$: $\min_{x \in A, y \in B} d(x, y)$ *(pode criar clusters alongados em "corrente")*.
+- **Ligação Média (*Average Linkage*):** É a **média de todas as distâncias** entre pares de pontos de $A$ e de $B$.
+
+> **[Complemento — Coeficiente de Silhueta e DBSCAN (Raschka et al., Cap. 10, Seções 10.1 e 10.3)]:**  
+> 1. **Como avaliar a qualidade de um agrupamento e escolher $K$? (Coeficiente de Silhueta):** Para cada ponto $x_i$, calcula-se sua coesão $a^{(i)}$ (distância média aos pontos do *mesmo* cluster) e sua separação $b^{(i)}$ (distância média aos pontos do *cluster vizinho mais próximo*). O **Coeficiente de Silhueta** é $s^{(i)} = \frac{b^{(i)} - a^{(i)}}{\max\{b^{(i)}, a^{(i)}\}} \in [-1, 1]$: valores próximos de $+1$ indicam clusters bem separados e compactos.
+> 2. **DBSCAN (*Density-Based Spatial Clustering of Applications with Noise*):** Enquanto o *K-Means* só consegue achar grupos redondos/esféricos e é obrigado a colocar *outliers* dentro de algum grupo, o **DBSCAN** agrupa regiões de **alta densidade de pontos** (pontos que têm pelo menos $\text{MinPts}$ vizinhos dentro de um raio $\varepsilon$). Isso permite descobrir clusters de **qualquer formato geométrico** (como meias-luas ou anéis) e rotular pontos isolados automaticamente como **ruído (*outliers*)**!
+
+![Figura 10: Aprendizado Não Supervisionado: PCA, Scree Plot e K-Means](./figuras/fig10_nao_supervisionado_pca_kmeans_hierarquico.svg)
+*Figura 10 — (a) Geometria da PCA em $\mathbb{R}^2$: a 1ª Componente Principal $Z_1$ (vetor de cargas $\phi_1$) captura a direção de máxima variância e $Z_2$ é ortogonal a $Z_1$ (Seção 12.2). (b) Scree Plot mostrando a Proporção da Variância Explicada (PVE) individual e acumulada. (c) Agrupamento K-Means ($K=3$) com os respectivos centroides $\bar{x}_k$ (Seção 12.4).*
+
+---
+
+### 9.3 Resumo Prático: Qual Algoritmo de Machine Learning Clássico Escolher em Cada Situação?
+
+Para fechar o curso, esta tabela resume quando usar cada método estudado e a classe correspondente em Python (`scikit-learn` / `ISLP`):
+
+| Tipo de Tarefa | Algoritmo | Principal Vantagem | Quando Usar na Prática | Classe em `scikit-learn` |
+| :--- | :--- | :--- | :--- | :--- |
+| **Regressão** (Prever número) | **Regressão Linear (OLS)** | Máxima interpretabilidade; testes $t$, $F$ e intervalos de confiança | Linha de base inicial, inferência causal/econômica, $n \gg p$ | `LinearRegression()` / `sm.OLS()` |
+| **Regressão** | **Ridge ($\ell_2$) / Lasso ($\ell_1$)** | Controla variância; o **Lasso** zera variáveis inúteis automaticamente | Quando há muitas variáveis ($p$ grande) ou colinearidade entre preditores | `RidgeCV()`, `LassoCV()` |
+| **Regressão** | **Splines Naturais / GAMs** | Captura relações curvas mantendo interpretabilidade visual | Relações não lineares suaves em poucas variáveis contínuas | `SplineTransformer()` / `pygam` |
+| **Classificação** (Prever classe) | **Regressão Logística** | Entrega probabilidades bem calibradas e razão de chances ($e^{\beta_j}$) | Linha de base para classificação binária/multiclasse e escores de risco | `LogisticRegression()` |
+| **Classificação** | **LDA / QDA / Naive Bayes** | Rápidos; funcionam bem com poucos dados ou muitas colunas (Naive Bayes) | LDA para classes normais bem separadas; Naive Bayes para textos/alta dimensão | `LinearDiscriminantAnalysis()`, `GaussianNB()` |
+| **Ambos** | **KNN ($K$-Vizinhos)** | Zero treinamento; não assume formato paramétrico | Problemas de baixa dimensão ($p \le 4$) com fronteiras irregulares (exige padronizar!) | `KNeighborsClassifier()`, `KNeighborsRegressor()` |
+| **Ambos** | **Árvore de Decisão (CART)** | Regras visuais fáceis de explicar; não exige padronizar variáveis | Quando um fluxograma simples de regras de negócio é exigido | `DecisionTreeClassifier(ccp_alpha=...)` |
+| **Ambos** | **Random Forest / Gradient Boosting (XGBoost)** | **Maior precisão preditiva** em tabelas de dados do mundo real | Padrão-ouro para competições e sistemas preditivos em dados tabulares | `RandomForestClassifier()`, `GradientBoostingClassifier()` |
+| **Classificação** | **SVM (Linear ou Kernel RBF)** | Maximiza a margem de segurança; excelente em dimensões médias/altas | Classificação com fronteiras curvas complexas e tamanho amostral moderado | `SVC(kernel='rbf', C=...)` |
+| **Não Supervisionado** | **PCA** | Comprime dezenas de colunas correlacionadas em 2 ou 3 eixos ortogonais | Visualização $2\text{D}/3\text{D}$, compressão de dados e remoção de ruído | `PCA(n_components=...)` |
+| **Não Supervisionado** | **K-Means / Hierárquico / DBSCAN** | Descobre grupos naturais de clientes ou produtos sem precisar de rótulos | Segmentação de clientes (*K-Means*), árvore de similaridade (Hierárquico) ou formas livres (DBSCAN) | `KMeans()`, `AgglomerativeClustering()`, `DBSCAN()` |
+
+#### Exercícios de Fixação (Seção 9)
+1. *(ISLP, Seção 12.6, Ex. 2)* Dada a matriz de distâncias entre 3 pontos: $d(1,2) = 0{,}3$, $d(1,3) = 0{,}4$ e $d(2,3) = 0{,}5$, qual par se funde primeiro no agrupamento hierárquico e a que altura o ponto 3 se junta ao grupo $\{1, 2\}$ usando **Ligação Completa** vs. **Ligação Simples**? *(Gabarito: Primeiro fundem-se $\{1, 2\}$ na altura **$0{,}3$**. Depois, o grupo $\{3\}$ une-se a $\{1, 2\}$ na altura $\max(0{,}4;\; 0{,}5) = \mathbf{0{,}5}$ na Ligação Completa e na altura $\min(0{,}4;\; 0{,}5) = \mathbf{0{,}4}$ na Ligação Simples).*

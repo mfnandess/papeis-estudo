@@ -1,26 +1,23 @@
-# Caderno de Exercícios e Demonstrações Resolvidas de Machine Learning
-## Material Prático Baseado em *An Introduction to Statistical Learning — with Applications in Python* (James, Witten, Hastie, Tibshirani & Taylor, 2023), com Complementos de *Machine Learning with PyTorch and Scikit-Learn* (Raschka, Liu & Mirjalili, 2022)
+# Caderno de Exercícios e Demonstrações Resolvidas de Machine Learning Clássico
+## Material Prático Baseado em *An Introduction to Statistical Learning — with Applications in Python* (James, Witten, Hastie, Tibshirani & Taylor, 2023), com Complementos de *Machine Learning with PyTorch and Scikit-Learn* (Raschka, Liu & Mirjalili, Capítulos 1 a 10)
 
 ---
 
 > **Sobre este Caderno**  
-> Este documento reúne **45 problemas fundamentais e demonstrações algébricas selecionadas**, organizados na sequência dos **13 capítulos de *An Introduction to Statistical Learning — with Applications in Python (ISLP)***, acrescidos de exercícios teóricos e de engenharia prática de ***Machine Learning with PyTorch and Scikit-Learn*, de Sebastian Raschka, Yuxi Liu & Vahid Mirjalili** (sempre identificados por `[Complemento — Raschka et al., ML with PyTorch and Scikit-Learn, Cap. X]`). Cada problema apresenta uma dica estratégica seguida da resolução passo a passo.
+> Este documento reúne **36 problemas fundamentais, exercícios numéricos feitos à mão e demonstrações algébricas selecionadas** de **Machine Learning Clássico** (4 problemas por bloco), organizados na sequência dos capítulos de ***An Introduction to Statistical Learning — with Applications in Python (ISLP, Cap. 1 a 9 e 12)***, acrescidos de exercícios práticos de ***Machine Learning with PyTorch and Scikit-Learn* (Raschka, Liu & Mirjalili, Cap. 1 a 10)** (sempre identificados por `[Complemento — Raschka et al., ML with PyTorch and Scikit-Learn, Cap. X]`). Cada problema apresenta uma dica estratégica seguida da resolução passo a passo.
 
 ---
 
-## Sumário por Blocos Temáticos
-1. [Bloco 1 — Aprendizado Estatístico, Decomposição Viés-Variância, KNN e Pré-Processamento (Cap. 2 + Raschka Cap. 4)](#bloco-1)
+## Sumário por Blocos Temáticos (36 Problemas Resolvidos)
+1. [Bloco 1 — Fundamentos do Aprendizado, Decomposição Viés-Variância, KNN e Pré-Processamento (Cap. 2 + Raschka Cap. 4)](#bloco-1)
 2. [Bloco 2 — Regressão Linear Simples e Múltipla, Teoria OLS, $R^2$ e Interações (Cap. 3)](#bloco-2)
-3. [Bloco 3 — Classificação: Logística, LDA, QDA, Naive Bayes, Softmax e Perceptron/Adaline (Cap. 4 + Raschka Cap. 2)](#bloco-3)
-4. [Bloco 4 — Reamostragem: Validação Cruzada $k$-Fold, LOOCV, Atalho $h_i$ e Bootstrap (Cap. 5)](#bloco-4)
+3. [Bloco 3 — Classificação: Logística, LDA, QDA, Naive Bayes e Perceptron/Adaline (Cap. 4 + Raschka Cap. 2)](#bloco-3)
+4. [Bloco 4 — Reamostragem: Validação Cruzada $k$-Fold, LOOCV, Atalho $h_i$, Vazamento e Bootstrap (Cap. 5)](#bloco-4)
 5. [Bloco 5 — Seleção de Variáveis, Regressão Ridge, Lasso, *Soft-Thresholding* e Priori Bayesiano (Cap. 6)](#bloco-5)
-6. [Bloco 6 — Além da Linearidade: Splines Cúbicas, *Smoothing Splines*, Base Polinomial e GAMs (Cap. 7)](#bloco-6)
+6. [Bloco 6 — Além da Linearidade: Splines Cúbicas, Splines Naturais, *Smoothing Splines* e GAMs (Cap. 7)](#bloco-6)
 7. [Bloco 7 — Árvores de Decisão, Impureza de Gini/Entropia, Bagging, Random Forests e Boosting (Cap. 8 + Raschka Cap. 7)](#bloco-7)
 8. [Bloco 8 — Máquinas de Vetores de Suporte (SVM), Margem Máxima, Kernels e *Hinge Loss* (Cap. 9)](#bloco-8)
-9. [Bloco 9 — Deep Learning: MLPs, CNNs, Otimização não Convexa, Self-Attention, GANs e Q-Learning (Cap. 10 + Raschka Cap. 11–19)](#bloco-9)
-10. [Bloco 10 — Análise de Sobrevivência e Dados Censurados: Kaplan-Meier, Log-Rank e Cox (Cap. 11)](#bloco-10)
-11. [Bloco 11 — Aprendizado Não Supervisionado: PCA, Cargas via Regressão, *K-Means* e Hierárquico (Cap. 12)](#bloco-11)
-12. [Bloco 12 — Testes Múltiplos de Hipóteses: FWER, Bonferroni, Holm e Benjamini-Hochberg / FDR (Cap. 13)](#bloco-12)
+9. [Bloco 9 — Aprendizado Não Supervisionado: PCA, PVE, *K-Means* Feito à Mão e Agrupamento Hierárquico (Cap. 12 + Raschka Cap. 5 e 10)](#bloco-9)
 
 ---
 
@@ -922,219 +919,9 @@ Considere a representação dual do classificador SVM: $f(x) = \beta_0 + \sum_{i
 ---
 
 <a id="bloco-9"></a>
-## Bloco 9 — Deep Learning: MLPs, CNNs, Otimização não Convexa, Self-Attention, GANs e Q-Learning (Capítulo 10 + Raschka Cap. 11–19)
+## Bloco 9 — Aprendizado Não Supervisionado: PCA, PVE, *K-Means* Feito à Mão e Agrupamento Hierárquico (Capítulo 12 + Raschka Cap. 5 e 10)
 
-### Exercício B9.1 *[ISLP, Seção 10.10, Ex. 1, Ex. 2 e Ex. 3]*
-(a) Considere uma rede neural *feedforward* (MLP) para regressão com $p = 4$ variáveis de entrada, duas camadas ocultas contendo $K_1 = 2$ e $K_2 = 3$ unidades ocultas respectivamente (todas com função de ativação $\text{ReLU}(z) = \max(0, z)$), e 1 unidade de saída linear. Escreva a expressão funcional completa de $f(X)$ e calcule o **número total de parâmetros treináveis** (pesos + *biases*) (Ex. 10.10.1).  
-(b) Mostre que a função **Softmax** $f_m(X) = \frac{e^{Z_m}}{\sum_{\ell=0}^9 e^{Z_\ell}}$ é invariante à adição de qualquer constante $c \in \mathbb{R}$ a todos os *logits* ($Z_\ell \mapsto Z_\ell + c$) (Ex. 10.10.2), e prove que a log-verossimilhança multinomial negativa $-\sum_{i=1}^n \sum_{m=0}^1 y_{im}\ln f_m(x_i)$ para $M = 2$ classes é equivalente à perda de entropia cruzada binária da regressão logística (Ex. 10.10.3).
-- **Dica:** Em (a), lembre que uma camada densa com $d_{\text{in}}$ entradas e $d_{\text{out}}$ saídas possui $(d_{\text{in}} + 1) \times d_{\text{out}}$ parâmetros (incluindo o *bias* de cada neurônio).
-
-<details>
-<summary><strong>Ver Resolução Completa Passo a Passo</strong></summary>
-
-1. **Item (a) — Equações e Contagem de Parâmetros da MLP $(4 \to 2 \to 3 \to 1)$ (Ex. 10.10.1):**
-   - **1ª Camada Oculta ($k = 1, 2$):**
-     $$A_k^{(1)} = \operatorname{ReLU}\!\left(w_{k0}^{(1)} + \sum_{j=1}^4 w_{kj}^{(1)} X_j\right) = \max\!\left(0,\; w_{k0}^{(1)} + \sum_{j=1}^4 w_{kj}^{(1)} X_j\right).$$
-     Número de parâmetros da camada 1: $(4 + 1) \times 2 = \mathbf{10}$.
-   - **2ª Camada Oculta ($\ell = 1, 2, 3$):**
-     $$A_\ell^{(2)} = \operatorname{ReLU}\!\left(w_{\ell 0}^{(2)} + \sum_{k=1}^2 w_{\ell k}^{(2)} A_k^{(1)}\right) = \max\!\left(0,\; w_{\ell 0}^{(2)} + \sum_{k=1}^2 w_{\ell k}^{(2)} A_k^{(1)}\right).$$
-     Número de parâmetros da camada 2: $(2 + 1) \times 3 = \mathbf{9}$.
-   - **Camada de Saída Linear:**
-     $$f(X) = \beta_0 + \sum_{\ell=1}^3 \beta_\ell A_\ell^{(2)}.$$
-     Número de parâmetros da saída: $(3 + 1) \times 1 = \mathbf{4}$.
-   - **Total de parâmetros treináveis:** $10 + 9 + 4 = \mathbf{23\text{ parâmetros}}$.
-
-2. **Item (b) — Invariância da Softmax e Equivalência com Logística Binária (Ex. 10.10.2–3):**
-   - Somando $c$ a cada $Z_\ell$:
-     $$\frac{e^{Z_m + c}}{\sum_{\ell=0}^9 e^{Z_\ell + c}} = \frac{e^c e^{Z_m}}{e^c \sum_{\ell=0}^9 e^{Z_\ell}} = \frac{e^{Z_m}}{\sum_{\ell=0}^9 e^{Z_\ell}} = f_m(X).$$
-   - Para $M = 2$ classes ($m \in \{0, 1\}$), com codificação *one-hot* $y_{i1} = y_i \in \{0, 1\}$ e $y_{i0} = 1 - y_i$, e definindo $p(x_i) = f_1(x_i) = \frac{e^{Z_1}}{e^{Z_0} + e^{Z_1}} = \frac{1}{1 + e^{-(Z_1 - Z_0)}}$ e $f_0(x_i) = 1 - p(x_i)$, a perda multinomial negativa torna-se:
-     $$-\sum_{i=1}^n \big[y_{i0}\ln f_0(x_i) + y_{i1}\ln f_1(x_i)\big] = \mathbf{-\sum_{i=1}^n \big[y_i \ln p(x_i) + (1 - y_i)\ln(1 - p(x_i))\big]},$$
-     que é exatamente o negativo da log-verossimilhança da regressão logística (Equação 4.5 do ISLP) com preditor linear $\eta_i = Z_{i1} - Z_{i0}$! $\blacksquare$
-</details>
-
----
-
-### Exercício B9.2 *[ISLP, Seção 10.10, Ex. 4 — Contagem de Parâmetros e Dualidade CNN vs. MLP]*
-Considere uma camada convolucional aplicada a uma imagem de entrada de dimensão $32 \times 32$ com $C_{\text{in}} = 1$ canal (escala de cinza), utilizando filtros de tamanho $5 \times 5$ (com *padding* zero para manter a saída em $32 \times 32$).
-(a) Se a camada possui $M$ filtros distintos (gerando um mapa de características de dimensão $32 \times 32 \times M$), quantos parâmetros treináveis existem nessa camada convolucional (incluindo um *bias* por filtro)?  
-(b) Se achatássemos a imagem para um vetor de $32 \times 32 = 1.024$ entradas e usássemos uma camada densa (*fully connected*) comum com $32 \times 32 \times M = 1.024\,M$ neurônios ocultos, quantos parâmetros ela teria?  
-(c) Explique como uma camada convolucional pode ser vista como uma camada densa ordinária submetida a duas famílias de restrições nos pesos.
-- **Dica:** Compare $(5 \times 5 + 1)M = 26M$ com $(1.024 + 1) \times 1.024\,M$.
-
-<details>
-<summary><strong>Ver Resolução Completa Passo a Passo</strong></summary>
-
-1. **Item (a) — Parâmetros na Camada Convolucional:**  
-   Cada um dos $M$ filtros possui $5 \times 5 = 25$ pesos mais $1$ termo de *bias* compartilhado por todas as posições espaciais daquele mapa de características. Logo:
-   $$N_{\text{CNN}} = (5 \times 5 + 1)\times M = \mathbf{26\,M \text{ parâmetros}}$$
-   (ou $25\,M$ sem *bias*). Por exemplo, para $M = 1$, são apenas $26$ parâmetros; para $M = 10$, são $260$ parâmetros.
-
-2. **Item (b) — Parâmetros na Camada Densa Equivalente:**  
-   Uma camada densa conectando todas as $1.024$ entradas a cada uma das $1.024\,M$ unidades de saída possui:
-   $$N_{\text{MLP}} = (1.024 + 1) \times (1.024\,M) = \mathbf{1.049.600\,M \text{ parâmetros}},$$
-   ou seja, mais de **40.000 vezes mais parâmetros** do que a camada convolucional!
-
-3. **Item (c) — Convolução como MLP Restrita:**  
-   Uma camada convolucional é equivalente a uma camada totalmente conectada na qual a matriz de pesos $W \in \mathbb{R}^{1024M \times 1024}$ obedece a duas restrições estruturais fortes (*inductive biases*):
-   1. **Conectividade Local (Esparsidade):** Todos os pesos fora da janela local $5 \times 5$ em torno do pixel $(i, j)$ são forçados identicamente a **zero** ($w = 0$).
-   2. **Compartilhamento de Pesos (*Weight Sharing* / Estrutura de Toeplitz em blocos):** Os $25$ pesos não nulos que conectam a janela $5 \times 5$ ao neurônio $(i, j)$ são **exatamente iguais** para todas as coordenadas espaciais $(i, j) \in \{1,\dots,32\}^2$ dentro de um mesmo canal $m$. $\blacksquare$
-</details>
-
----
-
-### Exercício B9.3 *[ISLP, Seção 10.10, Ex. 6 — Dinâmica de Gradiente Descendente em Superfície Não Convexa]*
-Considere a função objetivo univariada não convexa:
-$$R(\beta) = \operatorname{sen}(\beta) + \frac{\beta}{10}, \quad \beta \in [-6, 6].$$
-(a) Calcule a derivada $R'(\beta)$ e determine analiticamente todos os pontos críticos (mínimos e máximos locais) de $R(\beta)$ no intervalo $[-6, 6]$.  
-(b) Execute a primeira atualização do algoritmo de **Gradiente Descendente** $\beta^{1} = \beta^{0} - \rho R'(\beta^{0})$ com taxa de aprendizado $\rho = 0{,}1$ partindo de $\beta^{0} = 2{,}3$ e, separadamente, partindo de $\beta^{0} = 1{,}4$. Para qual mínimo local cada trajetória converge quando $k \to \infty$? Que lição fundamental isso ilustra sobre otimização em *Deep Learning*?
-- **Dica:** Observe onde se situa o máximo local entre $\beta \in [1, 2]$ resolvendo $\cos(\beta) = -0{,}1$.
-
-<details>
-<summary><strong>Ver Resolução Completa Passo a Passo</strong></summary>
-
-1. **Item (a) — Derivada e Pontos Críticos:**  
-   Derivando $R(\beta) = \operatorname{sen}(\beta) + \frac{\beta}{10}$:
-   $$\mathbf{R'(\beta) = \cos(\beta) + 0{,}1}, \qquad R''(\beta) = -\operatorname{sen}(\beta).$$
-   Os pontos críticos satisfazem $\cos(\beta) = -0{,}1 \iff \beta = \pm \arccos(-0{,}1) + 2k\pi \approx \pm 1{,}67096 + 2k\pi$:
-   - **Máximo local em $\beta_{\max, 1} \approx +1{,}671$:** (pois $R''(1{,}671) = -\operatorname{sen}(1{,}671) \approx -0{,}995 < 0$);
-   - **Mínimo local à direita em $\beta_{\min, R} = 2\pi - \arccos(-0{,}1) \approx +4{,}612$:** (pois $R''(4{,}612) \approx +0{,}995 > 0$, com $R(4{,}612) \approx -0{,}534$);
-   - **Mínimo local à esquerda em $\beta_{\min, L} = -\arccos(-0{,}1) \approx -1{,}671$:** (pois $R''(-1{,}671) \approx +0{,}995 > 0$, com $R(-1{,}671) \approx -1{,}162$ — **melhor mínimo local**!).
-
-2. **Item (b) — Sensibilidade à Inicialização ($\beta^0 = 2{,}3$ vs. $\beta^0 = 1{,}4$):**  
-   O máximo local $\beta_{\max, 1} \approx 1{,}671$ atua como uma **crista divisora de águas (fronteira de bacias de atração)**:
-   - **Partindo de $\beta^0 = 2{,}3 > 1{,}671$:**  
-     Temos $R'(2{,}3) = \cos(2{,}3) + 0{,}1 \approx -0{,}6663 + 0{,}1 = -0{,}5663 < 0$. O primeiro passo é:
-     $$\beta^1 = 2{,}3 - 0{,}1(-0{,}5663) = \mathbf{2{,}3566}.$$
-     Como a derivada é negativa, $\beta^k$ move-se para a **direita** e converge para o mínimo local subótimo **$\beta_{\min, R} \approx 4{,}612$**.
-   - **Partindo de $\beta^0 = 1{,}4 < 1{,}671$:**  
-     Temos $R'(1{,}4) = \cos(1{,}4) + 0{,}1 \approx 0{,}16997 + 0{,}1 = +0{,}26997 > 0$. O primeiro passo é:
-     $$\beta^1 = 1{,}4 - 0{,}1(0{,}26997) = \mathbf{1{,}3730}.$$
-     Como a derivada é positiva, $\beta^k$ move-se para a **esquerda** e converge para o mínimo global no intervalo **$\beta_{\min, L} \approx -1{,}671$**.
-   - **Lição:** Em superfícies de perda não convexas (redes neurais profundas), o destino do Gradiente Descendente depende criticamente da inicialização $\beta^0$ e do ruído do SGD para escapar de mínimos locais rasos. $\blacksquare$
-</details>
-
----
-
-### Exercício B9.4 *[Complemento — Raschka et al., ML with PyTorch and Scikit-Learn, Cap. 16, Cap. 17 e Cap. 19]*
-(a) (**Variância na *Scaled Dot-Product Self-Attention* — Raschka Cap. 16:**) Sejam $q, k \in \mathbb{R}^{d_k}$ dois vetores de consulta (*query*) e chave (*key*) cujas componentes $q_j, k_j$ são variáveis aleatórias independentes com média $0$ e variância $1$. Calcule a média e a variância do produto escalar bruto $q^T k = \sum_{j=1}^{d_k} q_j k_j$, e demonstre por que a atenção de Vaswani et al. divide por $\sqrt{d_k}$ em $\operatorname{Attention}(Q,K,V) = \operatorname{softmax}\!\left(\frac{QK^T}{\sqrt{d_k}}\right)V$.  
-(b) (**Discriminador Ótimo em GANs — Raschka Cap. 17:**) No jogo minimax de uma GAN $\min_G \max_D V(D, G) = \int p_{\text{data}}(x)\ln D(x)\,dx + \int p_g(x)\ln(1 - D(x))\,dx$, prove que, para um gerador $G$ fixo, o discriminador ótimo é $D^*(x) = \frac{p_{\text{data}}(x)}{p_{\text{data}}(x) + p_g(x)}$.  
-(c) (**Equação de Atualização do *Q-Learning* — Raschka Cap. 19:**) Um agente em um grid-world no estado $s$ executa a ação $a$, recebe recompensa imediata $r = +10$ e transita para o estado $s'$, onde $\max_{a'} Q(s', a') = 20$. Se a estimativa atual era $Q(s, a) = 12$, a taxa de aprendizado é $\alpha = 0{,}5$ e o fator de desconto é $\gamma = 0{,}9$, calcule o erro de diferença temporal ($\text{TD-error}$) e o novo valor $Q_{\text{novo}}(s, a)$.
-- **Dica:** Em (a), use $\operatorname{Var}(q_j k_j) = \mathbb{E}[q_j^2]\mathbb{E}[k_j^2] - (\mathbb{E}[q_j]\mathbb{E}[k_j])^2 = 1$ e a aditividade da variância para parcelas independentes. Em (b), maximize o integrando $g(y) = a\ln y + b\ln(1-y)$ em relação a $y = D(x) \in (0, 1)$.
-
-<details>
-<summary><strong>Ver Resolução Completa Passo a Passo</strong></summary>
-
-1. **Item (a) — Justificativa Matemática do Fator $\frac{1}{\sqrt{d_k}}$ em Transformers (Raschka Cap. 16):**  
-   Para cada coordenada $j \in \{1, \dots, d_k\}$, como $q_j$ e $k_j$ são independentes com média $0$ e variância $1$:
-   $$\mathbb{E}[q_j k_j] = \mathbb{E}[q_j]\mathbb{E}[k_j] = 0, \qquad \operatorname{Var}(q_j k_j) = \mathbb{E}[q_j^2 k_j^2] - 0 = \mathbb{E}[q_j^2]\mathbb{E}[k_j^2] = 1 \times 1 = 1.$$
-   Somando sobre as $d_k$ coordenadas independentes:
-   $$\mathbb{E}[q^T k] = \sum_{j=1}^{d_k} \mathbb{E}[q_j k_j] = 0, \qquad \operatorname{Var}(q^T k) = \sum_{j=1}^{d_k} \operatorname{Var}(q_j k_j) = \mathbf{d_k}.$$
-   Se $d_k$ for grande (ex.: $d_k = 64$ ou $512$), o desvio-padrão de $q^T k$ cresce como $\sqrt{d_k}$, empurrando os *logits* para regiões extremas onde a função $\operatorname{softmax}$ satura (probabilidades próximas de $0$ ou $1$) e **seus gradientes se anulam (*vanishing gradients*)**. Ao dividir por $\sqrt{d_k}$, restauramos variância unitária:
-   $$\mathbf{\operatorname{Var}\!\left(\frac{q^T k}{\sqrt{d_k}}\right) = \frac{1}{d_k}\operatorname{Var}(q^T k) = \frac{d_k}{d_k} = 1}.$$
-
-2. **Item (b) — Derivação do Discriminador Ótimo $D^*(x)$ em GANs (Raschka Cap. 17):**  
-   Para maximizar a integral $\int \big[p_{\text{data}}(x)\ln D(x) + p_g(x)\ln(1 - D(x))\big]dx$ ponto a ponto para cada $x$, derivamos o integrando $h(D) = a\ln D + b\ln(1 - D)$ (onde $a = p_{\text{data}}(x)$ e $b = p_g(x)$) em relação a $D \in (0, 1)$:
-   $$h'(D) = \frac{a}{D} - \frac{b}{1 - D} = 0 \iff a(1 - D) = bD \iff D^*(x) = \frac{a}{a + b} = \mathbf{\frac{p_{\text{data}}(x)}{p_{\text{data}}(x) + p_g(x)}}.$$
-   (Nota: quando o gerador $G$ converge para a distribuição real $p_g = p_{\text{data}}$, temos $D^*(x) = \frac{1}{2}$ em toda parte).
-
-3. **Item (c) — Atualização de *Q-Learning* Off-Policy (Raschka Cap. 19):**  
-   O alvo temporal (*TD-target*) e o erro de diferença temporal ($\delta_{\text{TD}}$) são:
-   $$y_{\text{TD}} = r + \gamma \max_{a'} Q(s', a') = 10 + 0{,}9(20) = 10 + 18 = \mathbf{28},$$
-   $$\delta_{\text{TD}} = y_{\text{TD}} - Q(s, a) = 28 - 12 = \mathbf{+16}.$$
-   Atualizando a tabela $Q$:
-   $$Q_{\text{novo}}(s, a) = Q(s, a) + \alpha\,\delta_{\text{TD}} = 12 + 0{,}5(16) = \mathbf{20}. \quad \blacksquare$$
-</details>
-
----
-
-<a id="bloco-10"></a>
-## Bloco 10 — Análise de Sobrevivência e Dados Censurados: Kaplan-Meier, Log-Rank e Cox (Capítulo 11)
-
-### Exercício B10.1 *[ISLP, Seção 11.9, Ex. 2, Ex. 3, Ex. 4 e Ex. 6 — Estimador de Kaplan-Meier Passo a Passo]*
-Considere um estudo clínico com $n = 6$ pacientes acompanhados ao longo do tempo, cujos tempos observados $Y_i = \min(T_i, C_i)$ (em meses) e indicadores de evento $\delta_i \in \{0, 1\}$ ($1 = \text{óbito/falha}$, $0 = \text{censurado à direita}$) são:
-$$(Y_1, \delta_1) = (2,\; 1), \quad (Y_2, \delta_2) = (3,\; 0), \quad (Y_3, \delta_3) = (5,\; 1), \quad (Y_4, \delta_4) = (5,\; 0), \quad (Y_5, \delta_5) = (8,\; 1), \quad (Y_6, \delta_6) = (10,\; 0).$$
-(a) Identifique os tempos únicos de falha ordenada $d_1 < d_2 < \dots < d_K$, calcule o tamanho do conjunto em risco $r_k$ e o número de eventos $q_k$ em cada $d_k$ (adotando a convenção padrão de que, em caso de empate entre falha e censura no mesmo instante $d_k$, a censura ocorre imediatamente após a falha).  
-(b) Construa a curva de sobrevivência estimada de **Kaplan-Meier** $\hat{S}(t) = \prod_{d_k \le t} \frac{r_k - q_k}{r_k}$ em todos os subintervalos de $[0, 10]$ e determine a probabilidade estimada de sobrevivência além de $t = 6$ meses.
-- **Dica:** Os instantes de falha ($\delta_i = 1$) são apenas $d_1 = 2$, $d_2 = 5$ e $d_3 = 8$. Nos instantes de censura pura ($t = 3$ e $t = 10$), $\hat{S}(t)$ **não** sofre queda, mas o conjunto de risco $r_k$ diminui para os eventos subsequentes!
-
-<details>
-<summary><strong>Ver Resolução Completa Passo a Passo</strong></summary>
-
-1. **Item (a) — Tempos de evento $d_k$, conjunto de risco $r_k$ e falhas $q_k$:**  
-   Os tempos únicos onde ocorre pelo menos um evento ($\delta_i = 1$) são $K = 3$ instantes: **$d_1 = 2$, $d_2 = 5$ e $d_3 = 8$**:
-   - **Em $d_1 = 2$:** Todos os $6$ pacientes estão sob acompanhamento ($Y_i \ge 2$), logo **$r_1 = 6$**, e ocorre **$q_1 = 1$** falha (paciente 1). Fator de sobrevivência condicional: $\frac{r_1 - q_1}{r_1} = \frac{6 - 1}{6} = \frac{5}{6}$.
-   - *(Em $t = 3$, o paciente 2 é censurado, saindo do conjunto de risco sem alterar $\hat{S}(t)$).*
-   - **Em $d_2 = 5$:** Estão em risco os pacientes 3, 4, 5 e 6 ($Y_i \ge 5$), logo **$r_2 = 4$**, e ocorre **$q_2 = 1$** falha (paciente 3; o paciente 4 é censurado logo após a falha em $t=5$). Fator condicional: $\frac{r_2 - q_2}{r_2} = \frac{4 - 1}{4} = \frac{3}{4}$.
-   - **Em $d_3 = 8$:** Estão em risco os pacientes 5 e 6 ($Y_i \ge 8$, pois os pacientes 1, 2, 3, 4 já falharam ou foram censurados em $t \le 5$), logo **$r_3 = 2$**, e ocorre **$q_3 = 1$** falha (paciente 5). Fator condicional: $\frac{r_3 - q_3}{r_3} = \frac{2 - 1}{2} = \frac{1}{2}$.
-
-2. **Item (b) — Função Escada de Kaplan-Meier $\hat{S}(t)$:**
-   - Para $0 \le t < 2$: $\hat{S}(t) = \mathbf{1{,}000}$ ($100\%$);
-   - Para $2 \le t < 5$: $\hat{S}(t) = \frac{5}{6} \approx \mathbf{0{,}8333}$ ($83{,}3\%$);
-   - Para $5 \le t < 8$: $\hat{S}(t) = \frac{5}{6} \times \frac{3}{4} = \frac{5}{8} = \mathbf{0{,}6250}$ ($62{,}5\%$);
-   - Para $8 \le t \le 10$: $\hat{S}(t) = \frac{5}{8} \times \frac{1}{2} = \frac{5}{16} = \mathbf{0{,}3125}$ ($31{,}25\%$).
-   Em particular, em $t = 6$ meses ($5 \le 6 < 8$), a probabilidade estimada de sobrevivência é **$\hat{S}(6) = 0{,}625$ ($62{,}5\%$)**. $\blacksquare$
-</details>
-
----
-
-### Exercício B10.2 *[ISLP, Seção 11.9, Ex. 8 e Ex. 9 — Taxa de Risco (Hazard) e MLE Sob Censura Exponencial]*
-Seja $T \ge 0$ uma variável aleatória contínua de tempo até o evento com densidade $f(t)$, função de sobrevivência $S(t) = \Pr(T > t) = 1 - F(t)$ e taxa de risco instantânea (*hazard*) $h(t) = \lim_{\Delta t \to 0^+} \frac{\Pr(t < T \le t + \Delta t \mid T > t)}{\Delta t} = \frac{f(t)}{S(t)}$.
-(a) Prove que $h(t) = -\frac{d}{dt}\ln S(t)$ e, consequentemente, que $S(t) = \exp\!\left(-\int_0^t h(u)\,du\right)$ (Ex. 11.9.8).  
-(b) Suponha que $T_i \stackrel{\text{i.i.d.}}{\sim} \operatorname{Exponencial}(\lambda)$, isto é, $f(t) = \lambda e^{-\lambda t}$ e $S(t) = e^{-\lambda t}$ (taxa de risco constante $h(t) = \lambda$). Escreva a função de verossimilhança para $n$ observações com censura independente à direita $\{(y_i, \delta_i)\}_{i=1}^n$, onde cada falha contribui com $f(y_i)$ e cada censura contribui com $S(y_i)$, e prove que o Estimador de Máxima Verossimilhança (MLE) de $\lambda$ é:
-$$\hat{\lambda}_{\text{MLE}} = \frac{\sum_{i=1}^n \delta_i}{\sum_{i=1}^n y_i}$$
-(o número total de eventos observados dividido pelo tempo total de exposição em pessoa-tempo) (Ex. 11.9.9).
-- **Dica:** Em (b), escreva a contribuição da $i$-ésima observação como $L_i(\lambda) = [f(y_i)]^{\delta_i}[S(y_i)]^{1-\delta_i} = \lambda^{\delta_i}e^{-\lambda y_i}$.
-
-<details>
-<summary><strong>Ver Resolução Completa Passo a Passo</strong></summary>
-
-1. **Item (a) — Relação Fundamental entre $h(t)$ e $S(t)$ (Ex. 11.9.8):**  
-   Como $S(t) = 1 - F(t) = \int_t^\infty f(u)\,du$, pelo Teorema Fundamental do Cálculo temos $S'(t) = -f(t)$. Logo:
-   $$-\frac{d}{dt}\ln S(t) = -\frac{S'(t)}{S(t)} = \frac{f(t)}{S(t)} = h(t).$$
-   Integrando ambos os membros de $0$ a $t$ e usando $\ln S(0) = \ln(1) = 0$:
-   $$\int_0^t h(u)\,du = -\big[\ln S(u)\big]_0^t = -\ln S(t) \iff \mathbf{S(t) = \exp\!\left(-\int_0^t h(u)\,du\right)}. \quad \blacksquare$$
-
-2. **Item (b) — Derivação do MLE Exponencial sob Censura à Direita (Ex. 11.9.9):**  
-   Para uma observação com evento observado ($\delta_i = 1$), sabemos que $T_i = y_i$, cuja densidade é $f(y_i) = \lambda e^{-\lambda y_i}$. Para uma observação censurada ($\delta_i = 0$), sabemos apenas que $T_i > y_i$, cuja probabilidade é $S(y_i) = e^{-\lambda y_i}$. Unificando ambas com o expoente $\delta_i \in \{0, 1\}$, a verossimilhança total é:
-   $$L(\lambda) = \prod_{i=1}^n \big[f(y_i)\big]^{\delta_i}\big[S(y_i)\big]^{1-\delta_i} = \prod_{i=1}^n \big(\lambda e^{-\lambda y_i}\big)^{\delta_i}\big(e^{-\lambda y_i}\big)^{1-\delta_i} = \prod_{i=1}^n \lambda^{\delta_i} e^{-\lambda y_i}.$$
-   Tomando o logaritmo natural (log-verossimilhança $\ell(\lambda) = \ln L(\lambda)$):
-   $$\ell(\lambda) = \left(\sum_{i=1}^n \delta_i\right)\ln\lambda - \lambda\sum_{i=1}^n y_i.$$
-   Derivando em relação a $\lambda$ e igualando a zero:
-   $$\ell'(\lambda) = \frac{\sum_{i=1}^n \delta_i}{\lambda} - \sum_{i=1}^n y_i = 0 \implies \mathbf{\hat{\lambda}_{\text{MLE}} = \frac{\sum_{i=1}^n \delta_i}{\sum_{i=1}^n y_i}}.$$
-   Como $\ell''(\lambda) = -\frac{\sum \delta_i}{\lambda^2} < 0$, trata-se do máximo global único! Note que se ignorássemos as observações censuradas, subestimaríamos o denominador $\sum_{i=1}^n y_i$ e superestimaríamos a taxa de mortalidade $\lambda$. $\blacksquare$
-</details>
-
----
-
-### Exercício B10.3 *[ISLP, Seção 11.5.2 e Seção 11.9, Ex. 10 — Verossimilhança Parcial de Cox e Hazard Ratios]*
-Considere um modelo de Riscos Proporcionais de Cox $h(t \mid x_i) = h_0(t)\exp(\beta_1 x_{i1} + \beta_2 x_{i2})$ ajustado a dados clínicos em que $X_1 \in \{0, 1\}$ indica o grupo de tratamento ($1 = \text{Droga Nova}$, $0 = \text{Placebo}$) e $X_2$ é a idade em anos, obtendo $\hat{\beta}_1 = -0{,}693$ e $\hat{\beta}_2 = +0{,}04$.
-(a) Calcule e interprete as razões de risco (*Hazard Ratios* — HR) associadas ao tratamento e a um aumento de $10$ anos na idade.  
-(b) Explique como a **Verossimilhança Parcial de Cox** $PL(\beta) = \prod_{i : \delta_i = 1} \frac{\exp(x_i^T\beta)}{\sum_{i' \in \mathcal{R}(y_i)} \exp(x_{i'}^T\beta)}$ consegue estimar $\beta$ sem precisar especificar ou estimar a função de risco basal $h_0(t)$.
-- **Dica:** Em (b), calcule a probabilidade condicional de que a falha observada no instante $y_i$ tenha ocorrido especificamente no indivíduo $i$, dado que exatamente um indivíduo do conjunto de risco $\mathcal{R}(y_i)$ falhou em $y_i$.
-
-<details>
-<summary><strong>Ver Resolução Completa Passo a Passo</strong></summary>
-
-1. **Item (a) — Cálculo e Interpretação dos *Hazard Ratios* (HR):**
-   - **Efeito do Tratamento ($X_1 = 1$ vs. $X_1 = 0$, mantendo idade $X_2$ fixa):**
-     $$\operatorname{HR}_{\text{Trat}} = \frac{h(t \mid X_1 = 1, X_2)}{h(t \mid X_1 = 0, X_2)} = e^{\hat{\beta}_1} = e^{-0{,}693} \approx \mathbf{0{,}50}.$$
-     *Interpretação:* Para pacientes da mesma idade, a Droga Nova **reduz a taxa instantânea de risco de óbito pela metade ($50\%$)** em qualquer instante $t$ em comparação ao Placebo.
-   - **Efeito de $+10$ anos na Idade ($\Delta X_2 = 10$, mantendo tratamento fixo):**
-     $$\operatorname{HR}_{+10\text{ anos}} = e^{10\,\hat{\beta}_2} = e^{10 \times 0{,}04} = e^{0{,}40} \approx \mathbf{1{,}4918}.$$
-     *Interpretação:* Cada década adicional de idade **aumenta a taxa instantânea de risco em $49{,}2\%$**.
-
-2. **Item (b) — Cancelamento de $h_0(t)$ na Verossimilhança Parcial de Cox:**  
-   Dado que um evento ocorreu no instante exato $y_i$ (onde o conjunto de pacientes em risco é $\mathcal{R}(y_i) = \{i' : y_{i'} \ge y_i\}$), a probabilidade condicional de que o indivíduo que sofreu o evento seja especificamente o paciente $i$ é:
-   $$\frac{h(y_i \mid x_i)\,dt}{\sum_{i' \in \mathcal{R}(y_i)} h(y_i \mid x_{i'})\,dt} = \frac{\cancel{h_0(y_i)}\exp(x_i^T\beta)}{\sum_{i' \in \mathcal{R}(y_i)} \cancel{h_0(y_i)}\exp(x_{i'}^T\beta)} = \mathbf{\frac{\exp(x_i^T\beta)}{\sum_{i' \in \mathcal{R}(y_i)} \exp(x_{i'}^T\beta)}}.$$
-   A função de risco basal arbitrária $h_0(y_i)$ **fatora para fora da soma no denominador e cancela-se exatamente** com o numerador! Por isso, o modelo de Cox é **semiparamétrico**: depende apenas da ordem relativa dos tempos de falha e não requer nenhuma hipótese paramétrica (como Weibull ou Exponencial) sobre $h_0(t)$. $\blacksquare$
-</details>
-
----
-
-<a id="bloco-11"></a>
-## Bloco 11 — Aprendizado Não Supervisionado: PCA, Cargas via Regressão, *K-Means* e Hierárquico (Capítulo 12)
-
-### Exercício B11.1 *[ISLP, Seção 12.6, Ex. 1 — Identidade Fundamental da Variância Intra-Cluster e Convergência do K-Means]*
+### Exercício B9.1 *[ISLP, Seção 12.6, Ex. 1 — Identidade Fundamental da Variância Intra-Cluster e Convergência do K-Means]*
 Seja $C_k \subset \{1, \dots, n\}$ o conjunto de índices das $|C_k|$ observações atribuídas ao $k$-ésimo cluster, e seja $\bar{x}_k = \frac{1}{|C_k|}\sum_{i \in C_k} x_i \in \mathbb{R}^p$ o centroide (vetor de médias) do cluster $C_k$.
 (a) Prove algebricamente a identidade (Equação 12.18 do ISLP):
 $$\frac{1}{|C_k|}\sum_{i, i' \in C_k} \sum_{j=1}^p (x_{ij} - x_{i'j})^2 = 2\sum_{i \in C_k} \sum_{j=1}^p (x_{ij} - \bar{x}_{kj})^2.$$
@@ -1164,7 +951,55 @@ $$\frac{1}{|C_k|}\sum_{i, i' \in C_k} \sum_{j=1}^p (x_{ij} - x_{i'j})^2 = 2\sum_
 
 ---
 
-### Exercício B11.2 *[ISLP, Seção 12.6, Ex. 2 — Agrupamento Hierárquico: Ligação Completa vs. Ligação Simples]*
+### Exercício B9.2 *[ISLP, Seção 12.6, Ex. 3 — Execução Manual Passo a Passo do Algoritmo K-Means em $\mathbb{R}^2$]*
+Considere $n = 6$ observações em $p = 2$ dimensões:
+
+| Obs. $i$ | $X_1$ | $X_2$ | Atribuição Inicial Aleatória |
+| :---: | :---: | :---: | :---: |
+| 1 | $1$ | $4$ | Cluster 1 |
+| 2 | $1$ | $3$ | Cluster 1 |
+| 3 | $0$ | $4$ | Cluster 2 |
+| 4 | $5$ | $1$ | Cluster 2 |
+| 5 | $6$ | $2$ | Cluster 1 |
+| 6 | $4$ | $0$ | Cluster 2 |
+
+Execute manualmente o algoritmo **K-Means** com $K = 2$ a partir dessa atribuição inicial até a convergência completa:
+(a) Calcule os centroides $\bar{x}_1^{(1)}$ e $\bar{x}_2^{(1)}$ na 1ª iteração.  
+(b) Reatribua cada uma das 6 observações ao centroide mais próximo pela distância euclidiana.  
+(c) Recalcule os novos centroides $\bar{x}_1^{(2)}$ e $\bar{x}_2^{(2)}$, verifique que nenhuma observação muda mais de grupo e calcule a inércia final (WCSS).
+- **Dica:** Na 1ª iteração, $C_1^{(0)} = \{1, 2, 5\}$ e $C_2^{(0)} = \{3, 4, 6\}$.
+
+<details>
+<summary><strong>Ver Resolução Completa Passo a Passo</strong></summary>
+
+1. **Item (a) — Centroides da 1ª Iteração:**  
+   - Para o **Cluster 1 inicial** $C_1^{(0)} = \{1, 2, 5\}$, cujos pontos são $(1, 4), (1, 3), (6, 2)$:
+     $$\bar{x}_1^{(1)} = \left(\frac{1 + 1 + 6}{3},\; \frac{4 + 3 + 2}{3}\right) = \mathbf{\left(\frac{8}{3},\; 3\right) \approx (2{,}67;\; 3{,}00)}.$$
+   - Para o **Cluster 2 inicial** $C_2^{(0)} = \{3, 4, 6\}$, cujos pontos são $(0, 4), (5, 1), (4, 0)$:
+     $$\bar{x}_2^{(1)} = \left(\frac{0 + 5 + 4}{3},\; \frac{4 + 1 + 0}{3}\right) = \mathbf{\left(3,\; \frac{5}{3}\right) \approx (3{,}00;\; 1{,}67)}.$$
+
+2. **Item (b) — Reatribuição de Cada Ponto ao Centroide Mais Próximo:**  
+   Calculando o quadrado da distância euclidiana $\|x_i - \bar{x}_1^{(1)}\|_2^2$ vs. $\|x_i - \bar{x}_2^{(1)}\|_2^2$:
+   - **Obs. 1 $(1, 4)$:** $d^2(x_1, \bar{x}_1^{(1)}) = (-5/3)^2 + 1^2 = 34/9 \approx \mathbf{3{,}78} < d^2(x_1, \bar{x}_2^{(1)}) = (-2)^2 + (7/3)^2 = 85/9 \approx 9{,}44 \implies \mathbf{\text{Cluster 1}}$.
+   - **Obs. 2 $(1, 3)$:** $d^2(x_2, \bar{x}_1^{(1)}) = (-5/3)^2 + 0^2 = 25/9 \approx \mathbf{2{,}78} < d^2(x_2, \bar{x}_2^{(1)}) = (-2)^2 + (4/3)^2 = 52/9 \approx 5{,}78 \implies \mathbf{\text{Cluster 1}}$.
+   - **Obs. 3 $(0, 4)$:** $d^2(x_3, \bar{x}_1^{(1)}) = (-8/3)^2 + 1^2 = 73/9 \approx \mathbf{8{,}11} < d^2(x_3, \bar{x}_2^{(1)}) = (-3)^2 + (7/3)^2 = 130/9 \approx 14{,}44 \implies$ muda para **$\mathbf{\text{Cluster 1}}$**!
+   - **Obs. 4 $(5, 1)$:** $d^2(x_4, \bar{x}_1^{(1)}) = (7/3)^2 + (-2)^2 = 85/9 \approx 9{,}44 > d^2(x_4, \bar{x}_2^{(1)}) = 2^2 + (-2/3)^2 = 40/9 \approx \mathbf{4{,}44} \implies \mathbf{\text{Cluster 2}}$.
+   - **Obs. 5 $(6, 2)$:** $d^2(x_5, \bar{x}_1^{(1)}) = (10/3)^2 + (-1)^2 = 109/9 \approx 12{,}11 > d^2(x_5, \bar{x}_2^{(1)}) = 3^2 + (1/3)^2 = 82/9 \approx \mathbf{9{,}11} \implies$ muda para **$\mathbf{\text{Cluster 2}}$**!
+   - **Obs. 6 $(4, 0)$:** $d^2(x_6, \bar{x}_1^{(1)}) = (4/3)^2 + (-3)^2 = 97/9 \approx 10{,}78 > d^2(x_6, \bar{x}_2^{(1)}) = 1^2 + (-5/3)^2 = 34/9 \approx \mathbf{3{,}78} \implies \mathbf{\text{Cluster 2}}$.
+   Logo, os novos grupos são **$C_1^{(1)} = \{1, 2, 3\}$** (canto superior esquerdo) e **$C_2^{(1)} = \{4, 5, 6\}$** (canto inferior direito).
+
+3. **Item (c) — Novos Centroides, Convergência e Inércia Final (WCSS):**  
+   - Novo centroide 1 ($C_1 = \{1, 2, 3\}$):
+     $$\bar{x}_1^{(2)} = \left(\frac{1 + 1 + 0}{3},\; \frac{4 + 3 + 4}{3}\right) = \mathbf{\left(\frac{2}{3},\; \frac{11}{3}\right) \approx (0{,}67;\; 3{,}67)}.$$
+   - Novo centroide 2 ($C_2 = \{4, 5, 6\}$):
+     $$\bar{x}_2^{(2)} = \left(\frac{5 + 6 + 4}{3},\; \frac{1 + 2 + 0}{3}\right) = \mathbf{(5,\; 1)}.$$
+   Como $\{1, 2, 3\}$ estão muito próximos de $(0{,}67; 3{,}67)$ e $\{4, 5, 6\}$ estão muito próximos de $(5, 1)$, nenhum ponto muda mais de cluster (**convergência atingida!**). A inércia final é:
+   $$\operatorname{WCSS} = \underbrace{\left[\left(\frac{1}{3}\right)^2+\left(\frac{1}{3}\right)^2 + \left(\frac{1}{3}\right)^2+\left(-\frac{2}{3}\right)^2 + \left(-\frac{2}{3}\right)^2+\left(\frac{1}{3}\right)^2\right]}_{C_1:\; 12/9 = 4/3} + \underbrace{\big[(0^2+0^2) + (1^2+1^2) + ((-1)^2+(-1)^2)\big]}_{C_2:\; 0 + 2 + 2 = 4} = \frac{4}{3} + 4 = \mathbf{\frac{16}{3} \approx 5{,}33}. \quad \blacksquare$$
+</details>
+
+---
+
+### Exercício B9.3 *[ISLP, Seção 12.6, Ex. 2 — Agrupamento Hierárquico: Ligação Completa vs. Ligação Simples]*
 Suponha que temos $n = 4$ observações com a seguinte matriz de dissimilaridades (distâncias) simétrica $D$:
 $$D = \begin{pmatrix} 0 & 0{,}3 & 0{,}4 & 0{,}7 \\ 0{,}3 & 0 & 0{,}5 & 0{,}8 \\ 0{,}4 & 0{,}5 & 0 & 0{,}45 \\ 0{,}7 & 0{,}8 & 0{,}45 & 0 \end{pmatrix}.$$
 (a) Execute passo a passo o algoritmo de **Agrupamento Hierárquico Aglomerativo** usando **Ligação Completa (*Complete Linkage* — máxima distância inter-cluster)**, indicando quais clusters se fundem em cada etapa e a altura (*height*) exata de cada fusão no dendrograma.  
@@ -1200,7 +1035,7 @@ $$D = \begin{pmatrix} 0 & 0{,}3 & 0{,}4 & 0{,}7 \\ 0{,}3 & 0 & 0{,}5 & 0{,}8 \\ 
 
 ---
 
-### Exercício B11.3 *[ISLP, Seção 12.6, Ex. 6 e Ex. 7 — PCA via Regressões Lineares Simples e Distância de Correlação]*
+### Exercício B9.4 *[ISLP, Seção 12.6, Ex. 6 e Ex. 7 — PCA via Regressões Lineares Simples e Distância de Correlação]*
 Seja $X \in \mathbb{R}^{n \times p}$ uma matriz de dados centrada ($\sum_{i=1}^n x_{ij} = 0$ para todo $j$).
 (a) Considere o problema de aproximação matricial da PCA (Equação 12.6): minimizar $\sum_{j=1}^p \sum_{i=1}^n \left(x_{ij} - \sum_{m=1}^M z_{im}\phi_{jm}\right)^2$. Suponha que os vetores de escores das componentes principais $z_m = (z_{1m}, \dots, z_{nm})^T$ sejam conhecidos e mutuamente ortogonais ($\sum_{i=1}^n z_{im}z_{im'} = 0$ para $m \neq m'$). Prove que, para cada variável $j$ e componente $m$, a carga ótima $\phi_{jm}$ é simplesmente o coeficiente angular da **regressão linear simples sem intercepto** da $j$-ésima coluna de $X$ sobre $z_m$ (Ex. 12.6.6).  
 (b) Suponha agora que cada observação (linha $x_i \in \mathbb{R}^p$) foi padronizada para ter média zero ($\bar{x}_i = \frac{1}{p}\sum_{j=1}^p x_{ij} = 0$) e desvio-padrão unitário ($\sum_{j=1}^p x_{ij}^2 = p - 1$ ou $1$). Prove que a dissimilaridade baseada em correlação $1 - r_{ij} = 1 - \operatorname{Cor}(x_i, x_j)$ é estritamente proporcional ao quadrado da distância euclidiana $\|x_i - x_j\|_2^2$ (Ex. 12.6.7).
@@ -1216,7 +1051,7 @@ Seja $X \in \mathbb{R}^{n \times p}$ uma matriz de dados centrada ($\sum_{i=1}^n
    $$\frac{\partial L_j}{\partial \phi_{jm}} = -2\sum_{i=1}^n z_{im}\left(x_{ij} - \sum_{m'=1}^M z_{im'}\phi_{jm'}\right) = 0 \implies \sum_{i=1}^n z_{im}x_{ij} = \sum_{m'=1}^M \phi_{jm'} \sum_{i=1}^n z_{im}z_{im'}.$$
    Pela ortogonalidade dos escores das componentes principais ($\sum_{i=1}^n z_{im}z_{im'} = 0$ para $m' \neq m$), todos os termos cruzados desaparecem, restando apenas $m' = m$:
    $$\mathbf{\hat{\phi}_{jm} = \frac{\sum_{i=1}^n z_{im}x_{ij}}{\sum_{i=1}^n z_{im}^2}},$$
-   que é exatamente o estimador de mínimos quadrados da regressão linear simples sem intercepto de $x_{\cdot j}$ sobre $z_{\cdot m}$! (Isso fundamenta o algoritmo de Mínimos Quadrados Alternados para PCA e completamento de matrizes).
+   que é exatamente o estimador de mínimos quadrados da regressão linear simples sem intercepto de $x_{\cdot j}$ sobre $z_{\cdot m}$!
 
 2. **Item (b) — Proporcionalidade $1 - r_{ij} \propto \|x_i - x_j\|_2^2$ para Observações Padronizadas (Ex. 12.6.7):**  
    Se cada vetor de observação $x_i \in \mathbb{R}^p$ tem média zero ($\bar{x}_i = 0$) e norma quadrática constante $\|x_i\|_2^2 = \sum_{k=1}^p x_{ik}^2 = c$ (onde $c = p - 1$ ou $c = 1$), o coeficiente de correlação de Pearson entre $x_i$ e $x_j$ é:
@@ -1224,109 +1059,4 @@ Seja $X \in \mathbb{R}^{n \times p}$ uma matriz de dados centrada ($\sum_{i=1}^n
    Por outro lado, expandindo o quadrado da distância euclidiana entre $x_i$ e $x_j$:
    $$\|x_i - x_j\|_2^2 = \|x_i\|_2^2 + \|x_j\|_2^2 - 2\,x_i^T x_j = c + c - 2(c\,r_{ij}) = \mathbf{2c(1 - r_{ij})}.$$
    Portanto, $\mathbf{1 - r_{ij} = \frac{1}{2c}\|x_i - x_j\|_2^2}$, provando que agrupar por distância de correlação equivale a agrupar por distância euclidiana após padronizar as linhas! $\blacksquare$
-</details>
-
----
-
-<a id="bloco-12"></a>
-## Bloco 12 — Testes Múltiplos de Hipóteses: FWER, Bonferroni, Holm e Benjamini-Hochberg / FDR (Capítulo 13)
-
-### Exercício B12.1 *[ISLP, Seção 13.7, Ex. 1, Ex. 2 e Ex. 3 — FWER e Prova da Desigualdade de Boole/Bonferroni]*
-Suponha que testamos $m$ hipóteses nulas $H_{01}, \dots, H_{0m}$, das quais $m_0$ são verdadeiras, rejeitando cada $H_{0j}$ se seu $p$-valor for menor que $\alpha$.
-(a) Se todas as $m_0$ hipóteses nulas verdadeiras forem mutuamente independentes, qual é a distribuição exata do número de falsos positivos $V$ (erros Tipo I), sua esperança $\mathbb{E}[V]$ e seu desvio-padrão $\operatorname{SD}(V)$? Calcule numericamente para $m_0 = 1.000$ e $\alpha = 0{,}05$ (Ex. 13.7.1–2).  
-(b) Compare o $\operatorname{FWER} = \Pr(V \ge 1)$ para $m = 2$ testes sob independência ($\alpha = 0{,}05$) com o caso extremo em que os dois $p$-valores têm correlação positiva perfeita ($p_1 = p_2$) e correlação negativa perfeita ($p_2 = 1 - p_1$) (Ex. 13.7.2).  
-(c) Prove rigorosamente a **Desigualdade de Boole / Bonferroni**: se a $j$-ésima hipótese nula for rejeitada ao nível $\alpha_j$, então, para qualquer estrutura de dependência entre os testes:
-$$\operatorname{FWER} \le \sum_{j=1}^m \alpha_j$$
-(em particular, escolhendo $\alpha_j = \alpha / m$, garante-se $\operatorname{FWER} \le \alpha$) (Ex. 13.7.3).
-- **Dica:** Em (a), lembre que sob $H_{0j}$ verdadeira, $P(p_j \le \alpha) = \alpha$, logo $V \sim \operatorname{Binomial}(m_0, \alpha)$. Em (c), use a subaditividade da medida de probabilidade $\Pr\left(\bigcup_{j \in \mathcal{M}_0} A_j\right) \le \sum_{j \in \mathcal{M}_0} \Pr(A_j)$.
-
-<details>
-<summary><strong>Ver Resolução Completa Passo a Passo</strong></summary>
-
-1. **Item (a) — Distribuição, Esperança e Desvio-Padrão de $V$:**  
-   Sob qualquer hipótese nula verdadeira $H_{0j}$, o $p$-valor tem distribuição $\operatorname{Uniforme}(0, 1)$, logo a probabilidade de rejeição falsa (Erro Tipo I) é $\Pr(p_j \le \alpha) = \alpha$. Pela linearidade da esperança (que vale **com ou sem independência**):
-   $$\mathbb{E}[V] = \sum_{j \in \mathcal{M}_0} \Pr(p_j \le \alpha) = \mathbf{m_0 \alpha}.$$
-   Sob independência entre os $m_0$ testes, $V$ é a soma de $m_0$ variáveis de Bernoulli i.i.d. de parâmetro $\alpha$, logo:
-   $$V \sim \operatorname{Binomial}(m_0, \alpha), \qquad \operatorname{SD}(V) = \mathbf{\sqrt{m_0 \alpha (1 - \alpha)}}.$$
-   Para $m_0 = 1.000$ e $\alpha = 0{,}05$: esperamos $\mathbb{E}[V] = 1.000 \times 0{,}05 = \mathbf{50\text{ falsos positivos}}$, com desvio-padrão $\operatorname{SD}(V) = \sqrt{1.000 \times 0{,}05 \times 0{,}95} = \sqrt{47{,}5} \approx \mathbf{6{,}89}$.
-
-2. **Item (b) — Efeito da Correlação sobre a FWER ($m = 2, \alpha = 0{,}05$, Ex. 13.7.2):**
-   - **Independência:** $\operatorname{FWER} = 1 - (1 - \alpha)^2 = 1 - 0{,}95^2 = \mathbf{0{,}0975}$ ($9{,}75\%$).
-   - **Dependência positiva extrema ($p_1 = p_2$):** Os dois eventos $\{p_1 \le \alpha\}$ e $\{p_2 \le \alpha\}$ coincidem totalmente, logo $\operatorname{FWER} = \Pr(p_1 \le \alpha) = \alpha = \mathbf{0{,}05}$ ($5{,}0\%$).
-   - **Dependência negativa extrema ($p_2 = 1 - p_1$, para $\alpha < 0{,}5$):** Os eventos $\{p_1 \le \alpha\}$ e $\{p_1 \ge 1 - \alpha\}$ são **mutuamente exclusivos (disjuntos)**, logo $\operatorname{FWER} = \alpha + \alpha = 2\alpha = \mathbf{0{,}10}$ ($10{,}0\%$, atingindo exatamente o limite superior de Bonferroni!).
-
-3. **Item (c) — Prova da Desigualdade de Boole / Correção de Bonferroni (Ex. 13.7.3):**  
-   Seja $\mathcal{M}_0 \subseteq \{1, \dots, m\}$ o subconjunto das $m_0$ hipóteses nulas verdadeiras, e seja $A_j = \{\text{rejeitar } H_{0j}\}$ o evento de erro Tipo I na $j$-ésima hipótese ($\Pr(A_j) \le \alpha_j$ para $j \in \mathcal{M}_0$). Pela definição de FWER e pela desigualdade de Boole (subaditividade finita da probabilidade):
-   $$\operatorname{FWER} = \Pr(V \ge 1) = \Pr\!\left(\bigcup_{j \in \mathcal{M}_0} A_j\right) \le \sum_{j \in \mathcal{M}_0} \Pr(A_j) \le \sum_{j \in \mathcal{M}_0} \alpha_j \le \mathbf{\sum_{j=1}^m \alpha_j}.$$
-   Tomando $\alpha_j = \alpha / m$ para todo $j = 1, \dots, m$, obtemos $\operatorname{FWER} \le m_0(\alpha / m) \le m(\alpha / m) = \alpha$. $\blacksquare$
-</details>
-
----
-
-### Exercício B12.2 *[ISLP, Seção 13.7, Ex. 4 e Ex. 5 — Aplicação Completa de Bonferroni, Holm e Benjamini-Hochberg]*
-Suponha que testamos $m = 10$ hipóteses nulas simultaneamente, obtendo os seguintes $p$-valores:
-$$p_1 = 0{,}0011, \quad p_2 = 0{,}031, \quad p_3 = 0{,}017, \quad p_4 = 0{,}32, \quad p_5 = 0{,}11,$$
-$$p_6 = 0{,}90, \quad p_7 = 0{,}07, \quad p_8 = 0{,}006, \quad p_9 = 0{,}004, \quad p_{10} = 0{,}0009.$$
-(a) Determine quais hipóteses nulas são rejeitadas ao controlar a **FWER no nível $\alpha = 0{,}05$** usando o método de **Bonferroni** e usando o método *step-down* de **Holm** (Ex. 13.7.4).  
-(b) Determine quais hipóteses nulas são rejeitadas ao controlar a **Taxa de Falsas Descobertas (FDR)** usando o procedimento de **Benjamini-Hochberg (BH)** no nível $q = 0{,}05$ e no nível $q = 0{,}20$.  
-(c) Construa um exemplo explícito com $m = 5$ $p$-valores em que o método de Holm rejeita $4$ hipóteses nulas no nível $\alpha = 0{,}10$, enquanto o método de Bonferroni rejeita apenas $1$ hipótese nula (Ex. 13.7.5).
-- **Dica:** Primeiro ordene os 10 $p$-valores em ordem crescente $p_{(1)} \le p_{(2)} \le \dots \le p_{(10)}$ e compare cada $p_{(j)}$ com o limiar de Holm $\frac{\alpha}{m + 1 - j}$ e com a reta de Benjamini-Hochberg $\frac{q \cdot j}{m}$.
-
-<details>
-<summary><strong>Ver Resolução Completa Passo a Passo</strong></summary>
-
-1. **Ordenação dos $m = 10$ $p$-valores e Tabela Comparativa de Limiares:**
-
-| Ordem $j$ | Hipótese Original | $p_{(j)}$ | Limiar Bonferroni ($\frac{0{,}05}{10}$) | Limiar de Holm ($\frac{0{,}05}{11 - j}$) | Limiar BH ($q=0{,}05$: $\frac{0{,}05\,j}{10}$) | Limiar BH ($q=0{,}20$: $\frac{0{,}20\,j}{10}$) |
-| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| $1$ | $H_{0,10}$ | $0{,}0009$ | $0{,}005$ (**Rej.**) | $0{,}00500$ (**Rej.**) | $0{,}005$ ($\le$) | $0{,}02$ ($\le$) |
-| $2$ | $H_{0,1}$ | $0{,}0011$ | $0{,}005$ (**Rej.**) | $0{,}00556$ (**Rej.**) | $0{,}010$ ($\le$) | $0{,}04$ ($\le$) |
-| $3$ | $H_{0,9}$ | $0{,}0040$ | $0{,}005$ (**Rej.**) | $0{,}00625$ (**Rej.**) | $0{,}015$ ($\le$) | $0{,}06$ ($\le$) |
-| $4$ | $H_{0,8}$ | $0{,}0060$ | $0{,}005$ *(Não)* | $0{,}00714$ (**Rej.**) | $0{,}020$ ($\le$) | $0{,}08$ ($\le$) |
-| $5$ | $H_{0,3}$ | $0{,}0170$ | $0{,}005$ *(Não)* | $0{,}00833$ *(Para: $L=5$)* | $0{,}025$ ($\le$, $L=5$) | $0{,}10$ ($\le$) |
-| $6$ | $H_{0,2}$ | $0{,}0310$ | $0{,}005$ *(Não)* | $0{,}01000$ | $0{,}030$ *(Não)* | $0{,}12$ ($\le$) |
-| $7$ | $H_{0,7}$ | $0{,}0700$ | $0{,}005$ *(Não)* | $0{,}01250$ | $0{,}035$ | $0{,}14$ ($\le$) |
-| $8$ | $H_{0,5}$ | $0{,}1100$ | $0{,}005$ *(Não)* | $0{,}01667$ | $0{,}040$ | $0{,}16$ ($\le$, $L=8$) |
-| $9$ | $H_{0,4}$ | $0{,}3200$ | $0{,}005$ *(Não)* | $0{,}02500$ | $0{,}045$ | $0{,}18$ *(Não)* |
-| $10$ | $H_{0,6}$ | $0{,}9000$ | $0{,}005$ *(Não)* | $0{,}05000$ | $0{,}050$ | $0{,}20$ |
-
-2. **Item (a) — Rejeições para FWER $\le 0{,}05$:**
-   - **Bonferroni ($\alpha/10 = 0{,}005$):** Rejeita apenas **3 hipóteses nulas**: $\mathbf{\{H_{0,10},\; H_{0,1},\; H_{0,9}\}}$.
-   - **Holm ($\alpha/(11-j)$):** O primeiro índice onde $p_{(j)} > \frac{0{,}05}{11-j}$ é $L = 5$ ($0{,}0170 > 0{,}00833$). Logo, Holm rejeita **4 hipóteses nulas**: $\mathbf{\{H_{0,10},\; H_{0,1},\; H_{0,9},\; H_{0,8}\}}$ (capturando $H_{0,8}$, cujo $p$-valor $0{,}006$ era perdido por Bonferroni!).
-
-3. **Item (b) — Rejeições para FDR via Benjamini-Hochberg:**
-   - **Para $q = 0{,}05$:** O maior índice $j$ tal que $p_{(j)} \le 0{,}005\,j$ é $L = 5$ ($p_{(5)} = 0{,}017 \le 0{,}025$). Logo, BH rejeita **5 hipóteses nulas**: $\mathbf{\{H_{0,10},\; H_{0,1},\; H_{0,9},\; H_{0,8},\; H_{0,3}\}}$.
-   - **Para $q = 0{,}20$:** O maior índice $j$ tal que $p_{(j)} \le 0{,}02\,j$ é $L = 8$ ($p_{(8)} = 0{,}11 \le 0{,}16$). Logo, BH rejeita **8 hipóteses nulas**: $\mathbf{\{H_{0,10},\; H_{0,1},\; H_{0,9},\; H_{0,8},\; H_{0,3},\; H_{0,2},\; H_{0,7},\; H_{0,5}\}}$.
-
-4. **Item (c) — Exemplo para $m = 5$ e $\alpha = 0{,}10$ (Ex. 13.7.5):**  
-   Para $m = 5$ e $\alpha = 0{,}10$, o limiar de Bonferroni é $\frac{0{,}10}{5} = 0{,}020$, enquanto os limiares de Holm para $j = 1, 2, 3, 4, 5$ são:
-   $$\frac{0{,}10}{5} = 0{,}020, \quad \frac{0{,}10}{4} = 0{,}025, \quad \frac{0{,}10}{3} \approx 0{,}0333, \quad \frac{0{,}10}{2} = 0{,}050, \quad \frac{0{,}10}{1} = 0{,}100.$$
-   Escolhendo os $p$-valores:
-   $$\mathbf{p_1 = 0{,}010, \quad p_2 = 0{,}022, \quad p_3 = 0{,}030, \quad p_4 = 0{,}045, \quad p_5 = 0{,}500},$$
-   Bonferroni rejeita apenas $H_{01}$ ($p_1 = 0{,}010 \le 0{,}020$), enquanto Holm rejeita $H_{01}, H_{02}, H_{03}$ e $H_{04}$ ($4$ hipóteses) controlando exatamente o mesmo FWER $\le 0{,}10$! $\blacksquare$
-</details>
-
----
-
-### Exercício B12.3 *[ISLP, Seção 13.7, Ex. 8e–f — A Armadilha de Cherry-Picking e Reamostragem Permutacional]*
-Um analista avalia o desempenho mensal de $m = 100$ gestores de fundos de investimento. Sob a hipótese nula global de que nenhum gestor possui habilidade superior ao acaso ($H_{0j}: \mu_j = 0$ para todo $j = 1, \dots, 100$), o analista seleciona apenas o **melhor gestor observado** na amostra (aquele com o menor $p$-valor individual $p_{(1)} = \min_{1 \le j \le 100} p_j$) e reporta $p_{(1)} = 0{,}008 < 0{,}05$ como prova estatística de que esse gestor bate o mercado.
-(a) Calcule a probabilidade exata de observar $\min_{1 \le j \le 100} p_j \le 0{,}008$ sob a hipótese nula global (assumindo independência entre os 100 gestores) e explique por que esse procedimento é falacioso (*cherry-picking* / *data snooping*).  
-(b) Qual deveria ser o $p$-valor ajustado de Bonferroni / Šidák para $p_{(1)} = 0{,}008$ entre $m = 100$ gestores?  
-(c) Explique como um **teste de permutação (reamostragem)** estima empiricamente a distribuição nula e a FDR quando os preditores ou testes possuem correlações complexas e o tamanho amostral é pequeno.
-- **Dica:** Em (a), use $\Pr\big(\min_{1 \le j \le 100} p_j \le x\big) = 1 - \Pr(p_1 > x, \dots, p_{100} > x) = 1 - (1 - x)^{100}$.
-
-<details>
-<summary><strong>Ver Resolução Completa Passo a Passo</strong></summary>
-
-1. **Item (a) — A Falácia do *Cherry-Picking* ($p_{(1)} = 0{,}008$ em $m = 100$):**  
-   Se todos os $m = 100$ gestores operam puramente ao acaso ($p_j \stackrel{\text{i.i.d.}}{\sim} \operatorname{Uniforme}(0, 1)$), a probabilidade de que **pelo menos um** dos 100 gestores apresente um $p$-valor individual $\le 0{,}008$ é:
-   $$\Pr\!\left(\min_{1 \le j \le 100} p_j \le 0{,}008\right) = 1 - (1 - 0{,}008)^{100} = 1 - (0{,}992)^{100} \approx \mathbf{0{,}5521 \;\; (55{,}2\%)}!$$
-   Ou seja, mesmo que absolutamente nenhum gestor tenha habilidade real, há mais de **$55\%$ de chance** de o "melhor" gestor de um grupo de $100$ exibir um $p$-valor aparente $\le 0{,}008$. Testar apenas o máximo amostral usando a distribuição nula de uma variável individual sem corrigir pela busca sobre os $m = 100$ candidatos invalida completamente o nível de significância.
-
-2. **Item (b) — $p$-valor Ajustado para $p_{(1)} = 0{,}008$:**
-   - **Ajuste de Bonferroni:** $p_{(1)}^{\text{Bonf}} = \min(m \cdot p_{(1)},\; 1) = 100 \times 0{,}008 = \mathbf{0{,}80}$ (totalmente não significativo!).
-   - **Ajuste exato de Šidák (sob independência):** $p_{(1)}^{\text{Šidák}} = 1 - (1 - 0{,}008)^{100} \approx \mathbf{0{,}552}$.
-
-3. **Item (c) — Abordagem de Reamostragem Permutacional (Seção 13.5):**  
-   Quando a distribuição teórica nula da estatística de teste $T_j$ é desconhecida ($n$ pequeno ou não normalidade) ou há forte correlação entre os $m$ testes, embaralhamos aleatoriamente os rótulos de classe (ou permutamos sinais em amostras pareadas) $B$ vezes ($b = 1, \dots, B$), recalculando as estatísticas $T_j^{*(b)}$ para todas as $m$ variáveis simultaneamente em cada permutação (o que preserva a estrutura de correlação entre as variáveis). Para um limiar $c > 0$, estimamos o número esperado de falsos positivos por $\widehat{\mathbb{E}[V(c)]} = \frac{1}{B}\sum_{b=1}^B \sum_{j=1}^m \mathbb{I}\!\left(|T_j^{*(b)}| \ge c\right)$ e a FDR empírica por $\widehat{\operatorname{FDR}}(c) = \frac{\widehat{\mathbb{E}[V(c)]}}{R(c)}$. $\blacksquare$
 </details>
