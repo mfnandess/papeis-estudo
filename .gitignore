@@ -1,0 +1,10 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Livros-texto de referência locais (arquivos grandes / direitos autorais)
+*z-library*.pdf
+Um Curso de Cálculo*.pdf
+CÁLCULO I*.pdf
+*.pyc
+__pycache__/
