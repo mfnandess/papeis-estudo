@@ -3,607 +3,482 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Caderno de Exercícios Resolvidos de Cálculo I (Guidorizzi 5ª ed. + Apostol)</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
-    onload="renderMathInElement(document.body, {
-      delimiters: [
-        {left: '\\[', right: '\\]', display: true},
-        {left: '\\(', right: '\\)', display: false}
-      ],
-      throwOnError: false
-    });"></script>
+  <title>Caderno de Exercícios de Cálculo I — Guidorizzi (5ª ed.) e Apostol</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
-    :root {
-      --navy: #0d3b66;
-      --navy-dark: #082542;
-      --blue-bg: #eff6ff;
-      --blue-border: #1d4ed8;
-      --amber-bg: #fffbeb;
-      --amber-border: #d97706;
-      --red-bg: #fef2f2;
-      --red-border: #dc2626;
-      --text: #1e293b;
-      --muted: #475569;
-      --border: #cbd5e1;
-      --card: #ffffff;
+    @page {
+      size: A4;
+      margin: 18mm 16mm 18mm 16mm;
     }
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
     body {
-      margin: 0;
-      font-family: "Georgia", "Times New Roman", serif;
+      font-family: "Georgia", "Times New Roman", Times, serif;
       font-size: 11pt;
       line-height: 1.65;
-      color: var(--text);
-      background: #f1f5f9;
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+      max-width: 210mm;
+      margin: 0 auto;
+      padding: 32px 28px 64px 28px;
+      text-align: justify;
+      hyphens: auto;
     }
-    /* Top Navbar */
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: var(--navy-dark);
-      color: #fff;
-      padding: 10px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    .paper-nav {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
-    .topbar-brand {
-      font-weight: 700;
-      font-size: 1rem;
-      color: #f8fafc;
-      text-decoration: none;
+      font-size: 0.85rem;
+      color: #475569;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 10px;
+      margin-bottom: 24px;
       display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
       align-items: center;
       gap: 8px;
+      text-align: left;
     }
-    .topbar-links {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    .topbar-links a, .btn-print {
-      color: #e2e8f0;
+    .paper-nav a {
+      color: #0d3b66;
       text-decoration: none;
-      font-size: 0.88rem;
-      padding: 6px 12px;
-      border-radius: 6px;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.15);
-      transition: all 0.15s;
-      cursor: pointer;
+      font-weight: 600;
     }
-    .topbar-links a:hover, .topbar-links a.active, .btn-print:hover {
-      background: #2563eb;
-      color: #fff;
-      border-color: #3b82f6;
-    }
-    /* Layout Grid */
-    .layout {
-      max-width: 1380px;
-      margin: 24px auto;
-      padding: 0 18px;
-      display: grid;
-      grid-template-columns: 290px minmax(0, 1fr);
-      gap: 26px;
-      align-items: start;
-    }
-    @media (max-width: 1024px) {
-      .layout { grid-template-columns: 1fr; }
-      .sidebar { position: static !important; max-height: none !important; }
-    }
-    /* Sidebar TOC */
-    .sidebar {
-      position: sticky;
-      top: 68px;
-      max-height: calc(100vh - 88px);
-      overflow-y: auto;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 16px 14px;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      box-shadow: 0 2px 6px rgba(15,23,42,0.05);
-    }
-    .sidebar h3 {
-      margin: 0 0 10px 0;
-      font-size: 0.92rem;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: var(--navy);
-      border-bottom: 2px solid var(--navy);
-      padding-bottom: 6px;
-    }
-    .toc-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      font-size: 0.84rem;
-    }
-    .toc-list li {
-      margin-bottom: 5px;
-      line-height: 1.35;
-    }
-    .toc-list li.toc-lvl-3 {
-      padding-left: 12px;
-      font-size: 0.80rem;
-    }
-    .toc-list a {
-      color: #334155;
-      text-decoration: none;
-      display: block;
-      padding: 3px 6px;
-      border-radius: 4px;
-    }
-    .toc-list a:hover {
-      background: var(--blue-bg);
-      color: var(--blue-border);
-    }
-    /* Main Paper Container */
-    .paper {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 42px 52px;
-      box-shadow: 0 4px 16px rgba(15,23,42,0.06);
-    }
-    @media (max-width: 680px) {
-      .paper { padding: 22px 18px; }
+    .paper-nav a:hover {
+      text-decoration: underline;
     }
     h1 {
-      font-size: 1.95rem;
-      color: var(--navy-dark);
+      font-size: 18pt;
       text-align: center;
       margin-top: 0;
-      margin-bottom: 8px;
-      line-height: 1.25;
+      margin-bottom: 6px;
+      color: #0d1b2a;
+      font-weight: bold;
+      line-height: 1.3;
     }
     h1 + h2 {
-      font-size: 1.12rem;
+      font-size: 11.5pt;
       font-weight: normal;
       font-style: italic;
       text-align: center;
-      color: var(--muted);
       border-bottom: none;
       margin-top: 0;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
+      color: #334155;
+      line-height: 1.45;
     }
     h2 {
-      font-size: 1.42rem;
-      color: var(--navy);
-      border-bottom: 2px solid var(--navy);
-      padding-bottom: 6px;
-      margin-top: 38px;
-      margin-bottom: 14px;
+      font-size: 13.5pt;
+      color: #0d1b2a;
+      border-bottom: 1.5px solid #0d1b2a;
+      padding-bottom: 4px;
+      margin-top: 30px;
+      margin-bottom: 12px;
+      text-align: left;
+      page-break-after: avoid;
     }
     h3 {
-      font-size: 1.16rem;
-      color: #1e3a8a;
-      margin-top: 26px;
-      margin-bottom: 10px;
+      font-size: 11.5pt;
+      color: #1b263b;
+      margin-top: 20px;
+      margin-bottom: 8px;
+      text-align: left;
+      page-break-after: avoid;
     }
     h4 {
-      font-size: 1.02rem;
-      color: #0f172a;
-      margin-top: 18px;
-      margin-bottom: 8px;
+      font-size: 10.5pt;
+      color: #1e3a8a;
+      margin-top: 16px;
+      margin-bottom: 6px;
+      text-align: left;
+      page-break-after: avoid;
     }
     p {
-      margin: 9px 0;
-      text-align: justify;
+      margin-top: 0;
+      margin-bottom: 10px;
     }
     ul, ol {
-      margin: 8px 0 14px 0;
-      padding-left: 24px;
+      margin-top: 4px;
+      margin-bottom: 12px;
+      padding-left: 22px;
     }
     li {
-      margin-bottom: 6px;
-      text-align: justify;
+      margin-bottom: 5px;
     }
-    .sub-item {
-      margin-left: 14px;
-      margin-top: 4px;
-    }
-    hr {
-      border: none;
-      border-top: 1px solid #e2e8f0;
-      margin: 30px 0;
-    }
-    /* Reference Callout Boxes */
     blockquote {
-      margin: 16px 0;
-      padding: 12px 18px;
-      border-radius: 0 8px 8px 0;
+      margin: 14px 0;
+      padding: 10px 16px;
+      background-color: #f8fafc;
+      border-left: 3.5px solid #0d3b66;
+      color: #1e293b;
+      font-size: 10.2pt;
+      page-break-inside: avoid;
     }
-    .callout-default {
-      background: #f8fafc;
-      border-left: 4px solid var(--navy);
+    blockquote.complemento-apostol {
+      background-color: #fafaf9;
+      border-left-color: #64748b;
     }
-    .callout-guidorizzi {
-      background: var(--blue-bg);
-      border-left: 5px solid var(--blue-border);
+    blockquote p:last-child {
+      margin-bottom: 0;
     }
-    .callout-apostol {
-      background: var(--amber-bg);
-      border-left: 5px solid var(--amber-border);
+    .math-display {
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 4px 0;
+      margin: 8px 0;
+      -webkit-overflow-scrolling: touch;
     }
-    .callout-warning {
-      background: var(--red-bg);
-      border-left: 5px solid var(--red-border);
-    }
-    .callout-nav {
-      background: #f0fdf4;
-      border-left: 5px solid #16a34a;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      font-size: 0.95rem;
-    }
-    /* Inline Reference Badges */
-    .badge-ref {
-      display: inline-block;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      font-size: 0.82rem;
-      font-weight: 600;
-      padding: 2px 9px;
-      border-radius: 999px;
-      vertical-align: middle;
-    }
-    .badge-guidorizzi {
-      background: #dbeafe;
-      color: #1e40af;
-      border: 1px solid #93c5fd;
-    }
-    .badge-apostol {
-      background: #fef3c7;
-      color: #92400e;
-      border: 1px solid #fcd34d;
-    }
-    /* Figures */
     .paper-figure {
-      margin: 22px auto;
-      padding: 14px;
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 10px;
+      margin: 18px 0 6px 0;
       text-align: center;
+      page-break-inside: avoid;
     }
     .paper-figure img {
       max-width: 100%;
       height: auto;
-      border-radius: 6px;
+      border: 1px solid #e2e8f0;
+      border-radius: 4px;
+      background: #ffffff;
     }
-    .paper-figure figcaption {
-      margin-top: 10px;
-      font-size: 0.92rem;
-      color: #334155;
-      text-align: justify;
-      padding: 0 8px;
+    .figure-caption {
+      font-size: 9.5pt;
+      color: #475569;
+      text-align: center;
+      margin-top: 4px;
+      margin-bottom: 18px;
     }
-    /* Tables */
     .table-wrapper {
+      width: 100%;
       overflow-x: auto;
-      margin: 16px 0;
+      margin: 14px 0;
+      -webkit-overflow-scrolling: touch;
     }
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.93rem;
+      font-size: 9.8pt;
+      page-break-inside: avoid;
     }
     th, td {
-      border: 1px solid var(--border);
-      padding: 8px 11px;
+      border: 1px solid #cbd5e1;
+      padding: 6px 10px;
       text-align: left;
-      vertical-align: middle;
+      vertical-align: top;
     }
     th {
-      background: #eef2f6;
-      color: var(--navy-dark);
+      background-color: #f1f5f9;
       font-weight: bold;
+      color: #0f172a;
     }
     tr:nth-child(even) td {
-      background: #f8fafc;
+      background-color: #f8fafc;
     }
-    /* Interactive Exercise Details */
+    hr {
+      border: none;
+      border-top: 1px solid #e2e8f0;
+      margin: 24px 0;
+    }
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 9.2pt;
+      background-color: #f1f5f9;
+      padding: 1px 4px;
+      border-radius: 3px;
+    }
     details {
-      margin: 14px 0;
-      background: #f8fafc;
+      margin: 10px 0 16px 0;
       border: 1px solid #cbd5e1;
-      border-left: 4px solid #0d9488;
-      border-radius: 6px;
-      padding: 10px 16px;
+      border-radius: 4px;
+      background: #ffffff;
+      padding: 8px 14px;
     }
     summary {
       cursor: pointer;
-      font-weight: 600;
-      color: #0f766e;
-      outline: none;
-    }
-    summary:hover {
-      color: #115e59;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 9.8pt;
+      color: #0d3b66;
+      user-select: none;
     }
     details[open] summary {
       margin-bottom: 10px;
       padding-bottom: 6px;
-      border-bottom: 1px dashed #cbd5e1;
+      border-bottom: 1px solid #e2e8f0;
     }
-    .math-display {
-      overflow-x: auto;
-      margin: 10px 0;
-      padding: 4px 0;
+    a {
+      color: #0d3b66;
+      text-decoration: none;
     }
-    code {
-      font-family: "SFMono-Regular", Consolas, Menlo, monospace;
-      font-size: 0.88em;
-      background: #f1f5f9;
-      padding: 2px 5px;
-      border-radius: 4px;
+    a:hover {
+      text-decoration: underline;
+    }
+    /* Tablet and Mobile adjustments */
+    @media (max-width: 768px) {
+      body {
+        font-size: 10.5pt;
+        line-height: 1.6;
+        padding: 18px 16px 48px 16px;
+        text-align: left;
+        hyphens: none;
+      }
+      h1 {
+        font-size: 15pt;
+      }
+      h1 + h2 {
+        font-size: 10.5pt;
+      }
+      h2 {
+        font-size: 12.5pt;
+      }
+      h3 {
+        font-size: 11pt;
+      }
+      blockquote {
+        padding: 8px 12px;
+        font-size: 10pt;
+      }
+      ul, ol {
+        padding-left: 18px;
+      }
     }
     @media print {
-      body { background: #fff; font-size: 10pt; }
-      .topbar, .sidebar { display: none !important; }
-      .layout { display: block; margin: 0; padding: 0; }
-      .paper { border: none; box-shadow: none; padding: 0; }
-      details { display: block; }
+      body {
+        max-width: 100%;
+        padding: 0;
+        background: #ffffff;
+      }
+      .paper-nav {
+        display: none;
+      }
+      details {
+        border: none;
+        padding: 0;
+      }
     }
   </style>
 </head>
 <body>
-  <header class="topbar">
-    <a href="./index.html" class="topbar-brand">📐 Cálculo I — Guidorizzi (5ª ed.) &amp; Apostol</a>
-    <nav class="topbar-links">
-      <a href="./index.html" class="">📄 Paper 1: Tratado Principal</a>
-      <a href="./exercicios.html" class="active">📝 Paper 2: Caderno de Exercícios</a>
-      <a href="./comparativo-guidorizzi-apostol.html" class="">⚖️ Paper 3: Guidorizzi vs. Apostol</a>
-      <a href="https://github.com/mfnandess/papeis-estudo" target="_blank" rel="noopener">🔗 GitHub Repo</a>
-      <button class="btn-print" onclick="window.print()">🖨️ Imprimir / Salvar PDF</button>
-    </nav>
-  </header>
-
-  <div class="layout">
-    <aside class="sidebar">
-      <h3>Sumário Navegável</h3>
-      <ul class="toc-list">
-        <li class="toc-lvl-2"><a href="#paper-pratico-acoplado-ao-tratado-de-calculo-1-um-curso-de-calculo-vol-1-h-l-guidorizzi-5-edicao-complementos-de-calculo-i-tom-m-apostol">Paper Prático Acoplado ao Tratado de Cálculo 1: <em>Um Curso de Cálculo — Vol. 1</em> (H. L. Guidorizzi, 5ª Edição) + Complementos de <em>Cálculo I</em> (Tom M. Apostol)</a></li>
-        <li class="toc-lvl-2"><a href="#sumario-por-blocos-tematicos">Sumário por Blocos Temáticos</a></li>
-        <li class="toc-lvl-2"><a href="#bloco-1-numeros-reais-modulo-supremo-e-funcoes-capitulos-1-e-2">Bloco 1 — Números Reais, Módulo, Supremo e Funções (Capítulos 1 e 2)</a></li>
-        <li class="toc-lvl-3"><a href="#exercicio-b1-1-code-inline-2">Exercício B1.1 🟢 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 1.3, Ex. 3 e 5]</span></a></li>
-        <li class="toc-lvl-3"><a href="#exercicio-b1-2-code-inline-3">Exercício B1.2 🟡 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 1.3, Ex. 6 e 7]</span></a></li>
-        <li class="toc-lvl-3"><a href="#exercicio-b1-3-code-inline-4">Exercício B1.3 🔴 <span class="badge-ref badge-apostol">📙 [Mudança de Referência — Apostol, Cálculo I, Parte I.3, Seção I.3.12, Ex. 5 e Guidorizzi, Apêndice 1, Seção A1.2]</span></a></li>
-        <li class="toc-lvl-2"><a href="#bloco-2-limite-e-continuidade-capitulo-3">Bloco 2 — Limite e Continuidade (Capítulo 3)</a></li>
-        <li class="toc-lvl-3"><a href="#exercicio-b2-1-code-inline-5">Exercício B2.1 🟡 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 3.2, Ex. 21 e Seção 3.3]</span></a></li>
-        <li class="toc-lvl-3"><a href="#exercicio-b2-2-code-inline-6">Exercício B2.2 🟡 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 3.3 e Seção 3.8]</span></a></li>
-        <li class="toc-lvl-2"><a href="#bloco-3-extensoes-do-limite-sequencias-e-o-numero-math-inline-222-capitulo-4">Bloco 3 — Extensões do Limite, Sequências e o Número <span class="math-inline">\(e\)</span> (Capítulo 4)</a></li>
-        <li class="toc-lvl-3"><a href="#exercicio-b3-1-code-inline-7">Exercício B3.1 🟡 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 4.1 e Seção 4.3]</span></a></li>
-        <li class="toc-lvl-2"><a href="#bloco-4-teoremas-globais-em-math-inline-244-anulamento-tvi-e-weierstrass-capitulo-5">Bloco 4 — Teoremas Globais em <span class="math-inline">\([a, b]\)</span>: Anulamento, TVI e Weierstrass (Capítulo 5)</a></li>
-        <li class="toc-lvl-3"><a href="#exercicio-b4-1-code-inline-8">Exercício B4.1 🟡 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Cap. 5, Ex. 2, 7 e 11]</span></a></li>
-        <li class="toc-lvl-3"><a href="#exercicio-b4-2-code-inline-9">Exercício B4.2 🔴 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Cap. 5, Ex. 10 e Ex. 12]</span></a></li>
-        <li class="toc-lvl-2"><a href="#bloco-5-funcoes-exponencial-e-logaritmica-capitulo-6">Bloco 5 — Funções Exponencial e Logarítmica (Capítulo 6)</a></li>
-        <li class="toc-lvl-3"><a href="#exercicio-b5-1-code-inline-10">Exercício B5.1 🟢 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 6.3, Ex. 1 a 3]</span></a></li>
-        <li class="toc-lvl-2"><a href="#bloco-6-derivadas-regra-da-cadeia-implicita-e-taxas-relacionadas-capitulo-7">Bloco 6 — Derivadas, Regra da Cadeia, Implícita e Taxas Relacionadas (Capítulo 7)</a></li>
-        <li class="toc-lvl-3"><a href="#exercicio-b6-1-code-inline-11">Exercício B6.1 🟡 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Seções 7.13, 7.15 e 7.16]</span></a></li>
-        <li class="toc-lvl-2"><a href="#bloco-7-funcoes-inversas-e-suas-derivadas-capitulo-8">Bloco 7 — Funções Inversas e suas Derivadas (Capítulo 8)</a></li>
-        <li class="toc-lvl-3"><a href="#exercicio-b7-1-code-inline-12">Exercício B7.1 🟡 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 8.2, Ex. 1 a 5]</span></a></li>
-        <li class="toc-lvl-2"><a href="#bloco-8-tvm-rolle-cauchy-variacao-de-funcoes-e-otimizacao-capitulos-9-e-15">Bloco 8 — TVM, Rolle, Cauchy, Variação de Funções e Otimização (Capítulos 9 e 15)</a></li>
-        <li class="toc-lvl-3"><a href="#exercicio-b8-1-code-inline-13">Exercício B8.1 🟡 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 9.2, Ex. 6 e 9]</span></a></li>
-        <li class="toc-lvl-3"><a href="#exercicio-b8-2-code-inline-14">Exercício B8.2 🟡 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 9.6 e Seção 9.8]</span></a></li>
-        <li class="toc-lvl-3"><a href="#exercicio-b8-3-code-inline-15">Exercício B8.3 🔴 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 9.7, Ex. 8 — Teorema de Darboux para a Derivada]</span></a></li>
-        <li class="toc-lvl-2"><a href="#bloco-9-primitivas-integral-de-riemann-1-e-2-tfc-e-areas-capitulos-10-e-11">Bloco 9 — Primitivas, Integral de Riemann, 1º e 2º TFC e Áreas (Capítulos 10 e 11)</a></li>
-        <li class="toc-lvl-3"><a href="#exercicio-b9-1-code-inline-16">Exercício B9.1 🟡 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 11.6 e Seção 11.7]</span></a></li>
-        <li class="toc-lvl-3"><a href="#exercicio-b9-2-code-inline-17">Exercício B9.2 🟡 <span class="badge-ref badge-apostol">📙 [Mudança de Referência — Apostol, Cálculo I, Cap. 5, Seção 5.1 (e Guidorizzi Vol. 2, Cap. 2)]</span></a></li>
-        <li class="toc-lvl-2"><a href="#bloco-10-tecnicas-de-primitivacao-capitulo-12">Bloco 10 — Técnicas de Primitivação (Capítulo 12)</a></li>
-        <li class="toc-lvl-3"><a href="#exercicio-b10-1-code-inline-18">Exercício B10.1 🟡 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Seções 12.3, 12.5 e 12.9]</span></a></li>
-        <li class="toc-lvl-2"><a href="#bloco-11-volumes-comprimento-de-arco-polares-e-pappus-capitulo-13">Bloco 11 — Volumes, Comprimento de Arco, Polares e Pappus (Capítulo 13)</a></li>
-        <li class="toc-lvl-3"><a href="#exercicio-b11-1-code-inline-19">Exercício B11.1 🟡 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Seções 13.1, 13.2 e 13.9, Ex. 5]</span></a></li>
-        <li class="toc-lvl-2"><a href="#bloco-12-equacoes-diferenciais-de-1-ordem-capitulo-14">Bloco 12 — Equações Diferenciais de 1ª Ordem (Capítulo 14)</a></li>
-        <li class="toc-lvl-3"><a href="#exercicio-b12-1-code-inline-20">Exercício B12.1 🟡 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Seções 14.3–14.6]</span></a></li>
-        <li class="toc-lvl-2"><a href="#bloco-13-formula-e-polinomios-de-taylor-capitulo-16">Bloco 13 — Fórmula e Polinômios de Taylor (Capítulo 16)</a></li>
-        <li class="toc-lvl-3"><a href="#exercicio-b13-1-code-inline-21">Exercício B13.1 🟡 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 16.2, Ex. 2 e Seção 16.3, Ex. 6 e 10]</span></a></li>
-        <li class="toc-lvl-2"><a href="#bloco-14-arquimedes-pascal-e-fermat-capitulo-17">Bloco 14 — Arquimedes, Pascal e Fermat (Capítulo 17)</a></li>
-        <li class="toc-lvl-3"><a href="#exercicio-b14-1-code-inline-22">Exercício B14.1 🔴 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 17.3 — Desafio Final de Fermat]</span></a></li>
-      </ul>
-    </aside>
-    <main class="paper">
-      <h1 id="caderno-de-exercicios-problemas-classicos-e-demonstracoes-de-calculo-i">Caderno de Exercícios, Problemas Clássicos e Demonstrações de Cálculo I</h1>
-<h2 id="paper-pratico-acoplado-ao-tratado-de-calculo-1-um-curso-de-calculo-vol-1-h-l-guidorizzi-5-edicao-complementos-de-calculo-i-tom-m-apostol">Paper Prático Acoplado ao Tratado de Cálculo 1: <em>Um Curso de Cálculo — Vol. 1</em> (H. L. Guidorizzi, 5ª Edição) + Complementos de <em>Cálculo I</em> (Tom M. Apostol)</h2>
-<hr/>
-<blockquote class="callout-nav"><p><strong>Navegação Rápida entre os Papers deste Repositório (GitHub Pages):</strong></p>
-<ul><li>📄 <strong><a href="./index.html">Paper 1 — Tratado Teórico Principal (Capítulos 1 a 17 + Apêndices)</a></strong> | <a href="./Paper_Calculo_1_Guidorizzi_Apostol.md">Versão Markdown</a></li><li>📝 <strong><a href="./exercicios.html">Paper 2 — Caderno de Exercícios Resolvidos (Você está aqui)</a></strong> | <a href="./Caderno_Exercicios_Calculo_1.md">Versão Markdown</a></li><li>⚖️ <strong><a href="./comparativo-guidorizzi-apostol.html">Paper 3 — Guia Comparativo: Guidorizzi (5ª ed.) vs. Apostol (Cálculo I)</a></strong> | <a href="./Comparativo_Guidorizzi_vs_Apostol.md">Versão Markdown</a></li></ul></blockquote>
-<hr/>
-<blockquote class="callout-default"><p><strong>Sobre este Paper de Exercícios</strong> Este caderno reúne <strong>45 problemas fundamentais e demonstrações selecionadas</strong>, organizados na sequência exata dos **17 capítulos de <em>Um Curso de Cálculo — Volume 1</em> (5ª edição), de Hamilton Luiz Guidorizzi<strong>, acrescidos de exercícios teóricos clássicos de </strong><em>Cálculo I</em>, de Tom M. Apostol**. Cada exercício traz:</p>
-<ol><li><strong>Selo de Referência Explícito:</strong> <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Seção X.Y]</span> ou <span class="badge-ref badge-apostol">📙 [Mudança de Referência — Apostol, Cálculo I, Seção Y.Z]</span>;</li><li><strong>Classificação de Nível:</strong> 🟢 <em>Fixação e Técnica</em>, 🟡 <em>Clássico de Prova (Poli/IME-USP)</em>, 🔴 <em>Desafio Teórico / Demonstração</em>;</li><li><strong>Dica Estratégica</strong> (para você tentar resolver antes de abrir a resposta);</li><li><strong>Resolução Completa Passo a Passo</strong> (expansível).</li></ol></blockquote>
-<hr/>
+  <div class="paper-nav">
+    <div><strong>Cálculo I</strong> — Guidorizzi (5ª ed.) &amp; Apostol</div>
+    <div><a href="./index.html">Paper Teórico Principal</a> &nbsp;|&nbsp; <strong>Caderno de Exercícios</strong> &nbsp;|&nbsp; <a href="javascript:window.print()">Imprimir / PDF</a></div>
+  </div>
+  <h1 id="caderno-de-exercicios-e-demonstracoes-resolvidas-de-calculo-i">Caderno de Exercícios e Demonstrações Resolvidas de Cálculo I</h1>
+<h2 id="material-pratico-baseado-em-um-curso-de-calculo-volume-1-hamilton-luiz-guidorizzi-5a-edicao-com-complementos-de-calculo-i-tom-m-apostol">Material Prático Baseado em <em>Um Curso de Cálculo — Volume 1</em> (Hamilton Luiz Guidorizzi, 5ª Edição), com Complementos de <em>Cálculo I</em> (Tom M. Apostol)</h2>
+<hr>
+<blockquote><p><strong>Sobre este Caderno</strong> Este documento reúne <strong>45 problemas fundamentais e demonstrações selecionadas</strong>, organizados na sequência dos **17 capítulos de <em>Um Curso de Cálculo — Volume 1</em> (5ª edição), de Hamilton Luiz Guidorizzi<strong>, acrescidos de exercícios teóricos clássicos de </strong><em>Cálculo I</em>, de Tom M. Apostol** (sempre identificados por @@CODE_TOKEN_0@@). Cada problema inclui uma dica estratégica seguida da resolução passo a passo.</p></blockquote>
+<hr>
 <h2 id="sumario-por-blocos-tematicos">Sumário por Blocos Temáticos</h2>
-<ol><li><a href="#cap-1-2">Bloco 1 — Números Reais, Módulo, Desigualdades, Indução e Funções (Cap. 1 e 2)</a></li><li><a href="#cap-3">Bloco 2 — Limite, Continuidade, <span class="math-inline">\(\varepsilon\)</span>-<span class="math-inline">\(\delta\)</span>, Confronto e 1º Limite Fundamental (Cap. 3)</a></li><li><a href="#cap-4">Bloco 3 — Limites no Infinito, Limites Infinitos, Sequências e o Número <span class="math-inline">\(e\)</span> (Cap. 4)</a></li><li><a href="#cap-5">Bloco 4 — Teoremas Globais: Anulamento (Bolzano), TVI e Weierstrass (Cap. 5)</a></li><li><a href="#cap-6">Bloco 5 — Funções Exponencial e Logarítmica (Cap. 6)</a></li><li><a href="#cap-7">Bloco 6 — Derivadas, Regra da Cadeia, Implícita, Diferencial e Taxas (Cap. 7)</a></li><li><a href="#cap-8">Bloco 7 — Funções Inversas e Trigonométricas Inversas (Cap. 8)</a></li><li><a href="#cap-9-15">Bloco 8 — Rolle, TVM, Cauchy, L'Hospital, Concavidade, Gráficos e Otimização (Cap. 9 e 15)</a></li><li><a href="#cap-10-11">Bloco 9 — Primitivas, Integral de Riemann, 1º e 2º TFC, Áreas e Trabalho (Cap. 10 e 11)</a></li><li><a href="#cap-12">Bloco 10 — Técnicas de Primitivação: Partes, Substituição Trigonométrica e Frações Parciais (Cap. 12)</a></li><li><a href="#cap-13">Bloco 11 — Volumes, Comprimento de Arco, Área de Superfície, Polares e Pappus (Cap. 13)</a></li><li><a href="#cap-14">Bloco 12 — Equações Diferenciais de 1ª Ordem Separáveis e Lineares (Cap. 14)</a></li><li><a href="#cap-16">Bloco 13 — Polinômios e Fórmula de Taylor com Restos de Peano e Lagrange (Cap. 16)</a></li><li><a href="#cap-17">Bloco 14 — Quadraturas Históricas de Arquimedes, Pascal e Fermat (Cap. 17)</a></li></ol>
-<hr/>
+<ol><li><a href="#cap-1-2">Bloco 1 — Números Reais, Módulo, Desigualdades, Indução e Funções (Cap. 1 e 2)</a></li><li><a href="#cap-3">Bloco 2 — Limite, Continuidade, $\varepsilon$-$\delta$, Confronto e 1º Limite Fundamental (Cap. 3)</a></li><li><a href="#cap-4">Bloco 3 — Limites no Infinito, Limites Infinitos, Sequências e o Número $e$ (Cap. 4)</a></li><li><a href="#cap-5">Bloco 4 — Teoremas Globais: Anulamento (Bolzano), TVI e Weierstrass (Cap. 5)</a></li><li><a href="#cap-6">Bloco 5 — Funções Exponencial e Logarítmica (Cap. 6)</a></li><li><a href="#cap-7">Bloco 6 — Derivadas, Regra da Cadeia, Implícita, Diferencial e Taxas (Cap. 7)</a></li><li><a href="#cap-8">Bloco 7 — Funções Inversas e Trigonométricas Inversas (Cap. 8)</a></li><li><a href="#cap-9-15">Bloco 8 — Rolle, TVM, Cauchy, L'Hospital, Concavidade, Gráficos e Otimização (Cap. 9 e 15)</a></li><li><a href="#cap-10-11">Bloco 9 — Primitivas, Integral de Riemann, 1º e 2º TFC, Áreas e Trabalho (Cap. 10 e 11)</a></li><li><a href="#cap-12">Bloco 10 — Técnicas de Primitivação: Partes, Substituição Trigonométrica e Frações Parciais (Cap. 12)</a></li><li><a href="#cap-13">Bloco 11 — Volumes, Comprimento de Arco, Área de Superfície, Polares e Pappus (Cap. 13)</a></li><li><a href="#cap-14">Bloco 12 — Equações Diferenciais de 1ª Ordem Separáveis e Lineares (Cap. 14)</a></li><li><a href="#cap-16">Bloco 13 — Polinômios e Fórmula de Taylor com Restos de Peano e Lagrange (Cap. 16)</a></li><li><a href="#cap-17">Bloco 14 — Quadraturas Históricas de Arquimedes, Pascal e Fermat (Cap. 17)</a></li></ol>
+<hr>
 <a id="cap-1-2"></a>
 <h2 id="bloco-1-numeros-reais-modulo-supremo-e-funcoes-capitulos-1-e-2">Bloco 1 — Números Reais, Módulo, Supremo e Funções (Capítulos 1 e 2)</h2>
-<h3 id="exercicio-b1-1-code-inline-2">Exercício B1.1 🟢 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 1.3, Ex. 3 e 5]</span></h3>
-<p>Elimine o módulo na expressão <span class="math-inline">\(f(x) = |x - 1| + |x + 2|\)</span> e resolva a inequação <span class="math-inline">\(|2x - 1| &lt; |x + 1|\)</span>.</p>
-<ul><li><strong>Dica:</strong> Para a função com dois módulos, estude o sinal nos intervalos determinados pelas raízes <span class="math-inline">\(-2\)</span> e <span class="math-inline">\(1\)</span>. Para a inequação entre módulos, como ambos os lados são <span class="math-inline">\(\ge 0\)</span>, eleve ao quadrado usando <span class="math-inline">\(|A| &lt; |B| \iff A^2 &lt; B^2 \iff (A-B)(A+B) &lt; 0\)</span>.</li></ul>
+<h3 id="exercicio-b1-1-guidorizzi-5a-ed-secao-1-3-ex-3-e-5">Exercício B1.1 <em>[Guidorizzi, 5ª ed., Seção 1.3, Ex. 3 e 5]</em></h3>
+<p>Elimine o módulo na expressão $f(x) = |x - 1| + |x + 2|$ e resolva a inequação $|2x - 1| < |x + 1|$.</p>
+<ul><li><strong>Dica:</strong> Para a função com dois módulos, estude o sinal nos intervalos determinados pelas raízes $-2$ e $1$. Para a inequação entre módulos, como ambos os lados são $\ge 0$, eleve ao quadrado usando $|A| < |B| \iff A^2 < B^2 \iff (A-B)(A+B) < 0$.</li></ul>
 <details>
 <summary><strong>Ver Resolução Completa Passo a Passo</strong></summary>
-<ol><li><strong>Eliminação do módulo em <span class="math-inline">\(f(x) = |x - 1| + |x + 2|\)</span> (Exemplo 10, Seção 1.3):</strong>   As mudanças de sinal ocorrem em <span class="math-inline">\(x = -2\)</span> e <span class="math-inline">\(x = 1\)</span>:<div class="sub-item">• Para <span class="math-inline">\(x &lt; -2\)</span>: <span class="math-inline">\(x - 1 &lt; 0\)</span> e <span class="math-inline">\(x + 2 &lt; 0 \implies f(x) = -(x - 1) - (x + 2) = -2x - 1\)</span>.</div><div class="sub-item">• Para <span class="math-inline">\(-2 \le x &lt; 1\)</span>: <span class="math-inline">\(x - 1 &lt; 0\)</span> e <span class="math-inline">\(x + 2 \ge 0 \implies f(x) = -(x - 1) + (x + 2) = 3\)</span>.</div><div class="sub-item">• Para <span class="math-inline">\(x \ge 1\)</span>: <span class="math-inline">\(x - 1 \ge 0\)</span> e <span class="math-inline">\(x + 2 \ge 0 \implies f(x) = (x - 1) + (x + 2) = 2x + 1\)</span>.</div> Logo: <div class="math-display">\[|x - 1| + |x + 2| = \begin{cases} -2x - 1, &amp; \text{se } x &lt; -2 \\ 3, &amp; \text{se } -2 \le x &lt; 1 \\ 2x + 1, &amp; \text{se } x \ge 1. \end{cases}\]</div></li><li><strong>Resolução de <span class="math-inline">\(|2x - 1| &lt; |x + 1|\)</span>:</strong>   Como <span class="math-inline">\(|u|^2 = u^2\)</span> e ambos os membros são não negativos: <div class="math-display">\[|2x - 1| &lt; |x + 1| \iff (2x - 1)^2 &lt; (x + 1)^2 \iff (2x - 1)^2 - (x + 1)^2 &lt; 0.\]</div> Pela diferença de quadrados <span class="math-inline">\(A^2 - B^2 = (A - B)(A + B)\)</span>: <div class="math-display">\[[(2x - 1) - (x + 1)][(2x - 1) + (x + 1)] &lt; 0 \iff (x - 2)(3x) &lt; 0 \iff \mathbf{0 &lt; x &lt; 2 \;\; (x \in \,]0, 2[)}. \quad \blacksquare\]</div></li></ol>
+<ol><li><strong>Eliminação do módulo em $f(x) = |x - 1| + |x + 2|$ (Exemplo 10, Seção 1.3):</strong> As mudanças de sinal ocorrem em $x = -2$ e $x = 1$:</li></ol>
+<ul><li>Para $x < -2$: $x - 1 < 0$ e $x + 2 < 0 \implies f(x) = -(x - 1) - (x + 2) = -2x - 1$.</li><li>Para $-2 \le x < 1$: $x - 1 < 0$ e $x + 2 \ge 0 \implies f(x) = -(x - 1) + (x + 2) = 3$.</li><li>Para $x \ge 1$: $x - 1 \ge 0$ e $x + 2 \ge 0 \implies f(x) = (x - 1) + (x + 2) = 2x + 1$. Logo: <div class="math-display">$$|x - 1| + |x + 2| = \begin{cases} -2x - 1, & \text{se } x < -2 \\ 3, & \text{se } -2 \le x < 1 \\ 2x + 1, & \text{se } x \ge 1. \end{cases}$$</div></li></ul>
+<ol><li><strong>Resolução de $|2x - 1| < |x + 1|$:</strong> Como $|u|^2 = u^2$ e ambos os membros são não negativos: <div class="math-display">$$|2x - 1| < |x + 1| \iff (2x - 1)^2 < (x + 1)^2 \iff (2x - 1)^2 - (x + 1)^2 < 0.$$</div> Pela diferença de quadrados $A^2 - B^2 = (A - B)(A + B)$: <div class="math-display">$$[(2x - 1) - (x + 1)][(2x - 1) + (x + 1)] < 0 \iff (x - 2)(3x) < 0 \iff \mathbf{0 < x < 2 \;\; (x \in \,]0, 2[)}. \quad \blacksquare$$</div></li></ol>
 </details>
-<hr/>
-<h3 id="exercicio-b1-2-code-inline-3">Exercício B1.2 🟡 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 1.3, Ex. 6 e 7]</span></h3>
-<p>Prove que, quaisquer que sejam <span class="math-inline">\(x, y \in \mathbb{R}\)</span>: (a) <span class="math-inline">\(|x + y| = |x| + |y| \iff xy \ge 0\)</span>; (b) <span class="math-inline">\(\big||x| - |y|\big| \le |x - y|\)</span>.</p>
-<ul><li><strong>Dica:</strong> Em (a), eleve ambos os membros não negativos ao quadrado e use <span class="math-inline">\(|x|^2 = x^2\)</span> e <span class="math-inline">\(|xy| = xy \iff xy \ge 0\)</span>. Em (b), aplique a desigualdade triangular a <span class="math-inline">\(x = (x - y) + y\)</span> e a <span class="math-inline">\(y = (y - x) + x\)</span>.</li></ul>
+<hr>
+<h3 id="exercicio-b1-2-guidorizzi-5a-ed-secao-1-3-ex-6-e-7">Exercício B1.2 <em>[Guidorizzi, 5ª ed., Seção 1.3, Ex. 6 e 7]</em></h3>
+<p>Prove que, quaisquer que sejam $x, y \in \mathbb{R}$: (a) $|x + y| = |x| + |y| \iff xy \ge 0$; (b) $\big||x| - |y|\big| \le |x - y|$.</p>
+<ul><li><strong>Dica:</strong> Em (a), eleve ambos os membros não negativos ao quadrado e use $|x|^2 = x^2$ e $|xy| = xy \iff xy \ge 0$. Em (b), aplique a desigualdade triangular a $x = (x - y) + y$ e a $y = (y - x) + x$.</li></ul>
 <details>
 <summary><strong>Ver Resolução Completa Passo a Passo</strong></summary>
-<ol><li><strong>Item (a):</strong> Como <span class="math-inline">\(|x + y| \ge 0\)</span> e <span class="math-inline">\(|x| + |y| \ge 0\)</span>: <div class="math-display">\[|x + y| = |x| + |y| \iff |x + y|^2 = (|x| + |y|)^2 \iff (x + y)^2 = |x|^2 + 2|x||y| + |y|^2.\]</div> Como <span class="math-inline">\((x + y)^2 = x^2 + 2xy + y^2\)</span>, <span class="math-inline">\(|x|^2 = x^2\)</span>, <span class="math-inline">\(|y|^2 = y^2\)</span> e <span class="math-inline">\(|x||y| = |xy|\)</span>, a igualdade equivale a: <div class="math-display">\[x^2 + 2xy + y^2 = x^2 + 2|xy| + y^2 \iff xy = |xy| \iff \mathbf{xy \ge 0}.\]</div></li><li><strong>Item (b):</strong> Pela desigualdade triangular: <div class="math-display">\[|x| = |(x - y) + y| \le |x - y| + |y| \implies |x| - |y| \le |x - y|.\]</div> Trocando os papéis de <span class="math-inline">\(x\)</span> e <span class="math-inline">\(y\)</span>: <div class="math-display">\[|y| = |(y - x) + x| \le |y - x| + |x| = |x - y| + |x| \implies |y| - |x| = -(|x| - |y|) \le |x - y|.\]</div> Logo, <span class="math-inline">\(-|x - y| \le |x| - |y| \le |x - y| \iff \mathbf{\big||x| - |y|\big| \le |x - y|}\)</span>. <span class="math-inline">\(\blacksquare\)</span></li></ol>
+<ol><li><strong>Item (a):</strong> Como $|x + y| \ge 0$ e $|x| + |y| \ge 0$: <div class="math-display">$$|x + y| = |x| + |y| \iff |x + y|^2 = (|x| + |y|)^2 \iff (x + y)^2 = |x|^2 + 2|x||y| + |y|^2.$$</div> Como $(x + y)^2 = x^2 + 2xy + y^2$, $|x|^2 = x^2$, $|y|^2 = y^2$ e $|x||y| = |xy|$, a igualdade equivale a: <div class="math-display">$$x^2 + 2xy + y^2 = x^2 + 2|xy| + y^2 \iff xy = |xy| \iff \mathbf{xy \ge 0}.$$</div></li><li><strong>Item (b):</strong> Pela desigualdade triangular: <div class="math-display">$$|x| = |(x - y) + y| \le |x - y| + |y| \implies |x| - |y| \le |x - y|.$$</div> Trocando os papéis de $x$ e $y$: <div class="math-display">$$|y| = |(y - x) + x| \le |y - x| + |x| = |x - y| + |x| \implies |y| - |x| = -(|x| - |y|) \le |x - y|.$$</div> Logo, $-|x - y| \le |x| - |y| \le |x - y| \iff \mathbf{\big||x| - |y|\big| \le |x - y|}$. $\blacksquare$</li></ol>
 </details>
-<hr/>
-<h3 id="exercicio-b1-3-code-inline-4">Exercício B1.3 🔴 <span class="badge-ref badge-apostol">📙 [Mudança de Referência — Apostol, Cálculo I, Parte I.3, Seção I.3.12, Ex. 5 e Guidorizzi, Apêndice 1, Seção A1.2]</span></h3>
-<p>Sejam <span class="math-inline">\(A\)</span> e <span class="math-inline">\(B\)</span> dois subconjuntos não vazios de <span class="math-inline">\(\mathbb{R}\)</span>, limitados superiormente, e seja <span class="math-inline">\(C = \{x + y \mid x \in A, y \in B\}\)</span>. Prove que <span class="math-inline">\(C\)</span> é limitado superiormente e que: <div class="math-display">\[\sup C = \sup A + \sup B.\]</div></p>
-<ul><li><strong>Dica:</strong> Mostre primeiro que <span class="math-inline">\(\sup A + \sup B\)</span> é cota superior de <span class="math-inline">\(C\)</span> (logo <span class="math-inline">\(\sup C \le \sup A + \sup B\)</span>). Depois, dado <span class="math-inline">\(\varepsilon &gt; 0\)</span> arbitrário, use a caracterização do supremo para escolher <span class="math-inline">\(x \in A\)</span> com <span class="math-inline">\(x &gt; \sup A - \frac{\varepsilon}{2}\)</span> e <span class="math-inline">\(y \in B\)</span> com <span class="math-inline">\(y &gt; \sup B - \frac{\varepsilon}{2}\)</span>.</li></ul>
+<hr>
+<h3 id="exercicio-b1-3-complemento-apostol-calculo-i-parte-i-3-secao-i-3-12-ex-5-e-guidorizzi-apendice-1-secao-a1-2">Exercício B1.3 <em>[Complemento — Apostol, Cálculo I, Parte I.3, Seção I.3.12, Ex. 5 e Guidorizzi, Apêndice 1, Seção A1.2]</em></h3>
+<p>Sejam $A$ e $B$ dois subconjuntos não vazios de $\mathbb{R}$, limitados superiormente, e seja $C = \{x + y \mid x \in A, y \in B\}$. Prove que $C$ é limitado superiormente e que: <div class="math-display">$$\sup C = \sup A + \sup B.$$</div></p>
+<ul><li><strong>Dica:</strong> Mostre primeiro que $\sup A + \sup B$ é cota superior de $C$ (logo $\sup C \le \sup A + \sup B$). Depois, dado $\varepsilon > 0$ arbitrário, use a caracterização do supremo para escolher $x \in A$ com $x > \sup A - \frac{\varepsilon}{2}$ e $y \in B$ com $y > \sup B - \frac{\varepsilon}{2}$.</li></ul>
 <details>
 <summary><strong>Ver Resolução Completa Passo a Passo</strong></summary>
-<ol><li>Sejam <span class="math-inline">\(a = \sup A\)</span> e <span class="math-inline">\(b = \sup B\)</span>. Para todo <span class="math-inline">\(x \in A\)</span> e todo <span class="math-inline">\(y \in B\)</span>, temos <span class="math-inline">\(x \le a\)</span> e <span class="math-inline">\(y \le b\)</span>, logo <span class="math-inline">\(x + y \le a + b\)</span>. Assim, <span class="math-inline">\(a + b\)</span> é uma cota superior de <span class="math-inline">\(C\)</span>, o que garante que <span class="math-inline">\(C\)</span> admite supremo <span class="math-inline">\(c = \sup C\)</span> e que <strong><span class="math-inline">\(c \le a + b\)</span></strong>.</li><li>Para provar que <span class="math-inline">\(c = a + b\)</span>, suponhamos, ou mostremos diretamente: dado qualquer <span class="math-inline">\(\varepsilon &gt; 0\)</span>, como <span class="math-inline">\(a = \sup A\)</span>, <span class="math-inline">\(a - \frac{\varepsilon}{2}\)</span> não é cota superior de <span class="math-inline">\(A\)</span>, logo existe <span class="math-inline">\(x_0 \in A\)</span> tal que <span class="math-inline">\(a - \frac{\varepsilon}{2} &lt; x_0\)</span>. Analogamente, existe <span class="math-inline">\(y_0 \in B\)</span> tal que <span class="math-inline">\(b - \frac{\varepsilon}{2} &lt; y_0\)</span>.</li><li>Somando as duas desigualdades, obtemos um elemento <span class="math-inline">\(x_0 + y_0 \in C\)</span> tal que: <div class="math-display">\[(a + b) - \varepsilon &lt; x_0 + y_0 \le \sup C = c.\]</div> Como <span class="math-inline">\((a + b) - \varepsilon &lt; c\)</span> vale para todo <span class="math-inline">\(\varepsilon &gt; 0\)</span>, concluímos que <span class="math-inline">\(a + b \le c\)</span>. Combinando com <span class="math-inline">\(c \le a + b\)</span>, segue <strong><span class="math-inline">\(\sup C = \sup A + \sup B\)</span></strong>. <span class="math-inline">\(\blacksquare\)</span></li></ol>
+<ol><li>Sejam $a = \sup A$ e $b = \sup B$. Para todo $x \in A$ e todo $y \in B$, temos $x \le a$ e $y \le b$, logo $x + y \le a + b$. Assim, $a + b$ é uma cota superior de $C$, o que garante que $C$ admite supremo $c = \sup C$ e que <strong>$c \le a + b$</strong>.</li><li>Para provar que $c = a + b$, suponhamos, ou mostremos diretamente: dado qualquer $\varepsilon > 0$, como $a = \sup A$, $a - \frac{\varepsilon}{2}$ não é cota superior de $A$, logo existe $x_0 \in A$ tal que $a - \frac{\varepsilon}{2} < x_0$. Analogamente, existe $y_0 \in B$ tal que $b - \frac{\varepsilon}{2} < y_0$.</li><li>Somando as duas desigualdades, obtemos um elemento $x_0 + y_0 \in C$ tal que: <div class="math-display">$$(a + b) - \varepsilon < x_0 + y_0 \le \sup C = c.$$</div> Como $(a + b) - \varepsilon < c$ vale para todo $\varepsilon > 0$, concluímos que $a + b \le c$. Combinando com $c \le a + b$, segue <strong>$\sup C = \sup A + \sup B$</strong>. $\blacksquare$</li></ol>
 </details>
-<hr/>
+<hr>
 <a id="cap-3"></a>
 <h2 id="bloco-2-limite-e-continuidade-capitulo-3">Bloco 2 — Limite e Continuidade (Capítulo 3)</h2>
-<h3 id="exercicio-b2-1-code-inline-5">Exercício B2.1 🟡 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 3.2, Ex. 21 e Seção 3.3]</span></h3>
-<p>(a) Prove, diretamente pela definição <span class="math-inline">\(\varepsilon\)</span>-<span class="math-inline">\(\delta\)</span>, que <span class="math-inline">\(\lim_{x \to 2} x^2 = 4\)</span>. (b) (<strong>Densidade de <span class="math-inline">\(\mathbb{Q}\)</span> e Funções Contínuas — Ex. 21 da Seção 3.2:</strong>) Sejam <span class="math-inline">\(f, g: \mathbb{R} \to \mathbb{R}\)</span> duas funções contínuas em <span class="math-inline">\(\mathbb{R}\)</span> tais que <span class="math-inline">\(f(r) = g(r)\)</span> para todo número racional <span class="math-inline">\(r \in \mathbb{Q}\)</span>. Prove que <span class="math-inline">\(f(x) = g(x)\)</span> para todo real <span class="math-inline">\(x \in \mathbb{R}\)</span>.</p>
-<ul><li><strong>Dica:</strong> Em (a), escreva <span class="math-inline">\(|x^2 - 4| = |x - 2||x + 2|\)</span> e restrinja inicialmente <span class="math-inline">\(|x - 2| &lt; 1\)</span> para limitar <span class="math-inline">\(|x + 2| &lt; 5\)</span>, tomando <span class="math-inline">\(\delta = \min\left\{1, \frac{\varepsilon}{5}\right\}\)</span>. Em (b), considere <span class="math-inline">\(h(x) = f(x) - g(x)\)</span> e use o Teorema da Conservação do Sinal caso existisse <span class="math-inline">\(p \in \mathbb{R}\)</span> com <span class="math-inline">\(h(p) \neq 0\)</span>.</li></ul>
+<h3 id="exercicio-b2-1-guidorizzi-5a-ed-secao-3-2-ex-21-e-secao-3-3">Exercício B2.1 <em>[Guidorizzi, 5ª ed., Seção 3.2, Ex. 21 e Seção 3.3]</em></h3>
+<p>(a) Prove, diretamente pela definição $\varepsilon$-$\delta$, que $\lim_{x \to 2} x^2 = 4$. (b) (<strong>Densidade de $\mathbb{Q}$ e Funções Contínuas — Ex. 21 da Seção 3.2:</strong>) Sejam $f, g: \mathbb{R} \to \mathbb{R}$ duas funções contínuas em $\mathbb{R}$ tais que $f(r) = g(r)$ para todo número racional $r \in \mathbb{Q}$. Prove que $f(x) = g(x)$ para todo real $x \in \mathbb{R}$.</p>
+<ul><li><strong>Dica:</strong> Em (a), escreva $|x^2 - 4| = |x - 2||x + 2|$ e restrinja inicialmente $|x - 2| < 1$ para limitar $|x + 2| < 5$, tomando $\delta = \min\left\{1, \frac{\varepsilon}{5}\right\}$. Em (b), considere $h(x) = f(x) - g(x)$ e use o Teorema da Conservação do Sinal caso existisse $p \in \mathbb{R}$ com $h(p) \neq 0$.</li></ul>
 <details>
 <summary><strong>Ver Resolução Completa Passo a Passo</strong></summary>
-<ol><li><strong>Item (a):</strong> Dado <span class="math-inline">\(\varepsilon &gt; 0\)</span>, queremos achar <span class="math-inline">\(\delta &gt; 0\)</span> tal que <span class="math-inline">\(0 &lt; |x - 2| &lt; \delta \implies |x^2 - 4| = |x - 2||x + 2| &lt; \varepsilon\)</span>.   Se exigirmos primeiramente <span class="math-inline">\(|x - 2| &lt; 1\)</span>, teremos <span class="math-inline">\(1 &lt; x &lt; 3 \implies 3 &lt; x + 2 &lt; 5 \implies |x + 2| &lt; 5\)</span>. Assim, para <span class="math-inline">\(|x - 2| &lt; 1\)</span>, vale <span class="math-inline">\(|x - 2||x + 2| &lt; 5|x - 2|\)</span>. Tomando então <strong><span class="math-inline">\(\delta = \min\left\{1, \frac{\varepsilon}{5}\right\} &gt; 0\)</span></strong>, sempre que <span class="math-inline">\(0 &lt; |x - 2| &lt; \delta\)</span> temos simultaneamente <span class="math-inline">\(|x - 2| &lt; 1\)</span> (donde <span class="math-inline">\(|x+2| &lt; 5\)</span>) e <span class="math-inline">\(|x - 2| &lt; \frac{\varepsilon}{5}\)</span>, logo: <div class="math-display">\[|x^2 - 4| = |x - 2||x + 2| &lt; 5|x - 2| &lt; 5\left(\frac{\varepsilon}{5}\right) = \varepsilon. \quad \blacksquare\]</div></li><li><strong>Item (b):</strong> Seja <span class="math-inline">\(h(x) = f(x) - g(x)\)</span>. Como <span class="math-inline">\(f\)</span> e <span class="math-inline">\(g\)</span> são contínuas em <span class="math-inline">\(\mathbb{R}\)</span>, <span class="math-inline">\(h\)</span> é contínua em <span class="math-inline">\(\mathbb{R}\)</span> e <span class="math-inline">\(h(r) = 0\)</span> para todo <span class="math-inline">\(r \in \mathbb{Q}\)</span>. Suponha, por absurdo, que exista <span class="math-inline">\(p \in \mathbb{R}\)</span> tal que <span class="math-inline">\(h(p) \neq 0\)</span>. Pela continuidade de <span class="math-inline">\(h\)</span> em <span class="math-inline">\(p\)</span>, <span class="math-inline">\(\lim_{x \to p} h(x) = h(p) \neq 0\)</span>. Pelo <strong>Teorema da Conservação do Sinal</strong>, existe <span class="math-inline">\(\delta &gt; 0\)</span> tal que para todo <span class="math-inline">\(x \in \,]p - \delta, p + \delta[\)</span>, <span class="math-inline">\(h(x)\)</span> tem o mesmo sinal de <span class="math-inline">\(h(p)\)</span> (em particular, <span class="math-inline">\(h(x) \neq 0\)</span> em todo o intervalo <span class="math-inline">\(]p-\delta, p+\delta[\)</span>). Mas entre dois reais quaisquer <span class="math-inline">\(p - \delta &lt; p + \delta\)</span> sempre existe pelo menos um número racional <span class="math-inline">\(r \in \mathbb{Q}\)</span>, para o qual <span class="math-inline">\(h(r) = 0\)</span> — contradição! Logo, <span class="math-inline">\(h(p) = 0 \iff f(p) = g(p)\)</span> para todo <span class="math-inline">\(p \in \mathbb{R}\)</span>. <span class="math-inline">\(\blacksquare\)</span></li></ol>
+<ol><li><strong>Item (a):</strong> Dado $\varepsilon > 0$, queremos achar $\delta > 0$ tal que $0 < |x - 2| < \delta \implies |x^2 - 4| = |x - 2||x + 2| < \varepsilon$. Se exigirmos primeiramente $|x - 2| < 1$, teremos $1 < x < 3 \implies 3 < x + 2 < 5 \implies |x + 2| < 5$. Assim, para $|x - 2| < 1$, vale $|x - 2||x + 2| < 5|x - 2|$. Tomando então <strong>$\delta = \min\left\{1, \frac{\varepsilon}{5}\right\} > 0$</strong>, sempre que $0 < |x - 2| < \delta$ temos simultaneamente $|x - 2| < 1$ (donde $|x+2| < 5$) e $|x - 2| < \frac{\varepsilon}{5}$, logo: <div class="math-display">$$|x^2 - 4| = |x - 2||x + 2| < 5|x - 2| < 5\left(\frac{\varepsilon}{5}\right) = \varepsilon. \quad \blacksquare$$</div></li><li><strong>Item (b):</strong> Seja $h(x) = f(x) - g(x)$. Como $f$ e $g$ são contínuas em $\mathbb{R}$, $h$ é contínua em $\mathbb{R}$ e $h(r) = 0$ para todo $r \in \mathbb{Q}$. Suponha, por absurdo, que exista $p \in \mathbb{R}$ tal que $h(p) \neq 0$. Pela continuidade de $h$ em $p$, $\lim_{x \to p} h(x) = h(p) \neq 0$. Pelo <strong>Teorema da Conservação do Sinal</strong>, existe $\delta > 0$ tal que para todo $x \in \,]p - \delta, p + \delta[$, $h(x)$ tem o mesmo sinal de $h(p)$ (em particular, $h(x) \neq 0$ em todo o intervalo $]p-\delta, p+\delta[$). Mas entre dois reais quaisquer $p - \delta < p + \delta$ sempre existe pelo menos um número racional $r \in \mathbb{Q}$, para o qual $h(r) = 0$ — contradição! Logo, $h(p) = 0 \iff f(p) = g(p)$ para todo $p \in \mathbb{R}$. $\blacksquare$</li></ol>
 </details>
-<hr/>
-<h3 id="exercicio-b2-2-code-inline-6">Exercício B2.2 🟡 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 3.3 e Seção 3.8]</span></h3>
-<p>Calcule os seguintes limites sem usar a Regra de L'Hospital (usando fatoração, conjugado de raízes e o 1º Limite Fundamental): (a) <span class="math-inline">\(\displaystyle \lim_{x \to 1} \frac{\sqrt[3]{x} - 1}{\sqrt{x} - 1}\)</span>; <span class="math-inline">\(\qquad\)</span> (b) <span class="math-inline">\(\displaystyle \lim_{x \to 0} \frac{\cos(2x) - \cos(3x)}{x^2}\)</span>; <span class="math-inline">\(\qquad\)</span> (c) <span class="math-inline">\(\displaystyle \lim_{x \to p} \frac{\operatorname{sen} x - \operatorname{sen} p}{x - p}\)</span>.</p>
-<ul><li><strong>Dica:</strong> Em (a), faça a mudança de variável <span class="math-inline">\(x = u^6\)</span> (<span class="math-inline">\(u \to 1\)</span>). Em (b), use prostaférese <span class="math-inline">\(\cos A - \cos B = -2\operatorname{sen}\left(\frac{A+B}{2}\right)\operatorname{sen}\left(\frac{A-B}{2}\right)\)</span>.</li></ul>
+<hr>
+<h3 id="exercicio-b2-2-guidorizzi-5a-ed-secao-3-3-e-secao-3-8">Exercício B2.2 <em>[Guidorizzi, 5ª ed., Seção 3.3 e Seção 3.8]</em></h3>
+<p>Calcule os seguintes limites sem usar a Regra de L'Hospital (usando fatoração, conjugado de raízes e o 1º Limite Fundamental): (a) $\displaystyle \lim_{x \to 1} \frac{\sqrt[3]{x} - 1}{\sqrt{x} - 1}$; $\qquad$ (b) $\displaystyle \lim_{x \to 0} \frac{\cos(2x) - \cos(3x)}{x^2}$; $\qquad$ (c) $\displaystyle \lim_{x \to p} \frac{\operatorname{sen} x - \operatorname{sen} p}{x - p}$.</p>
+<ul><li><strong>Dica:</strong> Em (a), faça a mudança de variável $x = u^6$ ($u \to 1$). Em (b), use prostaférese $\cos A - \cos B = -2\operatorname{sen}\left(\frac{A+B}{2}\right)\operatorname{sen}\left(\frac{A-B}{2}\right)$.</li></ul>
 <details>
 <summary><strong>Ver Resolução Completa Passo a Passo</strong></summary>
-<ol><li><strong>Item (a):</strong> Fazendo <span class="math-inline">\(x = u^6\)</span> (<span class="math-inline">\(u = \sqrt[6]{x}\)</span>), quando <span class="math-inline">\(x \to 1\)</span> temos <span class="math-inline">\(u \to 1\)</span> (<span class="math-inline">\(u \neq 1\)</span>). Então <span class="math-inline">\(\sqrt[3]{x} = u^2\)</span> e <span class="math-inline">\(\sqrt{x} = u^3\)</span>: <div class="math-display">\[\lim_{x \to 1} \frac{\sqrt[3]{x} - 1}{\sqrt{x} - 1} = \lim_{u \to 1} \frac{u^2 - 1}{u^3 - 1} = \lim_{u \to 1} \frac{(u - 1)(u + 1)}{(u - 1)(u^2 + u + 1)} = \frac{1 + 1}{1 + 1 + 1} = \mathbf{\frac{2}{3}}.\]</div></li><li><strong>Item (b):</strong> Pela fórmula de transformação em produto <span class="math-inline">\(\cos(2x) - \cos(3x) = -2\operatorname{sen}\left(\frac{5x}{2}\right)\operatorname{sen}\left(-\frac{x}{2}\right) = 2\operatorname{sen}\left(\frac{5x}{2}\right)\operatorname{sen}\left(\frac{x}{2}\right)\)</span>: <div class="math-display">\[\lim_{x \to 0} \frac{\cos(2x) - \cos(3x)}{x^2} = \lim_{x \to 0} 2 \cdot \frac{\operatorname{sen}(5x/2)}{(5x/2)} \cdot \frac{5}{2} \cdot \frac{\operatorname{sen}(x/2)}{(x/2)} \cdot \frac{1}{2} = 2 \cdot 1 \cdot \frac{5}{2} \cdot 1 \cdot \frac{1}{2} = \mathbf{\frac{5}{2}}.\]</div></li><li><strong>Item (c):</strong> Como <span class="math-inline">\(\operatorname{sen} x - \operatorname{sen} p = 2\operatorname{sen}\left(\frac{x - p}{2}\right)\cos\left(\frac{x + p}{2}\right)\)</span>: <div class="math-display">\[\lim_{x \to p} \frac{\operatorname{sen} x - \operatorname{sen} p}{x - p} = \lim_{x \to p} \frac{\operatorname{sen}\left(\frac{x - p}{2}\right)}{\frac{x - p}{2}} \cdot \cos\left(\frac{x + p}{2}\right) = 1 \cdot \cos p = \mathbf{\cos p}. \quad \blacksquare\]</div></li></ol>
+<ol><li><strong>Item (a):</strong> Fazendo $x = u^6$ ($u = \sqrt[6]{x}$), quando $x \to 1$ temos $u \to 1$ ($u \neq 1$). Então $\sqrt[3]{x} = u^2$ e $\sqrt{x} = u^3$: <div class="math-display">$$\lim_{x \to 1} \frac{\sqrt[3]{x} - 1}{\sqrt{x} - 1} = \lim_{u \to 1} \frac{u^2 - 1}{u^3 - 1} = \lim_{u \to 1} \frac{(u - 1)(u + 1)}{(u - 1)(u^2 + u + 1)} = \frac{1 + 1}{1 + 1 + 1} = \mathbf{\frac{2}{3}}.$$</div></li><li><strong>Item (b):</strong> Pela fórmula de transformação em produto $\cos(2x) - \cos(3x) = -2\operatorname{sen}\left(\frac{5x}{2}\right)\operatorname{sen}\left(-\frac{x}{2}\right) = 2\operatorname{sen}\left(\frac{5x}{2}\right)\operatorname{sen}\left(\frac{x}{2}\right)$: <div class="math-display">$$\lim_{x \to 0} \frac{\cos(2x) - \cos(3x)}{x^2} = \lim_{x \to 0} 2 \cdot \frac{\operatorname{sen}(5x/2)}{(5x/2)} \cdot \frac{5}{2} \cdot \frac{\operatorname{sen}(x/2)}{(x/2)} \cdot \frac{1}{2} = 2 \cdot 1 \cdot \frac{5}{2} \cdot 1 \cdot \frac{1}{2} = \mathbf{\frac{5}{2}}.$$</div></li><li><strong>Item (c):</strong> Como $\operatorname{sen} x - \operatorname{sen} p = 2\operatorname{sen}\left(\frac{x - p}{2}\right)\cos\left(\frac{x + p}{2}\right)$: <div class="math-display">$$\lim_{x \to p} \frac{\operatorname{sen} x - \operatorname{sen} p}{x - p} = \lim_{x \to p} \frac{\operatorname{sen}\left(\frac{x - p}{2}\right)}{\frac{x - p}{2}} \cdot \cos\left(\frac{x + p}{2}\right) = 1 \cdot \cos p = \mathbf{\cos p}. \quad \blacksquare$$</div></li></ol>
 </details>
-<hr/>
+<hr>
 <a id="cap-4"></a>
-<h2 id="bloco-3-extensoes-do-limite-sequencias-e-o-numero-math-inline-222-capitulo-4">Bloco 3 — Extensões do Limite, Sequências e o Número <span class="math-inline">\(e\)</span> (Capítulo 4)</h2>
-<h3 id="exercicio-b3-1-code-inline-7">Exercício B3.1 🟡 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 4.1 e Seção 4.3]</span></h3>
-<p>Calcule os limites no infinito: (a) <span class="math-inline">\(\displaystyle \lim_{x \to -\infty} \frac{\sqrt{9x^2 + x + 1}}{2x - 5}\)</span>; <span class="math-inline">\(\qquad\)</span> (b) <span class="math-inline">\(\displaystyle \lim_{x \to +\infty} \left(\sqrt{x^2 + 3x} - x\right)\)</span>; <span class="math-inline">\(\qquad\)</span> (c) <span class="math-inline">\(\displaystyle \lim_{n \to \infty} \sqrt[n]{3^n + 5^n}\)</span>.</p>
-<ul><li><strong>Dica:</strong> Em (a), lembre-se de que para <span class="math-inline">\(x &lt; 0\)</span>, <span class="math-inline">\(\sqrt{x^2} = |x| = -x\)</span>! Em (b), multiplique pelo conjugado <span class="math-inline">\(\sqrt{x^2 + 3x} + x\)</span>. Em (c), coloque <span class="math-inline">\(5^n\)</span> em evidência dentro da raiz <span class="math-inline">\(n\)</span>-ésima e use o Teorema do Confronto (<span class="math-inline">\(5 \le \sqrt[n]{3^n + 5^n} \le 5\sqrt[n]{2}\)</span>).</li></ul>
+<h2 id="bloco-3-extensoes-do-limite-sequencias-e-o-numero-math-token-222-capitulo-4">Bloco 3 — Extensões do Limite, Sequências e o Número $e$ (Capítulo 4)</h2>
+<h3 id="exercicio-b3-1-guidorizzi-5a-ed-secao-4-1-e-secao-4-3">Exercício B3.1 <em>[Guidorizzi, 5ª ed., Seção 4.1 e Seção 4.3]</em></h3>
+<p>Calcule os limites no infinito: (a) $\displaystyle \lim_{x \to -\infty} \frac{\sqrt{9x^2 + x + 1}}{2x - 5}$; $\qquad$ (b) $\displaystyle \lim_{x \to +\infty} \left(\sqrt{x^2 + 3x} - x\right)$; $\qquad$ (c) $\displaystyle \lim_{n \to \infty} \sqrt[n]{3^n + 5^n}$.</p>
+<ul><li><strong>Dica:</strong> Em (a), lembre-se de que para $x < 0$, $\sqrt{x^2} = |x| = -x$! Em (b), multiplique pelo conjugado $\sqrt{x^2 + 3x} + x$. Em (c), coloque $5^n$ em evidência dentro da raiz $n$-ésima e use o Teorema do Confronto ($5 \le \sqrt[n]{3^n + 5^n} \le 5\sqrt[n]{2}$).</li></ul>
 <details>
 <summary><strong>Ver Resolução Completa Passo a Passo</strong></summary>
-<ol><li><strong>Item (a):</strong> Para <span class="math-inline">\(x &lt; 0\)</span>, temos <span class="math-inline">\(\sqrt{x^2} = |x| = -x\)</span>. Colocando <span class="math-inline">\(x^2\)</span> em evidência dentro do radical: <div class="math-display">\[\lim_{x \to -\infty} \frac{\sqrt{9x^2 + x + 1}}{2x - 5} = \lim_{x \to -\infty} \frac{|x|\sqrt{9 + \frac{1}{x} + \frac{1}{x^2}}}{x\left(2 - \frac{5}{x}\right)} = \lim_{x \to -\infty} \frac{-x\sqrt{9 + \frac{1}{x} + \frac{1}{x^2}}}{x\left(2 - \frac{5}{x}\right)} = \frac{-\sqrt{9}}{2} = \mathbf{-\frac{3}{2}}.\]</div></li><li><strong>Item (b):</strong> Multiplicando e dividindo pelo conjugado <span class="math-inline">\(\sqrt{x^2 + 3x} + x\)</span> (com <span class="math-inline">\(x &gt; 0\)</span>): <div class="math-display">\[\lim_{x \to +\infty} \left(\sqrt{x^2 + 3x} - x\right) = \lim_{x \to +\infty} \frac{(x^2 + 3x) - x^2}{\sqrt{x^2 + 3x} + x} = \lim_{x \to +\infty} \frac{3x}{x\left(\sqrt{1 + \frac{3}{x}} + 1\right)} = \frac{3}{1 + 1} = \mathbf{\frac{3}{2}}.\]</div></li><li><strong>Item (c):</strong> Como <span class="math-inline">\(5^n &lt; 3^n + 5^n &lt; 5^n + 5^n = 2 \cdot 5^n\)</span>, extraindo a raiz <span class="math-inline">\(n\)</span>-ésima: <div class="math-display">\[5 &lt; \sqrt[n]{3^n + 5^n} &lt; 5 \cdot \sqrt[n]{2}.\]</div> Como <span class="math-inline">\(\lim_{n \to \infty} \sqrt[n]{2} = 1\)</span>, pelo Teorema do Confronto obtemos <span class="math-inline">\(\lim_{n \to \infty} \sqrt[n]{3^n + 5^n} = \mathbf{5}\)</span>. <span class="math-inline">\(\blacksquare\)</span></li></ol>
+<ol><li><strong>Item (a):</strong> Para $x < 0$, temos $\sqrt{x^2} = |x| = -x$. Colocando $x^2$ em evidência dentro do radical: <div class="math-display">$$\lim_{x \to -\infty} \frac{\sqrt{9x^2 + x + 1}}{2x - 5} = \lim_{x \to -\infty} \frac{|x|\sqrt{9 + \frac{1}{x} + \frac{1}{x^2}}}{x\left(2 - \frac{5}{x}\right)} = \lim_{x \to -\infty} \frac{-x\sqrt{9 + \frac{1}{x} + \frac{1}{x^2}}}{x\left(2 - \frac{5}{x}\right)} = \frac{-\sqrt{9}}{2} = \mathbf{-\frac{3}{2}}.$$</div></li><li><strong>Item (b):</strong> Multiplicando e dividindo pelo conjugado $\sqrt{x^2 + 3x} + x$ (com $x > 0$): <div class="math-display">$$\lim_{x \to +\infty} \left(\sqrt{x^2 + 3x} - x\right) = \lim_{x \to +\infty} \frac{(x^2 + 3x) - x^2}{\sqrt{x^2 + 3x} + x} = \lim_{x \to +\infty} \frac{3x}{x\left(\sqrt{1 + \frac{3}{x}} + 1\right)} = \frac{3}{1 + 1} = \mathbf{\frac{3}{2}}.$$</div></li><li><strong>Item (c):</strong> Como $5^n < 3^n + 5^n < 5^n + 5^n = 2 \cdot 5^n$, extraindo a raiz $n$-ésima: <div class="math-display">$$5 < \sqrt[n]{3^n + 5^n} < 5 \cdot \sqrt[n]{2}.$$</div> Como $\lim_{n \to \infty} \sqrt[n]{2} = 1$, pelo Teorema do Confronto obtemos $\lim_{n \to \infty} \sqrt[n]{3^n + 5^n} = \mathbf{5}$. $\blacksquare$</li></ol>
 </details>
-<hr/>
+<hr>
 <a id="cap-5"></a>
-<h2 id="bloco-4-teoremas-globais-em-math-inline-244-anulamento-tvi-e-weierstrass-capitulo-5">Bloco 4 — Teoremas Globais em <span class="math-inline">\([a, b]\)</span>: Anulamento, TVI e Weierstrass (Capítulo 5)</h2>
-<h3 id="exercicio-b4-1-code-inline-8">Exercício B4.1 🟡 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Cap. 5, Ex. 2, 7 e 11]</span></h3>
-<p>(a) (<strong>Teorema do Ponto Fixo em <span class="math-inline">\([0, 1]\)</span> — Ex. 11, Cap. 5:</strong>) Seja <span class="math-inline">\(f: [0, 1] \to \mathbb{R}\)</span> uma função contínua tal que, para todo <span class="math-inline">\(x \in [0, 1]\)</span>, tem-se <span class="math-inline">\(0 \le f(x) \le 1\)</span>. Prove que existe pelo menos um <span class="math-inline">\(c \in [0, 1]\)</span> tal que <strong><span class="math-inline">\(f(c) = c\)</span></strong>. (b) (<strong>Ex. 2, Cap. 5:</strong>) Prove que a equação <span class="math-inline">\(x^3 - 4x + 2 = 0\)</span> admite exatamente <strong>três raízes reais distintas</strong> e localize cada uma num intervalo de amplitude <span class="math-inline">\(1\)</span>.</p>
-<ul><li><strong>Dica:</strong> Em (a), aplique o Teorema do Anulamento à função auxiliar <span class="math-inline">\(g(x) = f(x) - x\)</span> em <span class="math-inline">\([0, 1]\)</span>. Em (b), calcule <span class="math-inline">\(f(-3), f(-2), f(0), f(1), f(2)\)</span> e observe as mudanças de sinal!</li></ul>
+<h2 id="bloco-4-teoremas-globais-em-math-token-244-anulamento-tvi-e-weierstrass-capitulo-5">Bloco 4 — Teoremas Globais em $[a, b]$: Anulamento, TVI e Weierstrass (Capítulo 5)</h2>
+<h3 id="exercicio-b4-1-guidorizzi-5a-ed-cap-5-ex-2-7-e-11">Exercício B4.1 <em>[Guidorizzi, 5ª ed., Cap. 5, Ex. 2, 7 e 11]</em></h3>
+<p>(a) (<strong>Teorema do Ponto Fixo em $[0, 1]$ — Ex. 11, Cap. 5:</strong>) Seja $f: [0, 1] \to \mathbb{R}$ uma função contínua tal que, para todo $x \in [0, 1]$, tem-se $0 \le f(x) \le 1$. Prove que existe pelo menos um $c \in [0, 1]$ tal que <strong>$f(c) = c$</strong>. (b) (<strong>Ex. 2, Cap. 5:</strong>) Prove que a equação $x^3 - 4x + 2 = 0$ admite exatamente <strong>três raízes reais distintas</strong> e localize cada uma num intervalo de amplitude $1$.</p>
+<ul><li><strong>Dica:</strong> Em (a), aplique o Teorema do Anulamento à função auxiliar $g(x) = f(x) - x$ em $[0, 1]$. Em (b), calcule $f(-3), f(-2), f(0), f(1), f(2)$ e observe as mudanças de sinal!</li></ul>
 <details>
 <summary><strong>Ver Resolução Completa Passo a Passo</strong></summary>
-<ol><li><strong>Item (a):</strong> Se <span class="math-inline">\(f(0) = 0\)</span> ou <span class="math-inline">\(f(1) = 1\)</span>, basta tomar <span class="math-inline">\(c = 0\)</span> ou <span class="math-inline">\(c = 1\)</span>. Suponhamos então que <span class="math-inline">\(f(0) \neq 0\)</span> e <span class="math-inline">\(f(1) \neq 1\)</span>. Como <span class="math-inline">\(0 \le f(x) \le 1\)</span> para todo <span class="math-inline">\(x \in [0, 1]\)</span>, temos <span class="math-inline">\(f(0) &gt; 0\)</span> e <span class="math-inline">\(f(1) &lt; 1\)</span>.   Considere a função auxiliar <span class="math-inline">\(g(x) = f(x) - x\)</span>, que é contínua em <span class="math-inline">\([0, 1]\)</span>. Temos: <div class="math-display">\[g(0) = f(0) - 0 &gt; 0 \qquad \text{e} \qquad g(1) = f(1) - 1 &lt; 0.\]</div> Pelo <strong>Teorema do Anulamento (Bolzano)</strong>, existe <span class="math-inline">\(c \in \,]0, 1[\)</span> tal que <span class="math-inline">\(g(c) = 0 \iff \mathbf{f(c) = c}\)</span>. <span class="math-inline">\(\blacksquare\)</span></li><li><strong>Item (b):</strong> Seja <span class="math-inline">\(f(x) = x^3 - 4x + 2\)</span>, contínua em <span class="math-inline">\(\mathbb{R}\)</span>. Avaliando nos inteiros:<div class="sub-item">• <span class="math-inline">\(f(-3) = -27 + 12 + 2 = -13 &lt; 0\)</span>;</div><div class="sub-item">• <span class="math-inline">\(f(-2) = -8 + 8 + 2 = 2 &gt; 0\)</span>;</div><div class="sub-item">• <span class="math-inline">\(f(0) = 2 &gt; 0\)</span>;</div><div class="sub-item">• <span class="math-inline">\(f(1) = 1 - 4 + 2 = -1 &lt; 0\)</span>;</div><div class="sub-item">• <span class="math-inline">\(f(2) = 8 - 8 + 2 = 2 &gt; 0\)</span>.</div> Pelo Teorema do Anulamento, <span class="math-inline">\(f\)</span> possui pelo menos uma raiz real <span class="math-inline">\(r_1 \in \,]-3, -2[\)</span>, uma raiz <span class="math-inline">\(r_2 \in \,]0, 1[\)</span> e uma raiz <span class="math-inline">\(r_3 \in \,]1, 2[\)</span>. Como um polinômio de grau <span class="math-inline">\(3\)</span> tem no máximo <span class="math-inline">\(3\)</span> raízes reais, essas são as três únicas raízes reais da equação! <span class="math-inline">\(\blacksquare\)</span></li></ol>
+<ol><li><strong>Item (a):</strong> Se $f(0) = 0$ ou $f(1) = 1$, basta tomar $c = 0$ ou $c = 1$. Suponhamos então que $f(0) \neq 0$ e $f(1) \neq 1$. Como $0 \le f(x) \le 1$ para todo $x \in [0, 1]$, temos $f(0) > 0$ e $f(1) < 1$. Considere a função auxiliar $g(x) = f(x) - x$, que é contínua em $[0, 1]$. Temos: <div class="math-display">$$g(0) = f(0) - 0 > 0 \qquad \text{e} \qquad g(1) = f(1) - 1 < 0.$$</div> Pelo <strong>Teorema do Anulamento (Bolzano)</strong>, existe $c \in \,]0, 1[$ tal que $g(c) = 0 \iff \mathbf{f(c) = c}$. $\blacksquare$</li><li><strong>Item (b):</strong> Seja $f(x) = x^3 - 4x + 2$, contínua em $\mathbb{R}$. Avaliando nos inteiros:</li></ol>
+<ul><li>$f(-3) = -27 + 12 + 2 = -13 < 0$;</li><li>$f(-2) = -8 + 8 + 2 = 2 > 0$;</li><li>$f(0) = 2 > 0$;</li><li>$f(1) = 1 - 4 + 2 = -1 < 0$;</li><li>$f(2) = 8 - 8 + 2 = 2 > 0$. Pelo Teorema do Anulamento, $f$ possui pelo menos uma raiz real $r_1 \in \,]-3, -2[$, uma raiz $r_2 \in \,]0, 1[$ e uma raiz $r_3 \in \,]1, 2[$. Como um polinômio de grau $3$ tem no máximo $3$ raízes reais, essas são as três únicas raízes reais da equação! $\blacksquare$</li></ul>
 </details>
-<hr/>
-<h3 id="exercicio-b4-2-code-inline-9">Exercício B4.2 🔴 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Cap. 5, Ex. 10 e Ex. 12]</span></h3>
-<p>(a) Suponha que <span class="math-inline">\(f: [0, 1] \to \mathbb{R}\)</span> seja contínua, <span class="math-inline">\(f(0) = 1\)</span> e que <strong><span class="math-inline">\(f(x)\)</span> seja um número racional para todo <span class="math-inline">\(x \in [0, 1]\)</span></strong>. Prove que <span class="math-inline">\(f(x) = 1\)</span> para todo <span class="math-inline">\(x \in [0, 1]\)</span>. (b) Seja <span class="math-inline">\(f\)</span> contínua e injetora em <span class="math-inline">\([a, b]\)</span> com <span class="math-inline">\(f(a) &lt; f(b)\)</span>. Prove, usando apenas o TVI, que <span class="math-inline">\(f\)</span> é <strong>estritamente crescente</strong> em <span class="math-inline">\([a, b]\)</span>.</p>
+<hr>
+<h3 id="exercicio-b4-2-guidorizzi-5a-ed-cap-5-ex-10-e-ex-12">Exercício B4.2 <em>[Guidorizzi, 5ª ed., Cap. 5, Ex. 10 e Ex. 12]</em></h3>
+<p>(a) Suponha que $f: [0, 1] \to \mathbb{R}$ seja contínua, $f(0) = 1$ e que <strong>$f(x)$ seja um número racional para todo $x \in [0, 1]$</strong>. Prove que $f(x) = 1$ para todo $x \in [0, 1]$. (b) Seja $f$ contínua e injetora em $[a, b]$ com $f(a) < f(b)$. Prove, usando apenas o TVI, que $f$ é <strong>estritamente crescente</strong> em $[a, b]$.</p>
 <details>
 <summary><strong>Ver Resolução Completa Passo a Passo</strong></summary>
-<ol><li><strong>Item (a):</strong> Suponha, por absurdo, que exista <span class="math-inline">\(x_0 \in [0, 1]\)</span> tal que <span class="math-inline">\(f(x_0) \neq 1\)</span>. Como <span class="math-inline">\(f\)</span> é contínua em <span class="math-inline">\([0, x_0]\)</span>, pelo <strong>Teorema do Valor Intermediário (TVI)</strong> <span class="math-inline">\(f\)</span> deveria assumir todos os valores reais compreendidos entre <span class="math-inline">\(f(0) = 1\)</span> e <span class="math-inline">\(f(x_0)\)</span>. Mas entre dois números reais distintos existem infinitos números <strong>irracionais</strong>, contradizendo a hipótese de que <span class="math-inline">\(f(x) \in \mathbb{Q}\)</span> para todo <span class="math-inline">\(x \in [0, 1]\)</span>! Logo, <span class="math-inline">\(f(x) = 1\)</span> para todo <span class="math-inline">\(x \in [0, 1]\)</span>. <span class="math-inline">\(\blacksquare\)</span></li><li><strong>Item (b):</strong> Dados <span class="math-inline">\(s, t \in [a, b]\)</span> com <span class="math-inline">\(s &lt; t\)</span>, precisamos provar que <span class="math-inline">\(f(s) &lt; f(t)\)</span>.   Primeiro mostremos que para todo <span class="math-inline">\(x \in \,]a, b[\)</span>, tem-se <span class="math-inline">\(f(a) &lt; f(x) &lt; f(b)\)</span>:<div class="sub-item">• Se fosse <span class="math-inline">\(f(x) &lt; f(a) &lt; f(b)\)</span>, pelo TVI aplicado em <span class="math-inline">\([x, b]\)</span> existiria <span class="math-inline">\(c \in \,]x, b[\)</span> tal que <span class="math-inline">\(f(c) = f(a)\)</span>, contradizendo a injetividade de <span class="math-inline">\(f\)</span> (<span class="math-inline">\(c \neq a\)</span>)!</div><div class="sub-item">• Se fosse <span class="math-inline">\(f(a) &lt; f(b) &lt; f(x)\)</span>, pelo TVI aplicado em <span class="math-inline">\([a, x]\)</span> existiria <span class="math-inline">\(c \in \,]a, x[\)</span> tal que <span class="math-inline">\(f(c) = f(b)\)</span>, novamente contradizendo a injetividade!</div> Logo, <span class="math-inline">\(f(a) &lt; f(x) &lt; f(b)\)</span> para todo <span class="math-inline">\(x \in \,]a, b[\)</span>. Aplicando esse mesmo raciocínio ao subintervalo <span class="math-inline">\([s, b]\)</span> (já que <span class="math-inline">\(f(s) &lt; f(b)\)</span>), para todo <span class="math-inline">\(t \in \,]s, b]\)</span> resulta <strong><span class="math-inline">\(f(s) &lt; f(t)\)</span></strong>! <span class="math-inline">\(\blacksquare\)</span></li></ol>
+<ol><li><strong>Item (a):</strong> Suponha, por absurdo, que exista $x_0 \in [0, 1]$ tal que $f(x_0) \neq 1$. Como $f$ é contínua em $[0, x_0]$, pelo <strong>Teorema do Valor Intermediário (TVI)</strong> $f$ deveria assumir todos os valores reais compreendidos entre $f(0) = 1$ e $f(x_0)$. Mas entre dois números reais distintos existem infinitos números <strong>irracionais</strong>, contradizendo a hipótese de que $f(x) \in \mathbb{Q}$ para todo $x \in [0, 1]$! Logo, $f(x) = 1$ para todo $x \in [0, 1]$. $\blacksquare$</li><li><strong>Item (b):</strong> Dados $s, t \in [a, b]$ com $s < t$, precisamos provar que $f(s) < f(t)$. Primeiro mostremos que para todo $x \in \,]a, b[$, tem-se $f(a) < f(x) < f(b)$:</li></ol>
+<ul><li>Se fosse $f(x) < f(a) < f(b)$, pelo TVI aplicado em $[x, b]$ existiria $c \in \,]x, b[$ tal que $f(c) = f(a)$, contradizendo a injetividade de $f$ ($c \neq a$)!</li><li>Se fosse $f(a) < f(b) < f(x)$, pelo TVI aplicado em $[a, x]$ existiria $c \in \,]a, x[$ tal que $f(c) = f(b)$, novamente contradizendo a injetividade! Logo, $f(a) < f(x) < f(b)$ para todo $x \in \,]a, b[$. Aplicando esse mesmo raciocínio ao subintervalo $[s, b]$ (já que $f(s) < f(b)$), para todo $t \in \,]s, b]$ resulta <strong>$f(s) < f(t)$</strong>! $\blacksquare$</li></ul>
 </details>
-<hr/>
+<hr>
 <a id="cap-6"></a>
 <h2 id="bloco-5-funcoes-exponencial-e-logaritmica-capitulo-6">Bloco 5 — Funções Exponencial e Logarítmica (Capítulo 6)</h2>
-<h3 id="exercicio-b5-1-code-inline-10">Exercício B5.1 🟢 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 6.3, Ex. 1 a 3]</span></h3>
-<p>Calcule os limites exponenciais e logarítmicos usando os limites fundamentais da Seção 6.3: (a) <span class="math-inline">\(\displaystyle \lim_{x \to +\infty} \left(\frac{2x + 3}{2x - 1}\right)^{x + 1}\)</span>; <span class="math-inline">\(\qquad\)</span> (b) <span class="math-inline">\(\displaystyle \lim_{x \to 0} \frac{a^x - b^x}{x}\)</span> (<span class="math-inline">\(a &gt; 0, b &gt; 0\)</span>); <span class="math-inline">\(\qquad\)</span> (c) <span class="math-inline">\(\displaystyle \lim_{x \to 0} \frac{\ln(\cos x)}{x^2}\)</span>.</p>
+<h3 id="exercicio-b5-1-guidorizzi-5a-ed-secao-6-3-ex-1-a-3">Exercício B5.1 <em>[Guidorizzi, 5ª ed., Seção 6.3, Ex. 1 a 3]</em></h3>
+<p>Calcule os limites exponenciais e logarítmicos usando os limites fundamentais da Seção 6.3: (a) $\displaystyle \lim_{x \to +\infty} \left(\frac{2x + 3}{2x - 1}\right)^{x + 1}$; $\qquad$ (b) $\displaystyle \lim_{x \to 0} \frac{a^x - b^x}{x}$ ($a > 0, b > 0$); $\qquad$ (c) $\displaystyle \lim_{x \to 0} \frac{\ln(\cos x)}{x^2}$.</p>
 <details>
 <summary><strong>Ver Resolução Completa Passo a Passo</strong></summary>
-<ol><li><strong>Item (a):</strong> Dividindo numerador e denominador por <span class="math-inline">\(2x\)</span> ou somando e subtraindo no numerador: <div class="math-display">\[\frac{2x + 3}{2x - 1} = \frac{(2x - 1) + 4}{2x - 1} = 1 + \frac{4}{2x - 1}.\]</div> Fazendo <span class="math-inline">\(u = \frac{2x - 1}{4} \iff 2x - 1 = 4u \iff x = 2u + \frac{1}{2}\)</span> (<span class="math-inline">\(x \to +\infty \iff u \to +\infty\)</span>): <div class="math-display">\[\left(\frac{2x + 3}{2x - 1}\right)^{x + 1} = \left(1 + \frac{1}{u}\right)^{2u + 3/2} = \left[\left(1 + \frac{1}{u}\right)^u\right]^2 \cdot \left(1 + \frac{1}{u}\right)^{3/2} \xrightarrow{u \to +\infty} e^2 \cdot 1^{3/2} = \mathbf{e^2}.\]</div></li><li><strong>Item (b):</strong> Somando e subtraindo <span class="math-inline">\(1\)</span> no numerador e usando <span class="math-inline">\(\lim_{x \to 0} \frac{a^x - 1}{x} = \ln a\)</span> (Ex. 2, Seção 6.3): <div class="math-display">\[\lim_{x \to 0} \frac{a^x - b^x}{x} = \lim_{x \to 0} \left(\frac{a^x - 1}{x} - \frac{b^x - 1}{x}\right) = \ln a - \ln b = \mathbf{\ln\left(\frac{a}{b}\right)}.\]</div></li><li><strong>Item (c):</strong> Escrevendo <span class="math-inline">\(\cos x = 1 + (\cos x - 1)\)</span> e multiplicando e dividindo por <span class="math-inline">\(\cos x - 1\)</span>: <div class="math-display">\[\lim_{x \to 0} \frac{\ln(\cos x)}{x^2} = \lim_{x \to 0} \frac{\ln\big(1 + (\cos x - 1)\big)}{\cos x - 1} \cdot \frac{\cos x - 1}{x^2} = 1 \cdot \left(-\frac{1}{2}\right) = \mathbf{-\frac{1}{2}}. \quad \blacksquare\]</div></li></ol>
+<ol><li><strong>Item (a):</strong> Dividindo numerador e denominador por $2x$ ou somando e subtraindo no numerador: <div class="math-display">$$\frac{2x + 3}{2x - 1} = \frac{(2x - 1) + 4}{2x - 1} = 1 + \frac{4}{2x - 1}.$$</div> Fazendo $u = \frac{2x - 1}{4} \iff 2x - 1 = 4u \iff x = 2u + \frac{1}{2}$ ($x \to +\infty \iff u \to +\infty$): <div class="math-display">$$\left(\frac{2x + 3}{2x - 1}\right)^{x + 1} = \left(1 + \frac{1}{u}\right)^{2u + 3/2} = \left[\left(1 + \frac{1}{u}\right)^u\right]^2 \cdot \left(1 + \frac{1}{u}\right)^{3/2} \xrightarrow{u \to +\infty} e^2 \cdot 1^{3/2} = \mathbf{e^2}.$$</div></li><li><strong>Item (b):</strong> Somando e subtraindo $1$ no numerador e usando $\lim_{x \to 0} \frac{a^x - 1}{x} = \ln a$ (Ex. 2, Seção 6.3): <div class="math-display">$$\lim_{x \to 0} \frac{a^x - b^x}{x} = \lim_{x \to 0} \left(\frac{a^x - 1}{x} - \frac{b^x - 1}{x}\right) = \ln a - \ln b = \mathbf{\ln\left(\frac{a}{b}\right)}.$$</div></li><li><strong>Item (c):</strong> Escrevendo $\cos x = 1 + (\cos x - 1)$ e multiplicando e dividindo por $\cos x - 1$: <div class="math-display">$$\lim_{x \to 0} \frac{\ln(\cos x)}{x^2} = \lim_{x \to 0} \frac{\ln\big(1 + (\cos x - 1)\big)}{\cos x - 1} \cdot \frac{\cos x - 1}{x^2} = 1 \cdot \left(-\frac{1}{2}\right) = \mathbf{-\frac{1}{2}}. \quad \blacksquare$$</div></li></ol>
 </details>
-<hr/>
+<hr>
 <a id="cap-7"></a>
 <h2 id="bloco-6-derivadas-regra-da-cadeia-implicita-e-taxas-relacionadas-capitulo-7">Bloco 6 — Derivadas, Regra da Cadeia, Implícita e Taxas Relacionadas (Capítulo 7)</h2>
-<h3 id="exercicio-b6-1-code-inline-11">Exercício B6.1 🟡 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Seções 7.13, 7.15 e 7.16]</span></h3>
-<p>(a) (<strong>Derivação Implícita — Fólio de Descartes, Seção 7.13:</strong>) Sendo <span class="math-inline">\(y = f(x)\)</span> definida implicitamente pela equação <span class="math-inline">\(x^3 + y^3 - 3xy = 0\)</span>, determine <span class="math-inline">\(\frac{dy}{dx}\)</span> e a equação da reta tangente no ponto <span class="math-inline">\(\left(\frac{3}{2}, \frac{3}{2}\right)\)</span>. (b) (<strong>Taxas Relacionadas — Seção 7.15:</strong>) Uma escada de <span class="math-inline">\(5\text{ m}\)</span> de comprimento está apoiada numa parede vertical. Se a base da escada desliza horizontalmente afastando-se da parede à velocidade constante de <span class="math-inline">\(1{,}2\text{ m/s}\)</span>, com que velocidade o topo da escada escorrega para baixo no instante em que a base está a <span class="math-inline">\(3\text{ m}\)</span> da parede?</p>
+<h3 id="exercicio-b6-1-guidorizzi-5a-ed-secoes-7-13-7-15-e-7-16">Exercício B6.1 <em>[Guidorizzi, 5ª ed., Seções 7.13, 7.15 e 7.16]</em></h3>
+<p>(a) (<strong>Derivação Implícita — Fólio de Descartes, Seção 7.13:</strong>) Sendo $y = f(x)$ definida implicitamente pela equação $x^3 + y^3 - 3xy = 0$, determine $\frac{dy}{dx}$ e a equação da reta tangente no ponto $\left(\frac{3}{2}, \frac{3}{2}\right)$. (b) (<strong>Taxas Relacionadas — Seção 7.15:</strong>) Uma escada de $5\text{ m}$ de comprimento está apoiada numa parede vertical. Se a base da escada desliza horizontalmente afastando-se da parede à velocidade constante de $1{,}2\text{ m/s}$, com que velocidade o topo da escada escorrega para baixo no instante em que a base está a $3\text{ m}$ da parede?</p>
 <details>
 <summary><strong>Ver Resolução Completa Passo a Passo</strong></summary>
-<ol><li><strong>Item (a):</strong> Derivando ambos os membros de <span class="math-inline">\(x^3 + y^3 - 3xy = 0\)</span> em relação a <span class="math-inline">\(x\)</span> (usando a Regra da Cadeia em <span class="math-inline">\(y^3\)</span> e a Regra do Produto em <span class="math-inline">\(3xy\)</span>): <div class="math-display">\[3x^2 + 3y^2 y' - 3(1 \cdot y + x y') = 0 \implies (y^2 - x)y' = y - x^2 \implies \mathbf{y' = \frac{y - x^2}{y^2 - x}}.\]</div> No ponto <span class="math-inline">\(\left(\frac{3}{2}, \frac{3}{2}\right)\)</span>: <div class="math-display">\[y'\left(\frac{3}{2}\right) = \frac{\frac{3}{2} - \frac{9}{4}}{\frac{9}{4} - \frac{3}{2}} = -1.\]</div> Logo, a equação da reta tangente é <span class="math-inline">\(y - \frac{3}{2} = -1\left(x - \frac{3}{2}\right) \iff \mathbf{x + y - 3 = 0}\)</span>.</li><li><strong>Item (b):</strong> Sejam <span class="math-inline">\(x(t)\)</span> a distância da base à parede e <span class="math-inline">\(y(t)\)</span> a altura do topo. Pelo Teorema de Pitágoras: <div class="math-display">\[x^2(t) + y^2(t) = 5^2 = 25.\]</div> Derivando ambos os membros em relação ao tempo <span class="math-inline">\(t\)</span>: <div class="math-display">\[2x(t)\frac{dx}{dt} + 2y(t)\frac{dy}{dt} = 0 \implies \frac{dy}{dt} = -\frac{x(t)}{y(t)}\frac{dx}{dt}.\]</div> Quando <span class="math-inline">\(x = 3\text{ m}\)</span>, temos <span class="math-inline">\(y = \sqrt{25 - 9} = 4\text{ m}\)</span> e <span class="math-inline">\(\frac{dx}{dt} = 1{,}2\text{ m/s}\)</span>. Portanto: <div class="math-display">\[\frac{dy}{dt} = -\frac{3}{4} \cdot 1{,}2 = \mathbf{-0{,}9\text{ m/s}} \quad (\text{desce à razão de } 0{,}9\text{ m/s}). \quad \blacksquare\]</div></li></ol>
+<ol><li><strong>Item (a):</strong> Derivando ambos os membros de $x^3 + y^3 - 3xy = 0$ em relação a $x$ (usando a Regra da Cadeia em $y^3$ e a Regra do Produto em $3xy$): <div class="math-display">$$3x^2 + 3y^2 y' - 3(1 \cdot y + x y') = 0 \implies (y^2 - x)y' = y - x^2 \implies \mathbf{y' = \frac{y - x^2}{y^2 - x}}.$$</div> No ponto $\left(\frac{3}{2}, \frac{3}{2}\right)$: <div class="math-display">$$y'\left(\frac{3}{2}\right) = \frac{\frac{3}{2} - \frac{9}{4}}{\frac{9}{4} - \frac{3}{2}} = -1.$$</div> Logo, a equação da reta tangente é $y - \frac{3}{2} = -1\left(x - \frac{3}{2}\right) \iff \mathbf{x + y - 3 = 0}$.</li><li><strong>Item (b):</strong> Sejam $x(t)$ a distância da base à parede e $y(t)$ a altura do topo. Pelo Teorema de Pitágoras: <div class="math-display">$$x^2(t) + y^2(t) = 5^2 = 25.$$</div> Derivando ambos os membros em relação ao tempo $t$: <div class="math-display">$$2x(t)\frac{dx}{dt} + 2y(t)\frac{dy}{dt} = 0 \implies \frac{dy}{dt} = -\frac{x(t)}{y(t)}\frac{dx}{dt}.$$</div> Quando $x = 3\text{ m}$, temos $y = \sqrt{25 - 9} = 4\text{ m}$ e $\frac{dx}{dt} = 1{,}2\text{ m/s}$. Portanto: <div class="math-display">$$\frac{dy}{dt} = -\frac{3}{4} \cdot 1{,}2 = \mathbf{-0{,}9\text{ m/s}} \quad (\text{desce à razão de } 0{,}9\text{ m/s}). \quad \blacksquare$$</div></li></ol>
 </details>
-<hr/>
+<hr>
 <a id="cap-8"></a>
 <h2 id="bloco-7-funcoes-inversas-e-suas-derivadas-capitulo-8">Bloco 7 — Funções Inversas e suas Derivadas (Capítulo 8)</h2>
-<h3 id="exercicio-b7-1-code-inline-12">Exercício B7.1 🟡 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 8.2, Ex. 1 a 5]</span></h3>
-<p>(a) Seja <span class="math-inline">\(f(x) = x^5 + 2x^3 + x - 1\)</span>. Mostre que <span class="math-inline">\(f\)</span> é inversível com inversa <span class="math-inline">\(g = f^{-1}\)</span> derivável em <span class="math-inline">\(\mathbb{R}\)</span>, e calcule <strong><span class="math-inline">\(g'(3)\)</span></strong> e <strong><span class="math-inline">\(g''(3)\)</span></strong>. (b) Simplifique a derivada de <span class="math-inline">\(h(x) = \operatorname{arctg}\left(\frac{1 + x}{1 - x}\right)\)</span> para <span class="math-inline">\(x \neq 1\)</span>, e interprete o resultado.</p>
+<h3 id="exercicio-b7-1-guidorizzi-5a-ed-secao-8-2-ex-1-a-5">Exercício B7.1 <em>[Guidorizzi, 5ª ed., Seção 8.2, Ex. 1 a 5]</em></h3>
+<p>(a) Seja $f(x) = x^5 + 2x^3 + x - 1$. Mostre que $f$ é inversível com inversa $g = f^{-1}$ derivável em $\mathbb{R}$, e calcule <strong>$g'(3)$</strong> e <strong>$g''(3)$</strong>. (b) Simplifique a derivada de $h(x) = \operatorname{arctg}\left(\frac{1 + x}{1 - x}\right)$ para $x \neq 1$, e interprete o resultado.</p>
 <details>
 <summary><strong>Ver Resolução Completa Passo a Passo</strong></summary>
-<ol><li><strong>Item (a):</strong> Temos <span class="math-inline">\(f'(x) = 5x^4 + 6x^2 + 1 \ge 1 &gt; 0\)</span> para todo <span class="math-inline">\(x \in \mathbb{R}\)</span>, logo <span class="math-inline">\(f\)</span> é estritamente crescente, sobrejetora em <span class="math-inline">\(\mathbb{R}\)</span> e sua inversa <span class="math-inline">\(g = f^{-1}\)</span> é derivável em todo <span class="math-inline">\(\mathbb{R}\)</span>.   Por inspeção, <span class="math-inline">\(f(1) = 1 + 2 + 1 - 1 = 3 \iff g(3) = 1\)</span> (e como <span class="math-inline">\(f\)</span> é injetora, <span class="math-inline">\(q = 1\)</span> é o único ponto tal que <span class="math-inline">\(f(q) = 3\)</span>). Pelo Teorema da Derivada da Inversa: <div class="math-display">\[g'(3) = \frac{1}{f'(g(3))} = \frac{1}{f'(1)} = \frac{1}{5(1)^4 + 6(1)^2 + 1} = \mathbf{\frac{1}{12}}.\]</div> Para calcular <span class="math-inline">\(g''(3)\)</span>, derivamos <span class="math-inline">\(g'(y) = \frac{1}{f'(g(y))}\)</span> pela Regra da Cadeia: <div class="math-display">\[g''(y) = -\frac{f''(g(y)) \cdot g'(y)}{[f'(g(y))]^2} = -\frac{f''(g(y))}{[f'(g(y))]^3}.\]</div> Como <span class="math-inline">\(f''(x) = 20x^3 + 12x \implies f''(1) = 32\)</span>, resulta: <div class="math-display">\[g''(3) = -\frac{f''(1)}{[f'(1)]^3} = -\frac{32}{12^3} = -\frac{32}{1728} = \mathbf{-\frac{1}{54}}.\]</div></li><li><strong>Item (b):</strong> Pela Regra da Cadeia e Regra do Quociente: <div class="math-display">\[h'(x) = \frac{1}{1 + \left(\frac{1+x}{1-x}\right)^2} \cdot \frac{1(1-x) - (1+x)(-1)}{(1-x)^2} = \frac{(1-x)^2}{(1-x)^2 + (1+x)^2} \cdot \frac{2}{(1-x)^2} = \frac{2}{2 + 2x^2} = \mathbf{\frac{1}{1 + x^2}}.\]</div> Observe que <span class="math-inline">\(h'(x) = (\operatorname{arctg} x)'\)</span> em cada um dos intervalos <span class="math-inline">\(]-\infty, 1[\)</span> e <span class="math-inline">\(]1, +\infty[\)</span>! Pelo Corolário da Seção 10.1, em cada um desses dois intervalos separadamente, <span class="math-inline">\(h(x) - \operatorname{arctg} x\)</span> é constante (valendo <span class="math-inline">\(\frac{\pi}{4}\)</span> para <span class="math-inline">\(x &lt; 1\)</span> e <span class="math-inline">\(-\frac{3\pi}{4}\)</span> para <span class="math-inline">\(x &gt; 1\)</span>). <span class="math-inline">\(\blacksquare\)</span></li></ol>
+<ol><li><strong>Item (a):</strong> Temos $f'(x) = 5x^4 + 6x^2 + 1 \ge 1 > 0$ para todo $x \in \mathbb{R}$, logo $f$ é estritamente crescente, sobrejetora em $\mathbb{R}$ e sua inversa $g = f^{-1}$ é derivável em todo $\mathbb{R}$. Por inspeção, $f(1) = 1 + 2 + 1 - 1 = 3 \iff g(3) = 1$ (e como $f$ é injetora, $q = 1$ é o único ponto tal que $f(q) = 3$). Pelo Teorema da Derivada da Inversa: <div class="math-display">$$g'(3) = \frac{1}{f'(g(3))} = \frac{1}{f'(1)} = \frac{1}{5(1)^4 + 6(1)^2 + 1} = \mathbf{\frac{1}{12}}.$$</div> Para calcular $g''(3)$, derivamos $g'(y) = \frac{1}{f'(g(y))}$ pela Regra da Cadeia: <div class="math-display">$$g''(y) = -\frac{f''(g(y)) \cdot g'(y)}{[f'(g(y))]^2} = -\frac{f''(g(y))}{[f'(g(y))]^3}.$$</div> Como $f''(x) = 20x^3 + 12x \implies f''(1) = 32$, resulta: <div class="math-display">$$g''(3) = -\frac{f''(1)}{[f'(1)]^3} = -\frac{32}{12^3} = -\frac{32}{1728} = \mathbf{-\frac{1}{54}}.$$</div></li><li><strong>Item (b):</strong> Pela Regra da Cadeia e Regra do Quociente: <div class="math-display">$$h'(x) = \frac{1}{1 + \left(\frac{1+x}{1-x}\right)^2} \cdot \frac{1(1-x) - (1+x)(-1)}{(1-x)^2} = \frac{(1-x)^2}{(1-x)^2 + (1+x)^2} \cdot \frac{2}{(1-x)^2} = \frac{2}{2 + 2x^2} = \mathbf{\frac{1}{1 + x^2}}.$$</div> Observe que $h'(x) = (\operatorname{arctg} x)'$ em cada um dos intervalos $]-\infty, 1[$ e $]1, +\infty[$! Pelo Corolário da Seção 10.1, em cada um desses dois intervalos separadamente, $h(x) - \operatorname{arctg} x$ é constante (valendo $\frac{\pi}{4}$ para $x < 1$ e $-\frac{3\pi}{4}$ para $x > 1$). $\blacksquare$</li></ol>
 </details>
-<hr/>
+<hr>
 <a id="cap-9-15"></a>
 <h2 id="bloco-8-tvm-rolle-cauchy-variacao-de-funcoes-e-otimizacao-capitulos-9-e-15">Bloco 8 — TVM, Rolle, Cauchy, Variação de Funções e Otimização (Capítulos 9 e 15)</h2>
-<h3 id="exercicio-b8-1-code-inline-13">Exercício B8.1 🟡 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 9.2, Ex. 6 e 9]</span></h3>
-<p>Utilizando o Teorema do Valor Médio (ou o estudo de crescimento da Seção 9.2), demonstre as desigualdades clássicas: (a) <strong>Desigualdade de Bernoulli Generalizada:</strong> <span class="math-inline">\((1 + x)^\alpha &gt; 1 + \alpha x\)</span> para todo <span class="math-inline">\(x &gt; 0\)</span> e <span class="math-inline">\(\alpha &gt; 1\)</span>; (b) <span class="math-inline">\(\dfrac{x}{1 + x^2} &lt; \operatorname{arctg} x &lt; x\)</span> para todo <span class="math-inline">\(x &gt; 0\)</span>; (c) <span class="math-inline">\(|\operatorname{sen} b - \operatorname{sen} a| \le |b - a|\)</span> para todos <span class="math-inline">\(a, b \in \mathbb{R}\)</span>.</p>
+<h3 id="exercicio-b8-1-guidorizzi-5a-ed-secao-9-2-ex-6-e-9">Exercício B8.1 <em>[Guidorizzi, 5ª ed., Seção 9.2, Ex. 6 e 9]</em></h3>
+<p>Utilizando o Teorema do Valor Médio (ou o estudo de crescimento da Seção 9.2), demonstre as desigualdades clássicas: (a) <strong>Desigualdade de Bernoulli Generalizada:</strong> $(1 + x)^\alpha > 1 + \alpha x$ para todo $x > 0$ e $\alpha > 1$; (b) $\dfrac{x}{1 + x^2} < \operatorname{arctg} x < x$ para todo $x > 0$; (c) $|\operatorname{sen} b - \operatorname{sen} a| \le |b - a|$ para todos $a, b \in \mathbb{R}$.</p>
 <details>
 <summary><strong>Ver Resolução Completa Passo a Passo</strong></summary>
-<ol><li><strong>Item (a):</strong> Seja <span class="math-inline">\(f(x) = (1 + x)^\alpha - (1 + \alpha x)\)</span> para <span class="math-inline">\(x \ge 0\)</span> (<span class="math-inline">\(\alpha &gt; 1\)</span>). Temos <span class="math-inline">\(f(0) = 0\)</span> e, para <span class="math-inline">\(x &gt; 0\)</span>: <div class="math-display">\[f'(x) = \alpha(1 + x)^{\alpha - 1} - \alpha = \alpha\big[(1 + x)^{\alpha - 1} - 1\big] &gt; 0\]</div> pois <span class="math-inline">\(1 + x &gt; 1\)</span> e <span class="math-inline">\(\alpha - 1 &gt; 0 \implies (1+x)^{\alpha-1} &gt; 1\)</span>. Logo, <span class="math-inline">\(f\)</span> é estritamente crescente em <span class="math-inline">\([0, +\infty[\)</span>, donde para todo <span class="math-inline">\(x &gt; 0\)</span> vale <span class="math-inline">\(f(x) &gt; f(0) = 0 \iff \mathbf{(1 + x)^\alpha &gt; 1 + \alpha x}\)</span>.</li><li><strong>Item (b):</strong> Para <span class="math-inline">\(x &gt; 0\)</span>, aplicamos o <strong>TVM</strong> à função <span class="math-inline">\(g(t) = \operatorname{arctg} t\)</span> no intervalo <span class="math-inline">\([0, x]\)</span>: existe <span class="math-inline">\(c \in \,]0, x[\)</span> tal que: <div class="math-display">\[\frac{\operatorname{arctg} x - \operatorname{arctg} 0}{x - 0} = g'(c) = \frac{1}{1 + c^2} \implies \operatorname{arctg} x = \frac{x}{1 + c^2}.\]</div> Como <span class="math-inline">\(0 &lt; c &lt; x \implies 1 &lt; 1 + c^2 &lt; 1 + x^2 \implies \frac{1}{1 + x^2} &lt; \frac{1}{1 + c^2} &lt; 1\)</span>, multiplicando por <span class="math-inline">\(x &gt; 0\)</span> obtemos imediatamente: <div class="math-display">\[\mathbf{\frac{x}{1 + x^2} &lt; \operatorname{arctg} x &lt; x} \quad (\forall x &gt; 0).\]</div></li><li><strong>Item (c):</strong> Se <span class="math-inline">\(a = b\)</span>, a igualdade <span class="math-inline">\(0 \le 0\)</span> é óbvia. Se <span class="math-inline">\(a \neq b\)</span>, pelo TVM aplicado a <span class="math-inline">\(f(x) = \operatorname{sen} x\)</span> no intervalo fechado de extremos <span class="math-inline">\(a\)</span> e <span class="math-inline">\(b\)</span>, existe <span class="math-inline">\(c\)</span> entre <span class="math-inline">\(a\)</span> e <span class="math-inline">\(b\)</span> tal que <span class="math-inline">\(\operatorname{sen} b - \operatorname{sen} a = (\cos c)(b - a)\)</span>. Tomando módulos e usando <span class="math-inline">\(|\cos c| \le 1\)</span>, segue <span class="math-inline">\(|\operatorname{sen} b - \operatorname{sen} a| = |\cos c||b - a| \le |b - a|\)</span>. <span class="math-inline">\(\blacksquare\)</span></li></ol>
+<ol><li><strong>Item (a):</strong> Seja $f(x) = (1 + x)^\alpha - (1 + \alpha x)$ para $x \ge 0$ ($\alpha > 1$). Temos $f(0) = 0$ e, para $x > 0$: <div class="math-display">$$f'(x) = \alpha(1 + x)^{\alpha - 1} - \alpha = \alpha\big[(1 + x)^{\alpha - 1} - 1\big] > 0$$</div> pois $1 + x > 1$ e $\alpha - 1 > 0 \implies (1+x)^{\alpha-1} > 1$. Logo, $f$ é estritamente crescente em $[0, +\infty[$, donde para todo $x > 0$ vale $f(x) > f(0) = 0 \iff \mathbf{(1 + x)^\alpha > 1 + \alpha x}$.</li><li><strong>Item (b):</strong> Para $x > 0$, aplicamos o <strong>TVM</strong> à função $g(t) = \operatorname{arctg} t$ no intervalo $[0, x]$: existe $c \in \,]0, x[$ tal que: <div class="math-display">$$\frac{\operatorname{arctg} x - \operatorname{arctg} 0}{x - 0} = g'(c) = \frac{1}{1 + c^2} \implies \operatorname{arctg} x = \frac{x}{1 + c^2}.$$</div> Como $0 < c < x \implies 1 < 1 + c^2 < 1 + x^2 \implies \frac{1}{1 + x^2} < \frac{1}{1 + c^2} < 1$, multiplicando por $x > 0$ obtemos imediatamente: <div class="math-display">$$\mathbf{\frac{x}{1 + x^2} < \operatorname{arctg} x < x} \quad (\forall x > 0).$$</div></li><li><strong>Item (c):</strong> Se $a = b$, a igualdade $0 \le 0$ é óbvia. Se $a \neq b$, pelo TVM aplicado a $f(x) = \operatorname{sen} x$ no intervalo fechado de extremos $a$ e $b$, existe $c$ entre $a$ e $b$ tal que $\operatorname{sen} b - \operatorname{sen} a = (\cos c)(b - a)$. Tomando módulos e usando $|\cos c| \le 1$, segue $|\operatorname{sen} b - \operatorname{sen} a| = |\cos c||b - a| \le |b - a|$. $\blacksquare$</li></ol>
 </details>
-<hr/>
-<h3 id="exercicio-b8-2-code-inline-14">Exercício B8.2 🟡 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 9.6 e Seção 9.8]</span></h3>
-<p>Determine as dimensões (raio da base <span class="math-inline">\(r\)</span> e altura <span class="math-inline">\(h\)</span>) do cilindro circular reto de <strong>volume máximo</strong> que pode ser inscrito numa esfera de raio fixo <span class="math-inline">\(R &gt; 0\)</span>.</p>
+<hr>
+<h3 id="exercicio-b8-2-guidorizzi-5a-ed-secao-9-6-e-secao-9-8">Exercício B8.2 <em>[Guidorizzi, 5ª ed., Seção 9.6 e Seção 9.8]</em></h3>
+<p>Determine as dimensões (raio da base $r$ e altura $h$) do cilindro circular reto de <strong>volume máximo</strong> que pode ser inscrito numa esfera de raio fixo $R > 0$.</p>
 <details>
 <summary><strong>Ver Resolução Completa Passo a Passo</strong></summary>
-<ol><li><strong>Modelagem Geométrica:</strong> Num corte meridiano da esfera de raio <span class="math-inline">\(R\)</span>, o retângulo gerador do cilindro tem base <span class="math-inline">\(2r\)</span> e altura <span class="math-inline">\(h\)</span>, inscrito num círculo de raio <span class="math-inline">\(R\)</span>. Pelo Teorema de Pitágoras: <div class="math-display">\[r^2 + \left(\frac{h}{2}\right)^2 = R^2 \implies r^2 = R^2 - \frac{h^2}{4}, \quad \text{com } h \in [0, 2R].\]</div></li><li><strong>Função Volume em uma variável <span class="math-inline">\(h \in [0, 2R]\)</span>:</strong> <div class="math-display">\[V(h) = \pi r^2 h = \pi\left(R^2 - \frac{h^2}{4}\right)h = \pi\left(R^2 h - \frac{h^3}{4}\right), \quad h \in [0, 2R].\]</div></li><li><strong>Maximização em <span class="math-inline">\([0, 2R]\)</span>:</strong> Como <span class="math-inline">\(V(0) = 0\)</span> e <span class="math-inline">\(V(2R) = 0\)</span>, e <span class="math-inline">\(V(h) &gt; 0\)</span> em <span class="math-inline">\(]0, 2R[\)</span>, o máximo global ocorre no interior <span class="math-inline">\(]0, 2R[\)</span>. Derivando em relação a <span class="math-inline">\(h\)</span>: <div class="math-display">\[V'(h) = \pi\left(R^2 - \frac{3h^2}{4}\right) = 0 \implies h^2 = \frac{4R^2}{3} \implies \mathbf{h = \frac{2R}{\sqrt{3}} = \frac{2\sqrt{3}}{3}R}.\]</div> Como <span class="math-inline">\(V''(h) = -\frac{3\pi}{2}h &lt; 0\)</span> para <span class="math-inline">\(h &gt; 0\)</span>, este é o ponto de máximo global! O raio correspondente é: <div class="math-display">\[r = \sqrt{R^2 - \frac{h^2}{4}} = \sqrt{R^2 - \frac{R^2}{3}} = \mathbf{R\sqrt{\frac{2}{3}}}, \qquad \text{com } V_{\max} = \mathbf{\frac{4\pi\sqrt{3}}{9}R^3}. \quad \blacksquare\]</div></li></ol>
+<ol><li><strong>Modelagem Geométrica:</strong> Num corte meridiano da esfera de raio $R$, o retângulo gerador do cilindro tem base $2r$ e altura $h$, inscrito num círculo de raio $R$. Pelo Teorema de Pitágoras: <div class="math-display">$$r^2 + \left(\frac{h}{2}\right)^2 = R^2 \implies r^2 = R^2 - \frac{h^2}{4}, \quad \text{com } h \in [0, 2R].$$</div></li><li><strong>Função Volume em uma variável $h \in [0, 2R]$:</strong> <div class="math-display">$$V(h) = \pi r^2 h = \pi\left(R^2 - \frac{h^2}{4}\right)h = \pi\left(R^2 h - \frac{h^3}{4}\right), \quad h \in [0, 2R].$$</div></li><li><strong>Maximização em $[0, 2R]$:</strong> Como $V(0) = 0$ e $V(2R) = 0$, e $V(h) > 0$ em $]0, 2R[$, o máximo global ocorre no interior $]0, 2R[$. Derivando em relação a $h$: <div class="math-display">$$V'(h) = \pi\left(R^2 - \frac{3h^2}{4}\right) = 0 \implies h^2 = \frac{4R^2}{3} \implies \mathbf{h = \frac{2R}{\sqrt{3}} = \frac{2\sqrt{3}}{3}R}.$$</div> Como $V''(h) = -\frac{3\pi}{2}h < 0$ para $h > 0$, este é o ponto de máximo global! O raio correspondente é: <div class="math-display">$$r = \sqrt{R^2 - \frac{h^2}{4}} = \sqrt{R^2 - \frac{R^2}{3}} = \mathbf{R\sqrt{\frac{2}{3}}}, \qquad \text{com } V_{\max} = \mathbf{\frac{4\pi\sqrt{3}}{9}R^3}. \quad \blacksquare$$</div></li></ol>
 </details>
-<hr/>
-<h3 id="exercicio-b8-3-code-inline-15">Exercício B8.3 🔴 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 9.7, Ex. 8 — Teorema de Darboux para a Derivada]</span></h3>
-<p>(<strong>Teorema de Darboux:</strong>) Suponha que <span class="math-inline">\(g\)</span> seja derivável no intervalo fechado <span class="math-inline">\([a, b]\)</span>, com <strong><span class="math-inline">\(g'(a) &lt; 0\)</span> e <span class="math-inline">\(g'(b) &gt; 0\)</span></strong>. Prove (mesmo sem supor que <span class="math-inline">\(g'\)</span> seja contínua!) que existe pelo menos um <span class="math-inline">\(c \in \,]a, b[\)</span> tal que <strong><span class="math-inline">\(g'(c) = 0\)</span></strong>.</p>
-<ul><li><strong>Dica (Sugestão do Guidorizzi):</strong> Como <span class="math-inline">\(g\)</span> é derivável em <span class="math-inline">\([a, b]\)</span>, <span class="math-inline">\(g\)</span> é contínua em <span class="math-inline">\([a, b]\)</span> e, pelo Teorema de Weierstrass, assume valor mínimo global num ponto <span class="math-inline">\(c \in [a, b]\)</span>. Mostre que <span class="math-inline">\(g'(a) &lt; 0 \implies c \neq a\)</span> e <span class="math-inline">\(g'(b) &gt; 0 \implies c \neq b\)</span>.</li></ul>
+<hr>
+<h3 id="exercicio-b8-3-guidorizzi-5a-ed-secao-9-7-ex-8-teorema-de-darboux-para-a-derivada">Exercício B8.3 <em>[Guidorizzi, 5ª ed., Seção 9.7, Ex. 8 — Teorema de Darboux para a Derivada]</em></h3>
+<p>(<strong>Teorema de Darboux:</strong>) Suponha que $g$ seja derivável no intervalo fechado $[a, b]$, com <strong>$g'(a) < 0$ e $g'(b) > 0$</strong>. Prove (mesmo sem supor que $g'$ seja contínua!) que existe pelo menos um $c \in \,]a, b[$ tal que <strong>$g'(c) = 0$</strong>.</p>
+<ul><li><strong>Dica (Sugestão do Guidorizzi):</strong> Como $g$ é derivável em $[a, b]$, $g$ é contínua em $[a, b]$ e, pelo Teorema de Weierstrass, assume valor mínimo global num ponto $c \in [a, b]$. Mostre que $g'(a) < 0 \implies c \neq a$ e $g'(b) > 0 \implies c \neq b$.</li></ul>
 <details>
 <summary><strong>Ver Resolução Completa Passo a Passo</strong></summary>
-<ol><li>Como <span class="math-inline">\(g\)</span> é derivável em <span class="math-inline">\([a, b]\)</span>, <span class="math-inline">\(g\)</span> é contínua em <span class="math-inline">\([a, b]\)</span> (Teorema da Seção 7.6). Pelo <strong>Teorema de Weierstrass</strong>, existe <span class="math-inline">\(c \in [a, b]\)</span> tal que <span class="math-inline">\(g(c) \le g(x)\)</span> para todo <span class="math-inline">\(x \in [a, b]\)</span> (<span class="math-inline">\(c\)</span> é ponto de mínimo de <span class="math-inline">\(g\)</span> em <span class="math-inline">\([a, b]\)</span>).</li><li>Provemos que <span class="math-inline">\(c \neq a\)</span>: como <span class="math-inline">\(g'(a) = \lim_{x \to a^+} \frac{g(x) - g(a)}{x - a} &lt; 0\)</span>, pelo Teorema da Conservação do Sinal existe <span class="math-inline">\(\delta_1 &gt; 0\)</span> tal que para <span class="math-inline">\(a &lt; x &lt; a + \delta_1\)</span> tem-se <span class="math-inline">\(\frac{g(x) - g(a)}{x - a} &lt; 0 \implies g(x) &lt; g(a)\)</span>. Logo, <span class="math-inline">\(g(a)\)</span> não é o valor mínimo de <span class="math-inline">\(g\)</span> em <span class="math-inline">\([a, b]\)</span>, ou seja, <strong><span class="math-inline">\(c \neq a\)</span></strong>.</li><li>Provemos que <span class="math-inline">\(c \neq b\)</span>: como <span class="math-inline">\(g'(b) = \lim_{x \to b^-} \frac{g(x) - g(b)}{x - b} &gt; 0\)</span>, pela Conservação do Sinal existe <span class="math-inline">\(\delta_2 &gt; 0\)</span> tal que para <span class="math-inline">\(b - \delta_2 &lt; x &lt; b\)</span> (onde <span class="math-inline">\(x - b &lt; 0\)</span>) tem-se <span class="math-inline">\(\frac{g(x) - g(b)}{x - b} &gt; 0 \implies g(x) - g(b) &lt; 0 \implies g(x) &lt; g(b)\)</span>. Logo, <span class="math-inline">\(g(b)\)</span> também não é o valor mínimo, ou seja, <strong><span class="math-inline">\(c \neq b\)</span></strong>.</li><li>Portanto, <span class="math-inline">\(c\)</span> pertence ao intervalo aberto <span class="math-inline">\(]a, b[\)</span> (<span class="math-inline">\(c\)</span> é ponto interior!). Pelo Teorema 1 da Seção 9.7 (Condição Necessária de Fermat), como <span class="math-inline">\(c \in \,]a, b[\)</span> é ponto de mínimo local de <span class="math-inline">\(g\)</span>, segue obrigatoriamente <strong><span class="math-inline">\(g'(c) = 0\)</span></strong>! <span class="math-inline">\(\blacksquare\)</span></li></ol>
+<ol><li>Como $g$ é derivável em $[a, b]$, $g$ é contínua em $[a, b]$ (Teorema da Seção 7.6). Pelo <strong>Teorema de Weierstrass</strong>, existe $c \in [a, b]$ tal que $g(c) \le g(x)$ para todo $x \in [a, b]$ ($c$ é ponto de mínimo de $g$ em $[a, b]$).</li><li>Provemos que $c \neq a$: como $g'(a) = \lim_{x \to a^+} \frac{g(x) - g(a)}{x - a} < 0$, pelo Teorema da Conservação do Sinal existe $\delta_1 > 0$ tal que para $a < x < a + \delta_1$ tem-se $\frac{g(x) - g(a)}{x - a} < 0 \implies g(x) < g(a)$. Logo, $g(a)$ não é o valor mínimo de $g$ em $[a, b]$, ou seja, <strong>$c \neq a$</strong>.</li><li>Provemos que $c \neq b$: como $g'(b) = \lim_{x \to b^-} \frac{g(x) - g(b)}{x - b} > 0$, pela Conservação do Sinal existe $\delta_2 > 0$ tal que para $b - \delta_2 < x < b$ (onde $x - b < 0$) tem-se $\frac{g(x) - g(b)}{x - b} > 0 \implies g(x) - g(b) < 0 \implies g(x) < g(b)$. Logo, $g(b)$ também não é o valor mínimo, ou seja, <strong>$c \neq b$</strong>.</li><li>Portanto, $c$ pertence ao intervalo aberto $]a, b[$ ($c$ é ponto interior!). Pelo Teorema 1 da Seção 9.7 (Condição Necessária de Fermat), como $c \in \,]a, b[$ é ponto de mínimo local de $g$, segue obrigatoriamente <strong>$g'(c) = 0$</strong>! $\blacksquare$</li></ol>
 </details>
-<hr/>
+<hr>
 <a id="cap-10-11"></a>
-<h2 id="bloco-9-primitivas-integral-de-riemann-1-e-2-tfc-e-areas-capitulos-10-e-11">Bloco 9 — Primitivas, Integral de Riemann, 1º e 2º TFC e Áreas (Capítulos 10 e 11)</h2>
-<h3 id="exercicio-b9-1-code-inline-16">Exercício B9.1 🟡 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 11.6 e Seção 11.7]</span></h3>
-<p>(a) Calcule a área da região plana limitada pelas curvas <span class="math-inline">\(y = x^2 - 2x\)</span> e <span class="math-inline">\(y = 4 - x^2\)</span>. (b) Seja <span class="math-inline">\(f: [-a, a] \to \mathbb{R}\)</span> contínua. Prove, usando o Teorema de Mudança de Variável na Integral (Seção 11.7), que se <span class="math-inline">\(f\)</span> é <strong>ímpar</strong> (<span class="math-inline">\(f(-x) = -f(x)\)</span>), então <span class="math-inline">\(\int_{-a}^{a} f(x)\,dx = 0\)</span>; e use isso para calcular num segundo <span class="math-inline">\(\displaystyle \int_{-\pi/2}^{\pi/2} \left(x^3 \cos x + \frac{\operatorname{sen}^5 x}{1 + x^4} + \cos x\right)dx\)</span>.</p>
+<h2 id="bloco-9-primitivas-integral-de-riemann-1o-e-2o-tfc-e-areas-capitulos-10-e-11">Bloco 9 — Primitivas, Integral de Riemann, 1º e 2º TFC e Áreas (Capítulos 10 e 11)</h2>
+<h3 id="exercicio-b9-1-guidorizzi-5a-ed-secao-11-6-e-secao-11-7">Exercício B9.1 <em>[Guidorizzi, 5ª ed., Seção 11.6 e Seção 11.7]</em></h3>
+<p>(a) Calcule a área da região plana limitada pelas curvas $y = x^2 - 2x$ e $y = 4 - x^2$. (b) Seja $f: [-a, a] \to \mathbb{R}$ contínua. Prove, usando o Teorema de Mudança de Variável na Integral (Seção 11.7), que se $f$ é <strong>ímpar</strong> ($f(-x) = -f(x)$), então $\int_{-a}^{a} f(x)\,dx = 0$; e use isso para calcular num segundo $\displaystyle \int_{-\pi/2}^{\pi/2} \left(x^3 \cos x + \frac{\operatorname{sen}^5 x}{1 + x^4} + \cos x\right)dx$.</p>
 <details>
 <summary><strong>Ver Resolução Completa Passo a Passo</strong></summary>
-<ol><li><strong>Item (a):</strong> Achamos primeiro as abscissas de interseção igualando as ordenadas: <div class="math-display">\[x^2 - 2x = 4 - x^2 \iff 2x^2 - 2x - 4 = 0 \iff x^2 - x - 2 = 0 \iff (x + 1)(x - 2) = 0 \implies x = -1 \text{ ou } x = 2.\]</div> Para <span class="math-inline">\(x \in [-1, 2]\)</span>, temos <span class="math-inline">\(4 - x^2 \ge x^2 - 2x\)</span>. Portanto: <div class="math-display">\[\text{Área} = \int_{-1}^{2} \big[(4 - x^2) - (x^2 - 2x)\big]\,dx = \int_{-1}^{2} (-2x^2 + 2x + 4)\,dx = \left[-\frac{2x^3}{3} + x^2 + 4x\right]_{-1}^{2} = \left(-\frac{16}{3} + 4 + 8\right) - \left(\frac{2}{3} + 1 - 4\right) = \mathbf{9}.\]</div></li><li><strong>Item (b):</strong> Pela aditividade da integral, <span class="math-inline">\(\int_{-a}^{a} f(x)\,dx = \int_{-a}^{0} f(x)\,dx + \int_{0}^{a} f(x)\,dx\)</span>. Na primeira integral, fazemos a substituição <span class="math-inline">\(x = -u \implies dx = -du\)</span> (para <span class="math-inline">\(x = -a \implies u = a\)</span>; para <span class="math-inline">\(x = 0 \implies u = 0\)</span>): <div class="math-display">\[\int_{-a}^{0} f(x)\,dx = \int_{a}^{0} f(-u)(-du) = \int_{0}^{a} f(-u)\,du = -\int_{0}^{a} f(u)\,du \implies \int_{-a}^{a} f(x)\,dx = 0.\]</div> Aplicando à integral dada em <span class="math-inline">\([-\pi/2, \pi/2]\)</span>: as funções <span class="math-inline">\(g_1(x) = x^3 \cos x\)</span> e <span class="math-inline">\(g_2(x) = \frac{\operatorname{sen}^5 x}{1 + x^4}\)</span> são <strong>ímpares</strong> (logo suas integrais em <span class="math-inline">\([-\pi/2, \pi/2]\)</span> valem <span class="math-inline">\(0\)</span>), enquanto <span class="math-inline">\(\cos x\)</span> é <strong>par</strong>: <div class="math-display">\[\int_{-\pi/2}^{\pi/2} \left(x^3 \cos x + \frac{\operatorname{sen}^5 x}{1 + x^4} + \cos x\right)dx = 0 + 0 + 2\int_{0}^{\pi/2} \cos x\,dx = 2\big[\operatorname{sen} x\big]_{0}^{\pi/2} = \mathbf{2}. \quad \blacksquare\]</div></li></ol>
+<ol><li><strong>Item (a):</strong> Achamos primeiro as abscissas de interseção igualando as ordenadas: <div class="math-display">$$x^2 - 2x = 4 - x^2 \iff 2x^2 - 2x - 4 = 0 \iff x^2 - x - 2 = 0 \iff (x + 1)(x - 2) = 0 \implies x = -1 \text{ ou } x = 2.$$</div> Para $x \in [-1, 2]$, temos $4 - x^2 \ge x^2 - 2x$. Portanto: <div class="math-display">$$\text{Área} = \int_{-1}^{2} \big[(4 - x^2) - (x^2 - 2x)\big]\,dx = \int_{-1}^{2} (-2x^2 + 2x + 4)\,dx = \left[-\frac{2x^3}{3} + x^2 + 4x\right]_{-1}^{2} = \left(-\frac{16}{3} + 4 + 8\right) - \left(\frac{2}{3} + 1 - 4\right) = \mathbf{9}.$$</div></li><li><strong>Item (b):</strong> Pela aditividade da integral, $\int_{-a}^{a} f(x)\,dx = \int_{-a}^{0} f(x)\,dx + \int_{0}^{a} f(x)\,dx$. Na primeira integral, fazemos a substituição $x = -u \implies dx = -du$ (para $x = -a \implies u = a$; para $x = 0 \implies u = 0$): <div class="math-display">$$\int_{-a}^{0} f(x)\,dx = \int_{a}^{0} f(-u)(-du) = \int_{0}^{a} f(-u)\,du = -\int_{0}^{a} f(u)\,du \implies \int_{-a}^{a} f(x)\,dx = 0.$$</div> Aplicando à integral dada em $[-\pi/2, \pi/2]$: as funções $g_1(x) = x^3 \cos x$ e $g_2(x) = \frac{\operatorname{sen}^5 x}{1 + x^4}$ são <strong>ímpares</strong> (logo suas integrais em $[-\pi/2, \pi/2]$ valem $0$), enquanto $\cos x$ é <strong>par</strong>: <div class="math-display">$$\int_{-\pi/2}^{\pi/2} \left(x^3 \cos x + \frac{\operatorname{sen}^5 x}{1 + x^4} + \cos x\right)dx = 0 + 0 + 2\int_{0}^{\pi/2} \cos x\,dx = 2\big[\operatorname{sen} x\big]_{0}^{\pi/2} = \mathbf{2}. \quad \blacksquare$$</div></li></ol>
 </details>
-<hr/>
-<h3 id="exercicio-b9-2-code-inline-17">Exercício B9.2 🟡 <span class="badge-ref badge-apostol">📙 [Mudança de Referência — Apostol, Cálculo I, Cap. 5, Seção 5.1 (e Guidorizzi Vol. 2, Cap. 2)]</span></h3>
-<p>Seja <span class="math-inline">\(F(x) = \displaystyle \int_{\operatorname{sen} x}^{x^2} e^{-t^2}\,dt\)</span>. Calcule <span class="math-inline">\(F'(x)\)</span> para todo <span class="math-inline">\(x \in \mathbb{R}\)</span>, e calcule o limite: <div class="math-display">\[\lim_{x \to 0} \frac{\displaystyle \int_{0}^{x^2} \operatorname{sen}(\sqrt{t})\,dt}{x^3} \quad (x &gt; 0).\]</div></p>
+<hr>
+<h3 id="exercicio-b9-2-complemento-apostol-calculo-i-cap-5-secao-5-1-e-guidorizzi-vol-2-cap-2">Exercício B9.2 <em>[Complemento — Apostol, Cálculo I, Cap. 5, Seção 5.1 (e Guidorizzi Vol. 2, Cap. 2)]</em></h3>
+<p>Seja $F(x) = \displaystyle \int_{\operatorname{sen} x}^{x^2} e^{-t^2}\,dt$. Calcule $F'(x)$ para todo $x \in \mathbb{R}$, e calcule o limite: <div class="math-display">$$\lim_{x \to 0} \frac{\displaystyle \int_{0}^{x^2} \operatorname{sen}(\sqrt{t})\,dt}{x^3} \quad (x > 0).$$</div></p>
 <details>
 <summary><strong>Ver Resolução Completa Passo a Passo</strong></summary>
-<ol><li><strong>Derivada de <span class="math-inline">\(F(x)\)</span>:</strong> Pelo Teorema da Derivada da Integral (Apostol, Seção 5.1) combinado com a Regra da Cadeia: <div class="math-display">\[F'(x) = \frac{d}{dx}\left[\int_{\operatorname{sen} x}^{x^2} e^{-t^2}\,dt\right] = e^{-(x^2)^2}\cdot (x^2)' - e^{-(\operatorname{sen} x)^2}\cdot (\operatorname{sen} x)' = \mathbf{2x e^{-x^4} - (\cos x) e^{-\operatorname{sen}^2 x}}.\]</div></li><li><strong>Cálculo do limite:</strong> Quando <span class="math-inline">\(x \to 0^+\)</span>, tanto o numerador <span class="math-inline">\(\int_0^{x^2} \operatorname{sen}(\sqrt{t})\,dt\)</span> quanto o denominador <span class="math-inline">\(x^3\)</span> tendem a <span class="math-inline">\(0\)</span> (indeterminação <span class="math-inline">\(\frac{0}{0}\)</span>). Aplicando a Regra de L'Hospital e derivando o numerador pelo TFC: <div class="math-display">\[\lim_{x \to 0^+} \frac{\int_{0}^{x^2} \operatorname{sen}(\sqrt{t})\,dt}{x^3} \stackrel{\text{L'H}}{=} \lim_{x \to 0^+} \frac{\operatorname{sen}\left(\sqrt{x^2}\right) \cdot 2x}{3x^2} = \lim_{x \to 0^+} \frac{2}{3} \cdot \frac{\operatorname{sen} x}{x} = \mathbf{\frac{2}{3}}. \quad \blacksquare\]</div></li></ol>
+<ol><li><strong>Derivada de $F(x)$:</strong> Pelo Teorema da Derivada da Integral (Apostol, Seção 5.1) combinado com a Regra da Cadeia: <div class="math-display">$$F'(x) = \frac{d}{dx}\left[\int_{\operatorname{sen} x}^{x^2} e^{-t^2}\,dt\right] = e^{-(x^2)^2}\cdot (x^2)' - e^{-(\operatorname{sen} x)^2}\cdot (\operatorname{sen} x)' = \mathbf{2x e^{-x^4} - (\cos x) e^{-\operatorname{sen}^2 x}}.$$</div></li><li><strong>Cálculo do limite:</strong> Quando $x \to 0^+$, tanto o numerador $\int_0^{x^2} \operatorname{sen}(\sqrt{t})\,dt$ quanto o denominador $x^3$ tendem a $0$ (indeterminação $\frac{0}{0}$). Aplicando a Regra de L'Hospital e derivando o numerador pelo TFC: <div class="math-display">$$\lim_{x \to 0^+} \frac{\int_{0}^{x^2} \operatorname{sen}(\sqrt{t})\,dt}{x^3} \stackrel{\text{L'H}}{=} \lim_{x \to 0^+} \frac{\operatorname{sen}\left(\sqrt{x^2}\right) \cdot 2x}{3x^2} = \lim_{x \to 0^+} \frac{2}{3} \cdot \frac{\operatorname{sen} x}{x} = \mathbf{\frac{2}{3}}. \quad \blacksquare$$</div></li></ol>
 </details>
-<hr/>
+<hr>
 <a id="cap-12"></a>
 <h2 id="bloco-10-tecnicas-de-primitivacao-capitulo-12">Bloco 10 — Técnicas de Primitivação (Capítulo 12)</h2>
-<h3 id="exercicio-b10-1-code-inline-18">Exercício B10.1 🟡 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Seções 12.3, 12.5 e 12.9]</span></h3>
-<p>Calcule as seguintes integrais: (a) <span class="math-inline">\(\displaystyle \int x^2 \operatorname{arctg} x\,dx\)</span>; <span class="math-inline">\(\qquad\)</span> (b) <span class="math-inline">\(\displaystyle \int \frac{\sqrt{4 - x^2}}{x^2}\,dx\)</span> (<span class="math-inline">\(0 &lt; x &lt; 2\)</span>); <span class="math-inline">\(\qquad\)</span> (c) (<strong>Integrais de Wallis — Ex. da Seção 12.9:</strong>) Deduzir que para todo natural <span class="math-inline">\(n \ge 2\)</span>, <span class="math-inline">\(I_n = \int_{0}^{\pi/2} \operatorname{sen}^n x\,dx\)</span> satisfaz <span class="math-inline">\(I_n = \frac{n-1}{n}I_{n-2}\)</span>.</p>
+<h3 id="exercicio-b10-1-guidorizzi-5a-ed-secoes-12-3-12-5-e-12-9">Exercício B10.1 <em>[Guidorizzi, 5ª ed., Seções 12.3, 12.5 e 12.9]</em></h3>
+<p>Calcule as seguintes integrais: (a) $\displaystyle \int x^2 \operatorname{arctg} x\,dx$; $\qquad$ (b) $\displaystyle \int \frac{\sqrt{4 - x^2}}{x^2}\,dx$ ($0 < x < 2$); $\qquad$ (c) (<strong>Integrais de Wallis — Ex. da Seção 12.9:</strong>) Deduzir que para todo natural $n \ge 2$, $I_n = \int_{0}^{\pi/2} \operatorname{sen}^n x\,dx$ satisfaz $I_n = \frac{n-1}{n}I_{n-2}$.</p>
 <details>
 <summary><strong>Ver Resolução Completa Passo a Passo</strong></summary>
-<ol><li><strong>Item (a) — Integração por Partes (Seção 12.3):</strong> Escolhendo <span class="math-inline">\(u = \operatorname{arctg} x \implies du = \frac{1}{1+x^2}\,dx\)</span> e <span class="math-inline">\(dv = x^2\,dx \implies v = \frac{x^3}{3}\)</span>: <div class="math-display">\[\int x^2 \operatorname{arctg} x\,dx = \frac{x^3}{3}\operatorname{arctg} x - \frac{1}{3}\int \frac{x^3}{x^2 + 1}\,dx.\]</div> Efetuando a divisão de polinômios <span class="math-inline">\(\frac{x^3}{x^2 + 1} = \frac{x(x^2 + 1) - x}{x^2 + 1} = x - \frac{x}{x^2 + 1}\)</span>: <div class="math-display">\[\int x^2 \operatorname{arctg} x\,dx = \frac{x^3}{3}\operatorname{arctg} x - \frac{1}{3}\int \left(x - \frac{x}{x^2 + 1}\right)dx = \mathbf{\frac{x^3}{3}\operatorname{arctg} x - \frac{x^2}{6} + \frac{1}{6}\ln(x^2 + 1) + k}.\]</div></li><li><strong>Item (b) — Substituição Trigonométrica (Seção 12.5):</strong> Fazendo <span class="math-inline">\(x = 2\operatorname{sen}\theta\)</span> (<span class="math-inline">\(\theta \in \,]0, \pi/2[\)</span>), temos <span class="math-inline">\(dx = 2\cos\theta\,d\theta\)</span> e <span class="math-inline">\(\sqrt{4 - x^2} = 2\cos\theta\)</span>: <div class="math-display">\[\int \frac{\sqrt{4 - x^2}}{x^2}\,dx = \int \frac{(2\cos\theta)(2\cos\theta\,d\theta)}{4\operatorname{sen}^2\theta} = \int \operatorname{cotg}^2\theta\,d\theta = \int (\operatorname{cossec}^2\theta - 1)\,d\theta = -\operatorname{cotg}\theta - \theta + k.\]</div> Como <span class="math-inline">\(\operatorname{sen}\theta = \frac{x}{2}\)</span>, no triângulo retângulo de hipotenusa <span class="math-inline">\(2\)</span> e cateto oposto <span class="math-inline">\(x\)</span>, o cateto adjacente é <span class="math-inline">\(\sqrt{4 - x^2}\)</span>, logo <span class="math-inline">\(\operatorname{cotg}\theta = \frac{\sqrt{4 - x^2}}{x}\)</span> e <span class="math-inline">\(\theta = \operatorname{arcsen}\left(\frac{x}{2}\right)\)</span>: <div class="math-display">\[\int \frac{\sqrt{4 - x^2}}{x^2}\,dx = \mathbf{-\frac{\sqrt{4 - x^2}}{x} - \operatorname{arcsen}\left(\frac{x}{2}\right) + k}.\]</div></li><li><strong>Item (c) — Fórmula de Wallis (Seção 12.9):</strong> Aplicando a fórmula de recorrência da Seção 12.9 no intervalo <span class="math-inline">\([0, \pi/2]\)</span>: <div class="math-display">\[I_n = \int_{0}^{\pi/2} \operatorname{sen}^n x\,dx = \underbrace{\left[-\frac{1}{n}\operatorname{sen}^{n-1} x \cos x\right]_{0}^{\pi/2}}_{0 - 0 = 0} + \frac{n - 1}{n}\int_{0}^{\pi/2} \operatorname{sen}^{n-2} x\,dx = \mathbf{\frac{n - 1}{n}I_{n-2}}. \quad \blacksquare\]</div></li></ol>
+<ol><li><strong>Item (a) — Integração por Partes (Seção 12.3):</strong> Escolhendo $u = \operatorname{arctg} x \implies du = \frac{1}{1+x^2}\,dx$ e $dv = x^2\,dx \implies v = \frac{x^3}{3}$: <div class="math-display">$$\int x^2 \operatorname{arctg} x\,dx = \frac{x^3}{3}\operatorname{arctg} x - \frac{1}{3}\int \frac{x^3}{x^2 + 1}\,dx.$$</div> Efetuando a divisão de polinômios $\frac{x^3}{x^2 + 1} = \frac{x(x^2 + 1) - x}{x^2 + 1} = x - \frac{x}{x^2 + 1}$: <div class="math-display">$$\int x^2 \operatorname{arctg} x\,dx = \frac{x^3}{3}\operatorname{arctg} x - \frac{1}{3}\int \left(x - \frac{x}{x^2 + 1}\right)dx = \mathbf{\frac{x^3}{3}\operatorname{arctg} x - \frac{x^2}{6} + \frac{1}{6}\ln(x^2 + 1) + k}.$$</div></li><li><strong>Item (b) — Substituição Trigonométrica (Seção 12.5):</strong> Fazendo $x = 2\operatorname{sen}\theta$ ($\theta \in \,]0, \pi/2[$), temos $dx = 2\cos\theta\,d\theta$ e $\sqrt{4 - x^2} = 2\cos\theta$: <div class="math-display">$$\int \frac{\sqrt{4 - x^2}}{x^2}\,dx = \int \frac{(2\cos\theta)(2\cos\theta\,d\theta)}{4\operatorname{sen}^2\theta} = \int \operatorname{cotg}^2\theta\,d\theta = \int (\operatorname{cossec}^2\theta - 1)\,d\theta = -\operatorname{cotg}\theta - \theta + k.$$</div> Como $\operatorname{sen}\theta = \frac{x}{2}$, no triângulo retângulo de hipotenusa $2$ e cateto oposto $x$, o cateto adjacente é $\sqrt{4 - x^2}$, logo $\operatorname{cotg}\theta = \frac{\sqrt{4 - x^2}}{x}$ e $\theta = \operatorname{arcsen}\left(\frac{x}{2}\right)$: <div class="math-display">$$\int \frac{\sqrt{4 - x^2}}{x^2}\,dx = \mathbf{-\frac{\sqrt{4 - x^2}}{x} - \operatorname{arcsen}\left(\frac{x}{2}\right) + k}.$$</div></li><li><strong>Item (c) — Fórmula de Wallis (Seção 12.9):</strong> Aplicando a fórmula de recorrência da Seção 12.9 no intervalo $[0, \pi/2]$: <div class="math-display">$$I_n = \int_{0}^{\pi/2} \operatorname{sen}^n x\,dx = \underbrace{\left[-\frac{1}{n}\operatorname{sen}^{n-1} x \cos x\right]_{0}^{\pi/2}}_{0 - 0 = 0} + \frac{n - 1}{n}\int_{0}^{\pi/2} \operatorname{sen}^{n-2} x\,dx = \mathbf{\frac{n - 1}{n}I_{n-2}}. \quad \blacksquare$$</div></li></ol>
 </details>
-<hr/>
+<hr>
 <a id="cap-13"></a>
 <h2 id="bloco-11-volumes-comprimento-de-arco-polares-e-pappus-capitulo-13">Bloco 11 — Volumes, Comprimento de Arco, Polares e Pappus (Capítulo 13)</h2>
-<h3 id="exercicio-b11-1-code-inline-19">Exercício B11.1 🟡 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Seções 13.1, 13.2 e 13.9, Ex. 5]</span></h3>
-<p>Considere o disco circular <span class="math-inline">\(A = \{(x, y) \in \mathbb{R}^2 \mid x^2 + (y - b)^2 \le a^2\}\)</span>, com <span class="math-inline">\(0 &lt; a &lt; b\)</span>. Calcule o volume do <strong>Toro (pneu / rosquinha)</strong> obtido pela rotação de <span class="math-inline">\(A\)</span> em torno do eixo <span class="math-inline">\(x\)</span>, tanto pela integral direta quanto pelo <strong>Teorema de Pappus</strong>!</p>
+<h3 id="exercicio-b11-1-guidorizzi-5a-ed-secoes-13-1-13-2-e-13-9-ex-5">Exercício B11.1 <em>[Guidorizzi, 5ª ed., Seções 13.1, 13.2 e 13.9, Ex. 5]</em></h3>
+<p>Considere o disco circular $A = \{(x, y) \in \mathbb{R}^2 \mid x^2 + (y - b)^2 \le a^2\}$, com $0 < a < b$. Calcule o volume do <strong>Toro (pneu / rosquinha)</strong> obtido pela rotação de $A$ em torno do eixo $x$, tanto pela integral direta quanto pelo <strong>Teorema de Pappus</strong>!</p>
 <details>
 <summary><strong>Ver Resolução Completa Passo a Passo</strong></summary>
-<ol><li><strong>Método 1 (Integral Direta por Anéis / Substituição Trigonométrica — Seção 13.1):</strong>   Isolando <span class="math-inline">\(y\)</span> na equação <span class="math-inline">\((y - b)^2 \le a^2 - x^2\)</span> para <span class="math-inline">\(x \in [-a, a]\)</span>, o bordo superior é <span class="math-inline">\(f(x) = b + \sqrt{a^2 - x^2}\)</span> e o bordo inferior é <span class="math-inline">\(g(x) = b - \sqrt{a^2 - x^2}\)</span>. Logo: <div class="math-display">\[[f(x)]^2 - [g(x)]^2 = \left(b + \sqrt{a^2 - x^2}\right)^2 - \left(b - \sqrt{a^2 - x^2}\right)^2 = 4b\sqrt{a^2 - x^2}.\]</div> Integrando de <span class="math-inline">\(-a\)</span> a <span class="math-inline">\(a\)</span>: <div class="math-display">\[V_x = \pi \int_{-a}^{a} 4b\sqrt{a^2 - x^2}\,dx = 4\pi b \underbrace{\int_{-a}^{a} \sqrt{a^2 - x^2}\,dx}_{\text{área do semicírculo } = \frac{\pi a^2}{2}} = 4\pi b \left(\frac{\pi a^2}{2}\right) = \mathbf{2\pi^2 a^2 b}.\]</div></li><li><strong>Método 2 (Em 1 linha pelo Teorema de Pappus — Seção 13.9):</strong>   O disco <span class="math-inline">\(A\)</span> tem área <span class="math-inline">\(\text{Área}(A) = \pi a^2\)</span> e seu centro de massa (por simetria) é o centro do círculo <span class="math-inline">\((x_c, y_c) = (0, b)\)</span>. Na rotação em torno do eixo <span class="math-inline">\(x\)</span>, o centro de massa descreve uma circunferência de raio <span class="math-inline">\(b\)</span> e comprimento <span class="math-inline">\(2\pi b\)</span>. Pelo Teorema de Pappus: <div class="math-display">\[V_x = (2\pi y_c) \cdot \text{Área}(A) = (2\pi b)(\pi a^2) = \mathbf{2\pi^2 a^2 b}. \quad \blacksquare\]</div></li></ol>
+<ol><li><strong>Método 1 (Integral Direta por Anéis / Substituição Trigonométrica — Seção 13.1):</strong> Isolando $y$ na equação $(y - b)^2 \le a^2 - x^2$ para $x \in [-a, a]$, o bordo superior é $f(x) = b + \sqrt{a^2 - x^2}$ e o bordo inferior é $g(x) = b - \sqrt{a^2 - x^2}$. Logo: <div class="math-display">$$[f(x)]^2 - [g(x)]^2 = \left(b + \sqrt{a^2 - x^2}\right)^2 - \left(b - \sqrt{a^2 - x^2}\right)^2 = 4b\sqrt{a^2 - x^2}.$$</div> Integrando de $-a$ a $a$: <div class="math-display">$$V_x = \pi \int_{-a}^{a} 4b\sqrt{a^2 - x^2}\,dx = 4\pi b \underbrace{\int_{-a}^{a} \sqrt{a^2 - x^2}\,dx}_{\text{área do semicírculo } = \frac{\pi a^2}{2}} = 4\pi b \left(\frac{\pi a^2}{2}\right) = \mathbf{2\pi^2 a^2 b}.$$</div></li><li><strong>Método 2 (Em 1 linha pelo Teorema de Pappus — Seção 13.9):</strong> O disco $A$ tem área $\text{Área}(A) = \pi a^2$ e seu centro de massa (por simetria) é o centro do círculo $(x_c, y_c) = (0, b)$. Na rotação em torno do eixo $x$, o centro de massa descreve uma circunferência de raio $b$ e comprimento $2\pi b$. Pelo Teorema de Pappus: <div class="math-display">$$V_x = (2\pi y_c) \cdot \text{Área}(A) = (2\pi b)(\pi a^2) = \mathbf{2\pi^2 a^2 b}. \quad \blacksquare$$</div></li></ol>
 </details>
-<hr/>
+<hr>
 <a id="cap-14"></a>
-<h2 id="bloco-12-equacoes-diferenciais-de-1-ordem-capitulo-14">Bloco 12 — Equações Diferenciais de 1ª Ordem (Capítulo 14)</h2>
-<h3 id="exercicio-b12-1-code-inline-20">Exercício B12.1 🟡 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Seções 14.3–14.6]</span></h3>
-<p>(a) Determine <strong>todas</strong> as soluções (constantes e não constantes) da EDO de variáveis separáveis <span class="math-inline">\(\dfrac{dx}{dt} = x^2 - 1\)</span>. (b) Resolva o problema de valor inicial (PVI) linear de 1ª ordem: <div class="math-display">\[\frac{dy}{dx} + (\operatorname{tg} x)y = \cos^2 x, \qquad y(0) = 2, \quad x \in \left]-\frac{\pi}{2}, \frac{\pi}{2}\right[.\]</div></p>
+<h2 id="bloco-12-equacoes-diferenciais-de-1a-ordem-capitulo-14">Bloco 12 — Equações Diferenciais de 1ª Ordem (Capítulo 14)</h2>
+<h3 id="exercicio-b12-1-guidorizzi-5a-ed-secoes-14-3-14-6">Exercício B12.1 <em>[Guidorizzi, 5ª ed., Seções 14.3–14.6]</em></h3>
+<p>(a) Determine <strong>todas</strong> as soluções (constantes e não constantes) da EDO de variáveis separáveis $\dfrac{dx}{dt} = x^2 - 1$. (b) Resolva o problema de valor inicial (PVI) linear de 1ª ordem: <div class="math-display">$$\frac{dy}{dx} + (\operatorname{tg} x)y = \cos^2 x, \qquad y(0) = 2, \quad x \in \left]-\frac{\pi}{2}, \frac{\pi}{2}\right[.$$</div></p>
 <details>
 <summary><strong>Ver Resolução Completa Passo a Passo</strong></summary>
-<ol><li><strong>Item (a) — EDO Separável (Seções 14.3–14.5):</strong><div class="sub-item">• <strong>Soluções constantes (<span class="math-inline">\(h(x) = x^2 - 1 = 0\)</span>):</strong> As funções constantes <strong><span class="math-inline">\(x(t) = 1\)</span></strong> (<span class="math-inline">\(\forall t \in \mathbb{R}\)</span>) e <strong><span class="math-inline">\(x(t) = -1\)</span></strong> (<span class="math-inline">\(\forall t \in \mathbb{R}\)</span>) são soluções.</div><div class="sub-item">• <strong>Soluções não constantes (<span class="math-inline">\(x^2 - 1 \neq 0\)</span>):</strong> Separando as variáveis e usando frações parciais <span class="math-inline">\(\frac{1}{x^2 - 1} = \frac{1}{2}\left(\frac{1}{x - 1} - \frac{1}{x + 1}\right)\)</span>:</div> <div class="math-display">\[\int \frac{1}{x^2 - 1}\,dx = \int 1\,dt \implies \frac{1}{2}\ln\left|\frac{x - 1}{x + 1}\right| = t + c \implies \left|\frac{x - 1}{x + 1}\right| = e^{2c} e^{2t} \implies \frac{x - 1}{x + 1} = k e^{2t} \quad (k \in \mathbb{R}^*).\]</div> Isolando <span class="math-inline">\(x(t)\)</span>: <span class="math-inline">\(x - 1 = k e^{2t}(x + 1) \implies x(1 - k e^{2t}) = 1 + k e^{2t} \implies \mathbf{x(t) = \frac{1 + k e^{2t}}{1 - k e^{2t}}}\)</span> (e note que tomando <span class="math-inline">\(k = 0\)</span> recuperamos a solução constante <span class="math-inline">\(x(t) = 1\)</span>, enquanto <span class="math-inline">\(x(t) = -1\)</span> fica destacada à parte!).</li><li><strong>Item (b) — EDO Linear via Fator Integrante (Seção 14.6):</strong>   Para <span class="math-inline">\(x \in \,]-\frac{\pi}{2}, \frac{\pi}{2}[\)</span>, temos <span class="math-inline">\(\cos x &gt; 0\)</span> e <span class="math-inline">\(a(x) = \operatorname{tg} x \implies A(x) = \int \operatorname{tg} x\,dx = -\ln(\cos x) = \ln(\sec x)\)</span>. Logo, o fator integrante é <span class="math-inline">\(\mu(x) = e^{A(x)} = \sec x = \frac{1}{\cos x}\)</span>. Multiplicando a EDO por <span class="math-inline">\(\sec x\)</span>: <div class="math-display">\[(\sec x)y' + (\sec x \operatorname{tg} x)y = \sec x \cos^2 x \iff \frac{d}{dx}\Big[(\sec x)y\Big] = \cos x.\]</div> Integrando em relação a <span class="math-inline">\(x\)</span>: <div class="math-display">\[(\sec x)y = \int \cos x\,dx = \operatorname{sen} x + k \implies y(x) = \operatorname{sen} x \cos x + k\cos x.\]</div> Impondo <span class="math-inline">\(y(0) = 2 \implies 0 + k \cdot 1 = 2 \implies k = 2\)</span>. Portanto: <div class="math-display">\[\mathbf{y(x) = \operatorname{sen} x \cos x + 2\cos x}. \quad \blacksquare\]</div></li></ol>
+<ol><li><strong>Item (a) — EDO Separável (Seções 14.3–14.5):</strong></li></ol>
+<ul><li><strong>Soluções constantes ($h(x) = x^2 - 1 = 0$):</strong> As funções constantes <strong>$x(t) = 1$</strong> ($\forall t \in \mathbb{R}$) e <strong>$x(t) = -1$</strong> ($\forall t \in \mathbb{R}$) são soluções.</li><li><strong>Soluções não constantes ($x^2 - 1 \neq 0$):</strong> Separando as variáveis e usando frações parciais $\frac{1}{x^2 - 1} = \frac{1}{2}\left(\frac{1}{x - 1} - \frac{1}{x + 1}\right)$: <div class="math-display">$$\int \frac{1}{x^2 - 1}\,dx = \int 1\,dt \implies \frac{1}{2}\ln\left|\frac{x - 1}{x + 1}\right| = t + c \implies \left|\frac{x - 1}{x + 1}\right| = e^{2c} e^{2t} \implies \frac{x - 1}{x + 1} = k e^{2t} \quad (k \in \mathbb{R}^*).$$</div> Isolando $x(t)$: $x - 1 = k e^{2t}(x + 1) \implies x(1 - k e^{2t}) = 1 + k e^{2t} \implies \mathbf{x(t) = \frac{1 + k e^{2t}}{1 - k e^{2t}}}$ (e note que tomando $k = 0$ recuperamos a solução constante $x(t) = 1$, enquanto $x(t) = -1$ fica destacada à parte!).</li></ul>
+<ol><li><strong>Item (b) — EDO Linear via Fator Integrante (Seção 14.6):</strong> Para $x \in \,]-\frac{\pi}{2}, \frac{\pi}{2}[$, temos $\cos x > 0$ e $a(x) = \operatorname{tg} x \implies A(x) = \int \operatorname{tg} x\,dx = -\ln(\cos x) = \ln(\sec x)$. Logo, o fator integrante é $\mu(x) = e^{A(x)} = \sec x = \frac{1}{\cos x}$. Multiplicando a EDO por $\sec x$: <div class="math-display">$$(\sec x)y' + (\sec x \operatorname{tg} x)y = \sec x \cos^2 x \iff \frac{d}{dx}\Big[(\sec x)y\Big] = \cos x.$$</div> Integrando em relação a $x$: <div class="math-display">$$(\sec x)y = \int \cos x\,dx = \operatorname{sen} x + k \implies y(x) = \operatorname{sen} x \cos x + k\cos x.$$</div> Impondo $y(0) = 2 \implies 0 + k \cdot 1 = 2 \implies k = 2$. Portanto: <div class="math-display">$$\mathbf{y(x) = \operatorname{sen} x \cos x + 2\cos x}. \quad \blacksquare$$</div></li></ol>
 </details>
-<hr/>
+<hr>
 <a id="cap-16"></a>
 <h2 id="bloco-13-formula-e-polinomios-de-taylor-capitulo-16">Bloco 13 — Fórmula e Polinômios de Taylor (Capítulo 16)</h2>
-<h3 id="exercicio-b13-1-code-inline-21">Exercício B13.1 🟡 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 16.2, Ex. 2 e Seção 16.3, Ex. 6 e 10]</span></h3>
-<p>(a) Utilizando um polinômio de Taylor de ordem <span class="math-inline">\(2\)</span> em volta de <span class="math-inline">\(x_0 = 8\)</span>, calcule um valor aproximado para <strong><span class="math-inline">\(\sqrt[3]{8{,}12}\)</span></strong>, avalie o erro cometido pelo Resto de Lagrange e diga se a aproximação é por falta ou por excesso. (b) Usando os polinômios de Maclaurin com resto de Peano <span class="math-inline">\(o(x^n)\)</span>, calcule o limite: <div class="math-display">\[\lim_{x \to 0} \frac{\cos x - e^{-x^2/2}}{x^4}.\]</div></p>
+<h3 id="exercicio-b13-1-guidorizzi-5a-ed-secao-16-2-ex-2-e-secao-16-3-ex-6-e-10">Exercício B13.1 <em>[Guidorizzi, 5ª ed., Seção 16.2, Ex. 2 e Seção 16.3, Ex. 6 e 10]</em></h3>
+<p>(a) Utilizando um polinômio de Taylor de ordem $2$ em volta de $x_0 = 8$, calcule um valor aproximado para <strong>$\sqrt[3]{8{,}12}$</strong>, avalie o erro cometido pelo Resto de Lagrange e diga se a aproximação é por falta ou por excesso. (b) Usando os polinômios de Maclaurin com resto de Peano $o(x^n)$, calcule o limite: <div class="math-display">$$\lim_{x \to 0} \frac{\cos x - e^{-x^2/2}}{x^4}.$$</div></p>
 <details>
 <summary><strong>Ver Resolução Completa Passo a Passo</strong></summary>
-<ol><li><strong>Item (a):</strong> Seja <span class="math-inline">\(f(x) = x^{1/3}\)</span> em torno de <span class="math-inline">\(x_0 = 8\)</span>. Calculando as derivadas até a 3ª ordem:<div class="sub-item">• <span class="math-inline">\(f(x) = x^{1/3} \implies f(8) = 2\)</span>;</div><div class="sub-item">• <span class="math-inline">\(f'(x) = \frac{1}{3}x^{-2/3} \implies f'(8) = \frac{1}{3 \cdot 4} = \frac{1}{12}\)</span>;</div><div class="sub-item">• <span class="math-inline">\(f''(x) = -\frac{2}{9}x^{-5/3} \implies f''(8) = -\frac{2}{9 \cdot 32} = -\frac{1}{144}\)</span>;</div><div class="sub-item">• <span class="math-inline">\(f'''(x) = \frac{10}{27}x^{-8/3}\)</span>.</div> O polinômio de Taylor de ordem <span class="math-inline">\(2\)</span> em volta de <span class="math-inline">\(x_0 = 8\)</span> é: <div class="math-display">\[P_2(x) = 2 + \frac{1}{12}(x - 8) - \frac{1}{288}(x - 8)^2.\]</div> Para <span class="math-inline">\(x = 8{,}12\)</span> (<span class="math-inline">\(x - 8 = 0{,}12\)</span>): <div class="math-display">\[\sqrt[3]{8{,}12} \approx P_2(8{,}12) = 2 + \frac{0{,}12}{12} - \frac{(0{,}12)^2}{288} = 2 + 0{,}01 - \frac{0{,}0144}{288} = 2 + 0{,}01 - 0{,}00005 = \mathbf{2{,}00995}.\]</div> <strong>Estimativa do Erro:</strong> Pelo Teorema de Lagrange, existe <span class="math-inline">\(\bar{x} \in \,]8;\, 8{,}12[\)</span> tal que: <div class="math-display">\[E_2(8{,}12) = \frac{f'''(\bar{x})}{3!}(0{,}12)^3 = \frac{10}{27 \cdot 6 \cdot \bar{x}^{8/3}}(0{,}12)^3 = \frac{5}{81 \cdot \bar{x}^{8/3}}(0{,}12)^3.\]</div> Como <span class="math-inline">\(\bar{x} &gt; 8 \implies \bar{x}^{8/3} &gt; 8^{8/3} = 2^8 = 256\)</span> e <span class="math-inline">\(E_2(8{,}12) &gt; 0\)</span>, a aproximação é <strong>por falta</strong> e o erro satisfaz: <div class="math-display">\[0 &lt; E_2(8{,}12) &lt; \frac{5}{81 \cdot 256}(1{,}728 \times 10^{-3}) &lt; \mathbf{5 \times 10^{-7}}.\]</div></li><li><strong>Item (b):</strong> Pela expansão de Maclaurin de ordem <span class="math-inline">\(4\)</span> em torno de <span class="math-inline">\(x_0 = 0\)</span>: <div class="math-display">\[\cos x = 1 - \frac{x^2}{2!} + \frac{x^4}{4!} + o(x^4) = 1 - \frac{x^2}{2} + \frac{x^4}{24} + o(x^4)\]</div> e substituindo <span class="math-inline">\(u = -\frac{x^2}{2}\)</span> em <span class="math-inline">\(e^u = 1 + u + \frac{u^2}{2!} + o(u^2)\)</span>: <div class="math-display">\[e^{-x^2/2} = 1 - \frac{x^2}{2} + \frac{(-x^2/2)^2}{2} + o(x^4) = 1 - \frac{x^2}{2} + \frac{x^4}{8} + o(x^4).\]</div> Subtraindo as duas expansões: <div class="math-display">\[\lim_{x \to 0} \frac{\cos x - e^{-x^2/2}}{x^4} = \lim_{x \to 0} \frac{\left(\frac{1}{24} - \frac{1}{8}\right)x^4 + o(x^4)}{x^4} = \frac{1}{24} - \frac{3}{24} = \mathbf{-\frac{1}{12}}. \quad \blacksquare\]</div></li></ol>
+<ol><li><strong>Item (a):</strong> Seja $f(x) = x^{1/3}$ em torno de $x_0 = 8$. Calculando as derivadas até a 3ª ordem:</li></ol>
+<ul><li>$f(x) = x^{1/3} \implies f(8) = 2$;</li><li>$f'(x) = \frac{1}{3}x^{-2/3} \implies f'(8) = \frac{1}{3 \cdot 4} = \frac{1}{12}$;</li><li>$f''(x) = -\frac{2}{9}x^{-5/3} \implies f''(8) = -\frac{2}{9 \cdot 32} = -\frac{1}{144}$;</li><li>$f'''(x) = \frac{10}{27}x^{-8/3}$. O polinômio de Taylor de ordem $2$ em volta de $x_0 = 8$ é: <div class="math-display">$$P_2(x) = 2 + \frac{1}{12}(x - 8) - \frac{1}{288}(x - 8)^2.$$</div> Para $x = 8{,}12$ ($x - 8 = 0{,}12$): <div class="math-display">$$\sqrt[3]{8{,}12} \approx P_2(8{,}12) = 2 + \frac{0{,}12}{12} - \frac{(0{,}12)^2}{288} = 2 + 0{,}01 - \frac{0{,}0144}{288} = 2 + 0{,}01 - 0{,}00005 = \mathbf{2{,}00995}.$$</div> <strong>Estimativa do Erro:</strong> Pelo Teorema de Lagrange, existe $\bar{x} \in \,]8;\, 8{,}12[$ tal que: <div class="math-display">$$E_2(8{,}12) = \frac{f'''(\bar{x})}{3!}(0{,}12)^3 = \frac{10}{27 \cdot 6 \cdot \bar{x}^{8/3}}(0{,}12)^3 = \frac{5}{81 \cdot \bar{x}^{8/3}}(0{,}12)^3.$$</div> Como $\bar{x} > 8 \implies \bar{x}^{8/3} > 8^{8/3} = 2^8 = 256$ e $E_2(8{,}12) > 0$, a aproximação é <strong>por falta</strong> e o erro satisfaz: <div class="math-display">$$0 < E_2(8{,}12) < \frac{5}{81 \cdot 256}(1{,}728 \times 10^{-3}) < \mathbf{5 \times 10^{-7}}.$$</div></li></ul>
+<ol><li><strong>Item (b):</strong> Pela expansão de Maclaurin de ordem $4$ em torno de $x_0 = 0$: <div class="math-display">$$\cos x = 1 - \frac{x^2}{2!} + \frac{x^4}{4!} + o(x^4) = 1 - \frac{x^2}{2} + \frac{x^4}{24} + o(x^4)$$</div> e substituindo $u = -\frac{x^2}{2}$ em $e^u = 1 + u + \frac{u^2}{2!} + o(u^2)$: <div class="math-display">$$e^{-x^2/2} = 1 - \frac{x^2}{2} + \frac{(-x^2/2)^2}{2} + o(x^4) = 1 - \frac{x^2}{2} + \frac{x^4}{8} + o(x^4).$$</div> Subtraindo as duas expansões: <div class="math-display">$$\lim_{x \to 0} \frac{\cos x - e^{-x^2/2}}{x^4} = \lim_{x \to 0} \frac{\left(\frac{1}{24} - \frac{1}{8}\right)x^4 + o(x^4)}{x^4} = \frac{1}{24} - \frac{3}{24} = \mathbf{-\frac{1}{12}}. \quad \blacksquare$$</div></li></ol>
 </details>
-<hr/>
+<hr>
 <a id="cap-17"></a>
 <h2 id="bloco-14-arquimedes-pascal-e-fermat-capitulo-17">Bloco 14 — Arquimedes, Pascal e Fermat (Capítulo 17)</h2>
-<h3 id="exercicio-b14-1-code-inline-22">Exercício B14.1 🔴 <span class="badge-ref badge-guidorizzi">📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 17.3 — Desafio Final de Fermat]</span></h3>
-<p>Utilizando a progressão geométrica ilimitada <span class="math-inline">\(1, E, E^2, E^3, \dots\)</span> com <strong><span class="math-inline">\(E &gt; 1\)</span></strong> (proposta por Guidorizzi ao final da Seção 17.3), mostre pelo método de Fermat que, para todo natural <span class="math-inline">\(k \ge 2\)</span>, a área da região ilimitada compreendida entre o gráfico de <span class="math-inline">\(y = \dfrac{1}{x^k}\)</span>, o eixo <span class="math-inline">\(Ox\)</span> e à direita da reta <span class="math-inline">\(x = 1\)</span> (<span class="math-inline">\(x \ge 1\)</span>) é dada exatamente por: <div class="math-display">\[\text{Área} = \frac{1}{k - 1}.\]</div></p>
+<h3 id="exercicio-b14-1-guidorizzi-5a-ed-secao-17-3-desafio-final-de-fermat">Exercício B14.1 <em>[Guidorizzi, 5ª ed., Seção 17.3 — Desafio Final de Fermat]</em></h3>
+<p>Utilizando a progressão geométrica ilimitada $1, E, E^2, E^3, \dots$ com <strong>$E > 1$</strong> (proposta por Guidorizzi ao final da Seção 17.3), mostre pelo método de Fermat que, para todo natural $k \ge 2$, a área da região ilimitada compreendida entre o gráfico de $y = \dfrac{1}{x^k}$, o eixo $Ox$ e à direita da reta $x = 1$ ($x \ge 1$) é dada exatamente por: <div class="math-display">$$\text{Área} = \frac{1}{k - 1}.$$</div></p>
 <details>
 <summary><strong>Ver Resolução Completa Passo a Passo</strong></summary>
-<ol><li>Tomamos <span class="math-inline">\(E &gt; 1\)</span> e subdividimos a semirreta <span class="math-inline">\([1, +\infty[\)</span> nos subintervalos <span class="math-inline">\([1, E], [E, E^2], [E^2, E^3], \dots, [E^{i-1}, E^i], \dots\)</span></li><li>Como <span class="math-inline">\(f(x) = \frac{1}{x^k}\)</span> é decrescente para <span class="math-inline">\(x \ge 1\)</span>, o retângulo circunscrito (por excesso) sobre o <span class="math-inline">\(i\)</span>-ésimo subintervalo <span class="math-inline">\([E^{i-1}, E^i]\)</span> tem base <span class="math-inline">\(E^i - E^{i-1} = E^{i-1}(E - 1)\)</span> e altura <span class="math-inline">\(f(E^{i-1}) = \frac{1}{(E^{i-1})^k} = (E^{-k})^{i-1}\)</span>. Logo, sua área é: <div class="math-display">\[\text{área}(R_i) = (E - 1) \cdot \left(\frac{1}{E^{k-1}}\right)^{i-1}, \qquad i = 1, 2, 3, \dots\]</div></li><li>Como <span class="math-inline">\(E &gt; 1\)</span> e <span class="math-inline">\(k \ge 2 \implies k - 1 \ge 1\)</span>, a razão da progressão geométrica é <span class="math-inline">\(q = \frac{1}{E^{k-1}} \in \,]0, 1[\)</span>. Somando a PG infinita: <div class="math-display">\[\sum_{i=1}^{\infty} \text{área}(R_i) = \frac{E - 1}{1 - \dfrac{1}{E^{k-1}}} = \frac{E^{k-1}(E - 1)}{E^{k-1} - 1} = \frac{E^{k-1}}{E^{k-2} + E^{k-3} + \dots + E + 1}.\]</div></li><li>Fazendo <span class="math-inline">\(E \to 1^+\)</span> (para que a amplitude de cada subintervalo tenda a zero), o numerador tende a <span class="math-inline">\(1^{k-1} = 1\)</span> e o denominador possui <span class="math-inline">\((k - 1)\)</span> parcelas que tendem a <span class="math-inline">\(1\)</span>, resultando em: <div class="math-display">\[\lim_{E \to 1^+} \frac{E^{k-1}}{E^{k-2} + \dots + E + 1} = \mathbf{\frac{1}{k - 1}}. \quad \blacksquare\]</div></li></ol>
+<ol><li>Tomamos $E > 1$ e subdividimos a semirreta $[1, +\infty[$ nos subintervalos $[1, E], [E, E^2], [E^2, E^3], \dots, [E^{i-1}, E^i], \dots$</li><li>Como $f(x) = \frac{1}{x^k}$ é decrescente para $x \ge 1$, o retângulo circunscrito (por excesso) sobre o $i$-ésimo subintervalo $[E^{i-1}, E^i]$ tem base $E^i - E^{i-1} = E^{i-1}(E - 1)$ e altura $f(E^{i-1}) = \frac{1}{(E^{i-1})^k} = (E^{-k})^{i-1}$. Logo, sua área é: <div class="math-display">$$\text{área}(R_i) = (E - 1) \cdot \left(\frac{1}{E^{k-1}}\right)^{i-1}, \qquad i = 1, 2, 3, \dots$$</div></li><li>Como $E > 1$ e $k \ge 2 \implies k - 1 \ge 1$, a razão da progressão geométrica é $q = \frac{1}{E^{k-1}} \in \,]0, 1[$. Somando a PG infinita: <div class="math-display">$$\sum_{i=1}^{\infty} \text{área}(R_i) = \frac{E - 1}{1 - \dfrac{1}{E^{k-1}}} = \frac{E^{k-1}(E - 1)}{E^{k-1} - 1} = \frac{E^{k-1}}{E^{k-2} + E^{k-3} + \dots + E + 1}.$$</div></li><li>Fazendo $E \to 1^+$ (para que a amplitude de cada subintervalo tenda a zero), o numerador tende a $1^{k-1} = 1$ e o denominador possui $(k - 1)$ parcelas que tendem a $1$, resultando em: <div class="math-display">$$\lim_{E \to 1^+} \frac{E^{k-1}}{E^{k-2} + \dots + E + 1} = \mathbf{\frac{1}{k - 1}}. \quad \blacksquare$$</div></li></ol>
 </details>
-    </main>
+  <hr>
+  <div class="paper-nav" style="border-bottom:none; margin-top:16px;">
+    <div>Referência Principal: H. L. Guidorizzi, <em>Um Curso de Cálculo — Vol. 1</em> (5ª ed.)</div>
+    <div><a href="./index.html">Paper Teórico Principal</a> &nbsp;|&nbsp; <strong>Caderno de Exercícios</strong> &nbsp;|&nbsp; <a href="javascript:window.print()">Imprimir / PDF</a></div>
   </div>
 </body>
 </html>

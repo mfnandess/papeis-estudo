@@ -1,22 +1,10 @@
-# Caderno de Exercícios, Problemas Clássicos e Demonstrações de Cálculo I
-## Paper Prático Acoplado ao Tratado de Cálculo 1: *Um Curso de Cálculo — Vol. 1* (H. L. Guidorizzi, 5ª Edição) + Complementos de *Cálculo I* (Tom M. Apostol)
+# Caderno de Exercícios e Demonstrações Resolvidas de Cálculo I
+## Material Prático Baseado em *Um Curso de Cálculo — Volume 1* (Hamilton Luiz Guidorizzi, 5ª Edição), com Complementos de *Cálculo I* (Tom M. Apostol)
 
 ---
 
-> **Navegação Rápida entre os Papers deste Repositório (GitHub Pages):**
-> - 📄 **[Paper 1 — Tratado Teórico Principal (Capítulos 1 a 17 + Apêndices)](./index.html)** | [Versão Markdown](./Paper_Calculo_1_Guidorizzi_Apostol.md)
-> - 📝 **[Paper 2 — Caderno de Exercícios Resolvidos (Você está aqui)](./exercicios.html)** | [Versão Markdown](./Caderno_Exercicios_Calculo_1.md)
-> - ⚖️ **[Paper 3 — Guia Comparativo: Guidorizzi (5ª ed.) vs. Apostol (Cálculo I)](./comparativo-guidorizzi-apostol.html)** | [Versão Markdown](./Comparativo_Guidorizzi_vs_Apostol.md)
-
----
-
-> **Sobre este Paper de Exercícios**  
-> Este caderno reúne **45 problemas fundamentais e demonstrações selecionadas**, organizados na sequência exata dos **17 capítulos de *Um Curso de Cálculo — Volume 1* (5ª edição), de Hamilton Luiz Guidorizzi**, acrescidos de exercícios teóricos clássicos de ***Cálculo I*, de Tom M. Apostol**.  
-> Cada exercício traz:
-> 1. **Selo de Referência Explícito:** `📘 [Guidorizzi, Vol. 1, 5ª ed., Seção X.Y]` ou `📙 [Mudança de Referência — Apostol, Cálculo I, Seção Y.Z]`;
-> 2. **Classificação de Nível:** 🟢 *Fixação e Técnica*, 🟡 *Clássico de Prova (Poli/IME-USP)*, 🔴 *Desafio Teórico / Demonstração*;
-> 3. **Dica Estratégica** (para você tentar resolver antes de abrir a resposta);
-> 4. **Resolução Completa Passo a Passo** (expansível).
+> **Sobre este Caderno**  
+> Este documento reúne **45 problemas fundamentais e demonstrações selecionadas**, organizados na sequência dos **17 capítulos de *Um Curso de Cálculo — Volume 1* (5ª edição), de Hamilton Luiz Guidorizzi**, acrescidos de exercícios teóricos clássicos de ***Cálculo I*, de Tom M. Apostol** (sempre identificados por `[Complemento — Apostol, Cálculo I, Seção X.Y]`). Cada problema inclui uma dica estratégica seguida da resolução passo a passo.
 
 ---
 
@@ -41,7 +29,7 @@
 <a id="cap-1-2"></a>
 ## Bloco 1 — Números Reais, Módulo, Supremo e Funções (Capítulos 1 e 2)
 
-### Exercício B1.1 🟢 `📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 1.3, Ex. 3 e 5]`
+### Exercício B1.1 *[Guidorizzi, 5ª ed., Seção 1.3, Ex. 3 e 5]*
 Elimine o módulo na expressão $f(x) = |x - 1| + |x + 2|$ e resolva a inequação $|2x - 1| < |x + 1|$.
 - **Dica:** Para a função com dois módulos, estude o sinal nos intervalos determinados pelas raízes $-2$ e $1$. Para a inequação entre módulos, como ambos os lados são $\ge 0$, eleve ao quadrado usando $|A| < |B| \iff A^2 < B^2 \iff (A-B)(A+B) < 0$.
 
@@ -64,7 +52,7 @@ Elimine o módulo na expressão $f(x) = |x - 1| + |x + 2|$ e resolva a inequaç�
 
 ---
 
-### Exercício B1.2 🟡 `📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 1.3, Ex. 6 e 7]`
+### Exercício B1.2 *[Guidorizzi, 5ª ed., Seção 1.3, Ex. 6 e 7]*
 Prove que, quaisquer que sejam $x, y \in \mathbb{R}$:
 (a) $|x + y| = |x| + |y| \iff xy \ge 0$;  
 (b) $\big||x| - |y|\big| \le |x - y|$.
@@ -86,7 +74,7 @@ Prove que, quaisquer que sejam $x, y \in \mathbb{R}$:
 
 ---
 
-### Exercício B1.3 🔴 `📙 [Mudança de Referência — Apostol, Cálculo I, Parte I.3, Seção I.3.12, Ex. 5 e Guidorizzi, Apêndice 1, Seção A1.2]`
+### Exercício B1.3 *[Complemento — Apostol, Cálculo I, Parte I.3, Seção I.3.12, Ex. 5 e Guidorizzi, Apêndice 1, Seção A1.2]*
 Sejam $A$ e $B$ dois subconjuntos não vazios de $\mathbb{R}$, limitados superiormente, e seja $C = \{x + y \mid x \in A, y \in B\}$. Prove que $C$ é limitado superiormente e que:
 $$\sup C = \sup A + \sup B.$$
 - **Dica:** Mostre primeiro que $\sup A + \sup B$ é cota superior de $C$ (logo $\sup C \le \sup A + \sup B$). Depois, dado $\varepsilon > 0$ arbitrário, use a caracterização do supremo para escolher $x \in A$ com $x > \sup A - \frac{\varepsilon}{2}$ e $y \in B$ com $y > \sup B - \frac{\varepsilon}{2}$.
@@ -106,7 +94,7 @@ $$\sup C = \sup A + \sup B.$$
 <a id="cap-3"></a>
 ## Bloco 2 — Limite e Continuidade (Capítulo 3)
 
-### Exercício B2.1 🟡 `📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 3.2, Ex. 21 e Seção 3.3]`
+### Exercício B2.1 *[Guidorizzi, 5ª ed., Seção 3.2, Ex. 21 e Seção 3.3]*
 (a) Prove, diretamente pela definição $\varepsilon$-$\delta$, que $\lim_{x \to 2} x^2 = 4$.  
 (b) (**Densidade de $\mathbb{Q}$ e Funções Contínuas — Ex. 21 da Seção 3.2:**) Sejam $f, g: \mathbb{R} \to \mathbb{R}$ duas funções contínuas em $\mathbb{R}$ tais que $f(r) = g(r)$ para todo número racional $r \in \mathbb{Q}$. Prove que $f(x) = g(x)$ para todo real $x \in \mathbb{R}$.
 - **Dica:** Em (a), escreva $|x^2 - 4| = |x - 2||x + 2|$ e restrinja inicialmente $|x - 2| < 1$ para limitar $|x + 2| < 5$, tomando $\delta = \min\left\{1, \frac{\varepsilon}{5}\right\}$. Em (b), considere $h(x) = f(x) - g(x)$ e use o Teorema da Conservação do Sinal caso existisse $p \in \mathbb{R}$ com $h(p) \neq 0$.
@@ -123,7 +111,7 @@ $$\sup C = \sup A + \sup B.$$
 
 ---
 
-### Exercício B2.2 🟡 `📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 3.3 e Seção 3.8]`
+### Exercício B2.2 *[Guidorizzi, 5ª ed., Seção 3.3 e Seção 3.8]*
 Calcule os seguintes limites sem usar a Regra de L'Hospital (usando fatoração, conjugado de raízes e o 1º Limite Fundamental):
 (a) $\displaystyle \lim_{x \to 1} \frac{\sqrt[3]{x} - 1}{\sqrt{x} - 1}$; $\qquad$ (b) $\displaystyle \lim_{x \to 0} \frac{\cos(2x) - \cos(3x)}{x^2}$; $\qquad$ (c) $\displaystyle \lim_{x \to p} \frac{\operatorname{sen} x - \operatorname{sen} p}{x - p}$.
 - **Dica:** Em (a), faça a mudança de variável $x = u^6$ ($u \to 1$). Em (b), use prostaférese $\cos A - \cos B = -2\operatorname{sen}\left(\frac{A+B}{2}\right)\operatorname{sen}\left(\frac{A-B}{2}\right)$.
@@ -144,7 +132,7 @@ Calcule os seguintes limites sem usar a Regra de L'Hospital (usando fatoração,
 <a id="cap-4"></a>
 ## Bloco 3 — Extensões do Limite, Sequências e o Número $e$ (Capítulo 4)
 
-### Exercício B3.1 🟡 `📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 4.1 e Seção 4.3]`
+### Exercício B3.1 *[Guidorizzi, 5ª ed., Seção 4.1 e Seção 4.3]*
 Calcule os limites no infinito:
 (a) $\displaystyle \lim_{x \to -\infty} \frac{\sqrt{9x^2 + x + 1}}{2x - 5}$; $\qquad$ (b) $\displaystyle \lim_{x \to +\infty} \left(\sqrt{x^2 + 3x} - x\right)$; $\qquad$ (c) $\displaystyle \lim_{n \to \infty} \sqrt[n]{3^n + 5^n}$.
 - **Dica:** Em (a), lembre-se de que para $x < 0$, $\sqrt{x^2} = |x| = -x$! Em (b), multiplique pelo conjugado $\sqrt{x^2 + 3x} + x$. Em (c), coloque $5^n$ em evidência dentro da raiz $n$-ésima e use o Teorema do Confronto ($5 \le \sqrt[n]{3^n + 5^n} \le 5\sqrt[n]{2}$).
@@ -166,7 +154,7 @@ Calcule os limites no infinito:
 <a id="cap-5"></a>
 ## Bloco 4 — Teoremas Globais em $[a, b]$: Anulamento, TVI e Weierstrass (Capítulo 5)
 
-### Exercício B4.1 🟡 `📘 [Guidorizzi, Vol. 1, 5ª ed., Cap. 5, Ex. 2, 7 e 11]`
+### Exercício B4.1 *[Guidorizzi, 5ª ed., Cap. 5, Ex. 2, 7 e 11]*
 (a) (**Teorema do Ponto Fixo em $[0, 1]$ — Ex. 11, Cap. 5:**) Seja $f: [0, 1] \to \mathbb{R}$ uma função contínua tal que, para todo $x \in [0, 1]$, tem-se $0 \le f(x) \le 1$. Prove que existe pelo menos um $c \in [0, 1]$ tal que **$f(c) = c$**.  
 (b) (**Ex. 2, Cap. 5:**) Prove que a equação $x^3 - 4x + 2 = 0$ admite exatamente **três raízes reais distintas** e localize cada uma num intervalo de amplitude $1$.
 - **Dica:** Em (a), aplique o Teorema do Anulamento à função auxiliar $g(x) = f(x) - x$ em $[0, 1]$. Em (b), calcule $f(-3), f(-2), f(0), f(1), f(2)$ e observe as mudanças de sinal!
@@ -189,7 +177,7 @@ Calcule os limites no infinito:
 
 ---
 
-### Exercício B4.2 🔴 `📘 [Guidorizzi, Vol. 1, 5ª ed., Cap. 5, Ex. 10 e Ex. 12]`
+### Exercício B4.2 *[Guidorizzi, 5ª ed., Cap. 5, Ex. 10 e Ex. 12]*
 (a) Suponha que $f: [0, 1] \to \mathbb{R}$ seja contínua, $f(0) = 1$ e que **$f(x)$ seja um número racional para todo $x \in [0, 1]$**. Prove que $f(x) = 1$ para todo $x \in [0, 1]$.  
 (b) Seja $f$ contínua e injetora em $[a, b]$ com $f(a) < f(b)$. Prove, usando apenas o TVI, que $f$ é **estritamente crescente** em $[a, b]$.
 
@@ -209,7 +197,7 @@ Calcule os limites no infinito:
 <a id="cap-6"></a>
 ## Bloco 5 — Funções Exponencial e Logarítmica (Capítulo 6)
 
-### Exercício B5.1 🟢 `📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 6.3, Ex. 1 a 3]`
+### Exercício B5.1 *[Guidorizzi, 5ª ed., Seção 6.3, Ex. 1 a 3]*
 Calcule os limites exponenciais e logarítmicos usando os limites fundamentais da Seção 6.3:
 (a) $\displaystyle \lim_{x \to +\infty} \left(\frac{2x + 3}{2x - 1}\right)^{x + 1}$; $\qquad$ (b) $\displaystyle \lim_{x \to 0} \frac{a^x - b^x}{x}$ ($a > 0, b > 0$); $\qquad$ (c) $\displaystyle \lim_{x \to 0} \frac{\ln(\cos x)}{x^2}$.
 
@@ -231,7 +219,7 @@ Calcule os limites exponenciais e logarítmicos usando os limites fundamentais d
 <a id="cap-7"></a>
 ## Bloco 6 — Derivadas, Regra da Cadeia, Implícita e Taxas Relacionadas (Capítulo 7)
 
-### Exercício B6.1 🟡 `📘 [Guidorizzi, Vol. 1, 5ª ed., Seções 7.13, 7.15 e 7.16]`
+### Exercício B6.1 *[Guidorizzi, 5ª ed., Seções 7.13, 7.15 e 7.16]*
 (a) (**Derivação Implícita — Fólio de Descartes, Seção 7.13:**) Sendo $y = f(x)$ definida implicitamente pela equação $x^3 + y^3 - 3xy = 0$, determine $\frac{dy}{dx}$ e a equação da reta tangente no ponto $\left(\frac{3}{2}, \frac{3}{2}\right)$.  
 (b) (**Taxas Relacionadas — Seção 7.15:**) Uma escada de $5\text{ m}$ de comprimento está apoiada numa parede vertical. Se a base da escada desliza horizontalmente afastando-se da parede à velocidade constante de $1{,}2\text{ m/s}$, com que velocidade o topo da escada escorrega para baixo no instante em que a base está a $3\text{ m}$ da parede?
 
@@ -256,7 +244,7 @@ Calcule os limites exponenciais e logarítmicos usando os limites fundamentais d
 <a id="cap-8"></a>
 ## Bloco 7 — Funções Inversas e suas Derivadas (Capítulo 8)
 
-### Exercício B7.1 🟡 `📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 8.2, Ex. 1 a 5]`
+### Exercício B7.1 *[Guidorizzi, 5ª ed., Seção 8.2, Ex. 1 a 5]*
 (a) Seja $f(x) = x^5 + 2x^3 + x - 1$. Mostre que $f$ é inversível com inversa $g = f^{-1}$ derivável em $\mathbb{R}$, e calcule **$g'(3)$** e **$g''(3)$**.  
 (b) Simplifique a derivada de $h(x) = \operatorname{arctg}\left(\frac{1 + x}{1 - x}\right)$ para $x \neq 1$, e interprete o resultado.
 
@@ -281,7 +269,7 @@ Calcule os limites exponenciais e logarítmicos usando os limites fundamentais d
 <a id="cap-9-15"></a>
 ## Bloco 8 — TVM, Rolle, Cauchy, Variação de Funções e Otimização (Capítulos 9 e 15)
 
-### Exercício B8.1 🟡 `📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 9.2, Ex. 6 e 9]`
+### Exercício B8.1 *[Guidorizzi, 5ª ed., Seção 9.2, Ex. 6 e 9]*
 Utilizando o Teorema do Valor Médio (ou o estudo de crescimento da Seção 9.2), demonstre as desigualdades clássicas:
 (a) **Desigualdade de Bernoulli Generalizada:** $(1 + x)^\alpha > 1 + \alpha x$ para todo $x > 0$ e $\alpha > 1$;  
 (b) $\dfrac{x}{1 + x^2} < \operatorname{arctg} x < x$ para todo $x > 0$;  
@@ -302,7 +290,7 @@ Utilizando o Teorema do Valor Médio (ou o estudo de crescimento da Seção 9.2)
 
 ---
 
-### Exercício B8.2 🟡 `📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 9.6 e Seção 9.8]`
+### Exercício B8.2 *[Guidorizzi, 5ª ed., Seção 9.6 e Seção 9.8]*
 Determine as dimensões (raio da base $r$ e altura $h$) do cilindro circular reto de **volume máximo** que pode ser inscrito numa esfera de raio fixo $R > 0$.
 
 <details>
@@ -320,7 +308,7 @@ Determine as dimensões (raio da base $r$ e altura $h$) do cilindro circular ret
 
 ---
 
-### Exercício B8.3 🔴 `📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 9.7, Ex. 8 — Teorema de Darboux para a Derivada]`
+### Exercício B8.3 *[Guidorizzi, 5ª ed., Seção 9.7, Ex. 8 — Teorema de Darboux para a Derivada]*
 (**Teorema de Darboux:**) Suponha que $g$ seja derivável no intervalo fechado $[a, b]$, com **$g'(a) < 0$ e $g'(b) > 0$**. Prove (mesmo sem supor que $g'$ seja contínua!) que existe pelo menos um $c \in \,]a, b[$ tal que **$g'(c) = 0$**.
 - **Dica (Sugestão do Guidorizzi):** Como $g$ é derivável em $[a, b]$, $g$ é contínua em $[a, b]$ e, pelo Teorema de Weierstrass, assume valor mínimo global num ponto $c \in [a, b]$. Mostre que $g'(a) < 0 \implies c \neq a$ e $g'(b) > 0 \implies c \neq b$.
 
@@ -338,7 +326,7 @@ Determine as dimensões (raio da base $r$ e altura $h$) do cilindro circular ret
 <a id="cap-10-11"></a>
 ## Bloco 9 — Primitivas, Integral de Riemann, 1º e 2º TFC e Áreas (Capítulos 10 e 11)
 
-### Exercício B9.1 🟡 `📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 11.6 e Seção 11.7]`
+### Exercício B9.1 *[Guidorizzi, 5ª ed., Seção 11.6 e Seção 11.7]*
 (a) Calcule a área da região plana limitada pelas curvas $y = x^2 - 2x$ e $y = 4 - x^2$.  
 (b) Seja $f: [-a, a] \to \mathbb{R}$ contínua. Prove, usando o Teorema de Mudança de Variável na Integral (Seção 11.7), que se $f$ é **ímpar** ($f(-x) = -f(x)$), então $\int_{-a}^{a} f(x)\,dx = 0$; e use isso para calcular num segundo $\displaystyle \int_{-\pi/2}^{\pi/2} \left(x^3 \cos x + \frac{\operatorname{sen}^5 x}{1 + x^4} + \cos x\right)dx$.
 
@@ -357,7 +345,7 @@ Determine as dimensões (raio da base $r$ e altura $h$) do cilindro circular ret
 
 ---
 
-### Exercício B9.2 🟡 `📙 [Mudança de Referência — Apostol, Cálculo I, Cap. 5, Seção 5.1 (e Guidorizzi Vol. 2, Cap. 2)]`
+### Exercício B9.2 *[Complemento — Apostol, Cálculo I, Cap. 5, Seção 5.1 (e Guidorizzi Vol. 2, Cap. 2)]*
 Seja $F(x) = \displaystyle \int_{\operatorname{sen} x}^{x^2} e^{-t^2}\,dt$. Calcule $F'(x)$ para todo $x \in \mathbb{R}$, e calcule o limite:
 $$\lim_{x \to 0} \frac{\displaystyle \int_{0}^{x^2} \operatorname{sen}(\sqrt{t})\,dt}{x^3} \quad (x > 0).$$
 
@@ -375,7 +363,7 @@ $$\lim_{x \to 0} \frac{\displaystyle \int_{0}^{x^2} \operatorname{sen}(\sqrt{t})
 <a id="cap-12"></a>
 ## Bloco 10 — Técnicas de Primitivação (Capítulo 12)
 
-### Exercício B10.1 🟡 `📘 [Guidorizzi, Vol. 1, 5ª ed., Seções 12.3, 12.5 e 12.9]`
+### Exercício B10.1 *[Guidorizzi, 5ª ed., Seções 12.3, 12.5 e 12.9]*
 Calcule as seguintes integrais:
 (a) $\displaystyle \int x^2 \operatorname{arctg} x\,dx$; $\qquad$ (b) $\displaystyle \int \frac{\sqrt{4 - x^2}}{x^2}\,dx$ ($0 < x < 2$); $\qquad$ (c) (**Integrais de Wallis — Ex. da Seção 12.9:**) Deduzir que para todo natural $n \ge 2$, $I_n = \int_{0}^{\pi/2} \operatorname{sen}^n x\,dx$ satisfaz $I_n = \frac{n-1}{n}I_{n-2}$.
 
@@ -399,7 +387,7 @@ Calcule as seguintes integrais:
 <a id="cap-13"></a>
 ## Bloco 11 — Volumes, Comprimento de Arco, Polares e Pappus (Capítulo 13)
 
-### Exercício B11.1 🟡 `📘 [Guidorizzi, Vol. 1, 5ª ed., Seções 13.1, 13.2 e 13.9, Ex. 5]`
+### Exercício B11.1 *[Guidorizzi, 5ª ed., Seções 13.1, 13.2 e 13.9, Ex. 5]*
 Considere o disco circular $A = \{(x, y) \in \mathbb{R}^2 \mid x^2 + (y - b)^2 \le a^2\}$, com $0 < a < b$. Calcule o volume do **Toro (pneu / rosquinha)** obtido pela rotação de $A$ em torno do eixo $x$, tanto pela integral direta quanto pelo **Teorema de Pappus**!
 
 <details>
@@ -420,7 +408,7 @@ Considere o disco circular $A = \{(x, y) \in \mathbb{R}^2 \mid x^2 + (y - b)^2 \
 <a id="cap-14"></a>
 ## Bloco 12 — Equações Diferenciais de 1ª Ordem (Capítulo 14)
 
-### Exercício B12.1 🟡 `📘 [Guidorizzi, Vol. 1, 5ª ed., Seções 14.3–14.6]`
+### Exercício B12.1 *[Guidorizzi, 5ª ed., Seções 14.3–14.6]*
 (a) Determine **todas** as soluções (constantes e não constantes) da EDO de variáveis separáveis $\dfrac{dx}{dt} = x^2 - 1$.  
 (b) Resolva o problema de valor inicial (PVI) linear de 1ª ordem:
 $$\frac{dy}{dx} + (\operatorname{tg} x)y = \cos^2 x, \qquad y(0) = 2, \quad x \in \left]-\frac{\pi}{2}, \frac{\pi}{2}\right[.$$
@@ -448,7 +436,7 @@ $$\frac{dy}{dx} + (\operatorname{tg} x)y = \cos^2 x, \qquad y(0) = 2, \quad x \i
 <a id="cap-16"></a>
 ## Bloco 13 — Fórmula e Polinômios de Taylor (Capítulo 16)
 
-### Exercício B13.1 🟡 `📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 16.2, Ex. 2 e Seção 16.3, Ex. 6 e 10]`
+### Exercício B13.1 *[Guidorizzi, 5ª ed., Seção 16.2, Ex. 2 e Seção 16.3, Ex. 6 e 10]*
 (a) Utilizando um polinômio de Taylor de ordem $2$ em volta de $x_0 = 8$, calcule um valor aproximado para **$\sqrt[3]{8{,}12}$**, avalie o erro cometido pelo Resto de Lagrange e diga se a aproximação é por falta ou por excesso.  
 (b) Usando os polinômios de Maclaurin com resto de Peano $o(x^n)$, calcule o limite:
 $$\lim_{x \to 0} \frac{\cos x - e^{-x^2/2}}{x^4}.$$
@@ -482,7 +470,7 @@ $$\lim_{x \to 0} \frac{\cos x - e^{-x^2/2}}{x^4}.$$
 <a id="cap-17"></a>
 ## Bloco 14 — Arquimedes, Pascal e Fermat (Capítulo 17)
 
-### Exercício B14.1 🔴 `📘 [Guidorizzi, Vol. 1, 5ª ed., Seção 17.3 — Desafio Final de Fermat]`
+### Exercício B14.1 *[Guidorizzi, 5ª ed., Seção 17.3 — Desafio Final de Fermat]*
 Utilizando a progressão geométrica ilimitada $1, E, E^2, E^3, \dots$ com **$E > 1$** (proposta por Guidorizzi ao final da Seção 17.3), mostre pelo método de Fermat que, para todo natural $k \ge 2$, a área da região ilimitada compreendida entre o gráfico de $y = \dfrac{1}{x^k}$, o eixo $Ox$ e à direita da reta $x = 1$ ($x \ge 1$) é dada exatamente por:
 $$\text{Área} = \frac{1}{k - 1}.$$
 
